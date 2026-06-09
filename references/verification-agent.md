@@ -1,6 +1,6 @@
 # Verification agent (Fase 4, sub-agent self-check)
 
-Lancia un sub-agent (tool Task) che rilegge le schede prodotte prima che l'utente le veda. Se non puoi lanciare un sub-agent, esegui questa checklist nello stesso contesto prima di produrre l'output. Produce `raw/verification-report.md`.
+Lancia un sub-agent (tool Task) che rilegge le schede prodotte prima che l'utente le veda. Se non puoi lanciare un sub-agent, esegui questa checklist nello stesso contesto prima di produrre l'output. Produce `raw/verification-report.md` (o `raw-deep/verification-report.md` se i grezzi della run stanno in `raw-deep/`, vedi `research-waves.md`).
 
 ## Check universali
 

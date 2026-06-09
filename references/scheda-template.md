@@ -86,8 +86,12 @@ I contatti si rendono come organigramma a tre fasce, non come elenco piatto:
 - Tre colonne: **Decide** (budget/firma, accento caldo) · **Influenza** (tecnici/champion) · **Usa**.
 - Ogni persona è un nodo `.node` (nome in navy + ruolo). Il contatto consigliato per il primo approccio è `.node--star` (★). Chi è decisore ma ignoto o non raggiungibile (es. CTO non in CRM, direttore IT da identificare) è un nodo `.node--ghost` (tratteggiato).
 - Dentro il nodo, una riga `.c` con i dati di contatto: email (✉, come `mailto:`) e telefono (☎) per le persone presenti nei fogli CRM; telefono assente si rende "n.d.". Quando esiste un profilo LinkedIn verificato, aggiungi la pillola `.li` (testo "in") che linka al profilo. Mai inventare email, telefono o URL LinkedIn: si riportano solo se reperiti.
-- Riga finale `.org__path`: il percorso consigliato, da chi contattare al target, con la freccia del ponte (es. "engineer Senior ★ → CTO"). Questo rende esplicito a Oriana chi scrivere per primo e dove vuole arrivare.
+- Riga finale `.org__path`: il percorso consigliato, da chi contattare al target, con la freccia del ponte (es. "engineer Senior ★ → CTO"). Questo rende esplicito al sales chi scrivere per primo e dove vuole arrivare.
 - Sotto l'organigramma, una riga sintetica sul contatto prioritario (note CRM/web, email, link), con le label di affidabilità dove serve.
+
+### Scheda persona (componente `.person`)
+
+La scheda persona (Standard: contatto prioritario; Deep: tutti i contatti chiave) si rende dentro un blocco `.person` annidato nella card dell'azienda, usando righe `.row` (label monospace / valore) per i campi PERCORSO / OPINIONI-TEMI / PASSIONI / STILE / GANCI / CANALE del layout testuale; le FONTI della persona chiudono il blocco come link a pillola (stesso stile del footer `.src`). I ganci portano inline il tag di affidabilità e l'esito del creepy test (passa / scartato con motivo). Non introdurre classi nuove: nel template canonico `.person` ha solo la regola di stampa `break-inside:avoid` e il blocco si compone con le `.row` esistenti.
 
 ### Legenda in chiusura (solo glossario, niente note per-azienda)
 

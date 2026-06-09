@@ -24,20 +24,24 @@ A livello di lista: tabella riepilogativa ordinata per priorità (coda di lavoro
 
 ## Installazione
 
-La skill è la cartella `corley-company-mapping/` (questo repository). Il file `SKILL.md` ha il frontmatter (`name`, `description` con i trigger) e il flusso; la cartella `references/` contiene i dettagli caricati on-demand.
+La skill è questo repository: il file `SKILL.md` ha il frontmatter (`name`, `description` con i trigger) e il flusso; la cartella `references/` contiene i dettagli caricati on-demand.
 
 ### Per Claude Code (umano)
 
-Copia la cartella della skill in una delle directory che Claude Code legge:
+Clona il repository e copia la skill in una delle directory che Claude Code legge (la cartella installata deve chiamarsi `corley-company-mapping`, come il `name` nel frontmatter):
 
 ```bash
+git clone git@github.com:FrancescoPolitanoCorley/corley-company-mapping-skill.git
+
 # A livello utente (disponibile in tutte le sessioni)
 mkdir -p ~/.claude/skills
-cp -R corley-company-mapping ~/.claude/skills/
+cp -R corley-company-mapping-skill ~/.claude/skills/corley-company-mapping
+rm -rf ~/.claude/skills/corley-company-mapping/.git
 
 # oppure a livello progetto
 mkdir -p .claude/skills
-cp -R corley-company-mapping .claude/skills/
+cp -R corley-company-mapping-skill .claude/skills/corley-company-mapping
+rm -rf .claude/skills/corley-company-mapping/.git
 ```
 
 Riavvia/riapri la sessione. La skill si attiva da sola quando il messaggio contiene i trigger (vedi sotto), oppure invocala esplicitamente.
@@ -48,9 +52,9 @@ Leggi `SKILL.md` e segui il flusso a 6 fasi, aprendo i file in `references/` qua
 
 ### Requisiti dell'ambiente
 
-> **Prerequisito obbligatorio: connettore Google Drive.** La skill legge il CRM da Google Drive nella Fase 1 (cross-reference). Serve quindi avere installato e autorizzato il **connettore/skill Google Drive** (MCP) nell'ambiente dove gira (Claude Code, Cowork, ecc.). Senza il connettore Drive la Fase 1 non parte: niente stato CALDA/FREDDA né contatti dal CRM, e il dossier si basa solo sul web. Installa e collega il connettore Google Drive **prima** di usare la skill.
+> **Prerequisito obbligatorio: accesso al CRM su Google Drive.** La Fase 1 (cross-reference) legge i file lead Corley che vivono su Google Drive. L'accesso può avvenire in due modi, in quest'ordine: **mount locale** (Google Drive Desktop o un export dei file) cercato via shell, oppure **connettore Google Drive (MCP)** quando non c'è nessun mount (es. ambiente cloud). Serve almeno uno dei due: senza, la Fase 1 non parte (niente stato CALDA/FREDDA né contatti dal CRM, dossier basato solo sul web). Se lavori in un ambiente senza filesystem condiviso con Drive, installa e autorizza il connettore **prima** di usare la skill.
 
-- **Connettore Google Drive** (MCP) per il cross-reference CRM in Fase 1. **Obbligatorio** (vedi sopra).
+- **Accesso al CRM**: mount locale di Google Drive **oppure** connettore Google Drive (MCP). Almeno uno dei due, vedi sopra.
 - **WebSearch / WebFetch** per la ricerca.
 - Per il PDF: un **browser Chromium-based** (Chrome, Chromium, Edge, Brave, Vivaldi, Opera) e accesso alla shell. La skill usa il **browser predefinito di sistema** se è Chromium, altrimenti ripiega su un Chromium installato; rileva tutto da sola su macOS/Linux/Windows, senza percorsi da configurare. Se il predefinito è Safari o Firefox (che non stampano via questa pipeline) e non c'è alcun Chromium, consegna comunque l'HTML e segnala che il PDF va generato a parte.
 
@@ -62,7 +66,7 @@ Frase tipo: *"mappa queste aziende: …"*, *"qualifica questi lead"*, *"prepara 
 
 **Input:** un elenco di aziende o una singola azienda. Opzionali: l'angolo (default: lead per consulenza AWS) e il tier.
 
-**Output:** `{nome}.html` + `{nome}.pdf` nella directory di lavoro.
+**Output:** nella directory di lavoro, un HTML + il PDF corrispondente. Naming: singola azienda `{id}.html` (slug dell'azienda, es. `kedrion-biopharma.html`), lista `company-mapping-{data}.html`; un nome indicato dall'utente vince sulla convenzione.
 
 ---
 
@@ -83,7 +87,7 @@ L'utente può sempre forzare il tier.
 ## Come funziona (flusso a 6 fasi)
 
 0. **Intake & angolo** — lista o singola azienda; angolo default Corley con override; tier; crea/riprende `PROGRESS.md`.
-1. **CRM cross-reference** (sempre, prima del web) — scansiona la cartella Drive dei lead e sottocartelle, fuzzy match sul nome azienda, classifica calda/fredda, estrae evento, anno, note, livello AWS, status, account manager, email e telefono.
+1. **CRM cross-reference** (sempre, prima del web) — cerca nei file lead Corley (shell sul mount locale di Drive se c'è, altrimenti tool Drive con query mirate), fuzzy match sul nome azienda, classifica calda/fredda, estrae evento, anno, note, livello AWS, status, account manager, email e telefono.
 2. **Ricerca web in wave** (fan-out) — A azienda & finanza (+ trigger di timing, segnali di deal), B tecnologia & AWS (+ incumbent), C persone (organigramma; in Deep layer personale + ganci). I grezzi vanno in `raw/`.
 3. **Sintesi** — connette i segnali, calcola priorità/deal/ICP fit, deriva pain/leve/contro-leva/mossa/bozza, applica le label, riconcilia i conflitti, dichiara i gap.
 4. **Verifica** — un controllo finale rilegge l'output (claim senza fonte, contraddizioni, dati stale, gap non dichiarati) prima della consegna.

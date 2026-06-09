@@ -72,5 +72,5 @@ Nota operativa sul matching: `fullText contains '{token}'` è rumoroso sui token
 
 - Classificazione: `CALDA` (almeno un match) o `FREDDA`.
 - Se calda: elenco delle persone già in CRM, ciascuna con evento, anno, note, livello AWS, status, account manager.
-- **Email e telefono**: per ogni persona presente nei fogli, riporta sempre l'email e, se presente nel foglio, il telefono. Sono i dati di contatto che il sales userà per scrivere o chiamare. Se il telefono non c'è nel foglio, segnala "n.d." (non inventarlo).
+- **Email e telefono**: per ogni persona presente nei fogli, riporta sempre l'email e, se presente nel foglio, il telefono. Sono i dati di contatto che il sales userà per scrivere o chiamare. Leggi sempre la colonna telefono del foglio per esteso: "n.d." va scritto solo se la cella è davvero vuota, non se la colonna non è stata letta (errore già osservato in un test: numero presente nel foglio, scheda uscita con "n.d."). In una run Deep su un'azienda già coperta, ri-verifica i campi di contatto alla fonte CRM invece di ereditarli dal raw della run precedente.
 - Questo output informa la Wave C: se il contatto esiste già, la wave lo arricchisce invece di ripartire da zero. Email e telefono dal CRM vanno mantenuti nella scheda finale accanto alla persona.

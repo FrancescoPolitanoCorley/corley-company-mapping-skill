@@ -39,21 +39,23 @@ Esempio (Python, append-safe):
 ```python
 import csv, os, json
 COLS = ["id","data_aggiornamento","angolo","tier","azienda","alias","settore","sede","dimensione","dipendenti","ricavi","ricavi_anno","ricavi_label","utile_perdita","utile_label","situazione_finanziaria","salute","gruppo_round","tech_ai","incumbent","legame_aws","crm_stato","crm_evento","crm_anno","crm_status","crm_account_manager","perche_ora","icp_fit","priorita","deal_stimato","pain","leve","contro_leva","mossa","bozza_apertura","note","gap_rischi","contatti_json","fonti_json"]
+# row = dict con i campi della scheda; "contatti" e "fonti" sono liste Python (vengono serializzate qui)
+row = {"id": "kedrion-biopharma", "data_aggiornamento": "2026-06-09", "contatti": [], "fonti": []}  # esempio
 path = "company-mapping-db.csv"
 new = not os.path.exists(path)
 with open(path, "a", newline="", encoding="utf-8") as f:
     w = csv.DictWriter(f, fieldnames=COLS)
     if new: w.writeheader()
-    row["contatti_json"] = json.dumps(row.get("contatti", []), ensure_ascii=False)
-    row["fonti_json"] = json.dumps(row.get("fonti", []), ensure_ascii=False)
+    row["contatti_json"] = json.dumps(row.pop("contatti", []), ensure_ascii=False)
+    row["fonti_json"] = json.dumps(row.pop("fonti", []), ensure_ascii=False)
     w.writerow({k: row.get(k, "") for k in COLS})
 ```
 
 ## Rigenerare HTML/PDF senza ricerca (il punto del datastore)
 
-Quando l'utente chiede di **ricreare, ri-stilizzare o ri-esportare** un dossier di aziende già mappate (o di metterne alcune già note in un nuovo report), NON rifare le Fasi 1-2-4: leggi il CSV e renderizza.
+Quando l'utente chiede di **ricreare, ri-stilizzare o ri-esportare** un dossier di aziende già mappate (o di metterne alcune già note in un nuovo report), NON rifare le Fasi 1-4 (CRM, ricerca, sintesi e verifica sono già consolidate nel CSV): leggi il CSV e renderizza.
 
-1. Carica `company-mapping-db.csv`. Per ogni `id` tieni **solo la riga più recente** (`data_aggiornamento` massima): le run vecchie restano nel file come storico ma non si renderizzano.
+1. Carica `company-mapping-db.csv`. Per ogni `id` tieni **solo la riga più recente** (`data_aggiornamento` massima; a parità di data vince l'ultima riga in ordine di file, cioè l'append più recente): le run vecchie restano nel file come storico ma non si renderizzano.
 2. Filtra alle aziende richieste (se l'utente ne indica un sottoinsieme).
 3. Per ogni riga: ricostruisci la card secondo `scheda-template.md` (i campi testuali hanno già le label; `contatti_json`/`fonti_json` si de-serializzano in organigramma e fonti).
 4. Genera HTML + PDF come in Fase 5.

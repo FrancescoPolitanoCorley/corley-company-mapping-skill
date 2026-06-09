@@ -17,7 +17,7 @@ L'organigramma non è un elenco piatto di nomi, è una mappa che dice al sales c
 
 - **Decide / Influenza / Usa**: ogni persona va collocata nella fascia giusta.
 - **Contatto consigliato (★)**: marca la persona da cui partire per il primo approccio. Di norma è chi è già nel CRM o il decisore raggiungibile.
-- **Nodi fantasma (tratteggiati)**: chi è rilevante ma ignoto o non raggiungibile (es. decisore di budget da identificare, CTO non presente nel CRM). Vanno mostrati come obiettivo, non nascosti.
+- **Nodi fantasma (tratteggiati)**: chi è rilevante ma ignoto o non raggiungibile (es. decisore di budget da identificare, CTO non presente nel CRM). Vanno mostrati come obiettivo, non nascosti. In Deep, ogni nodo fantasma ereditato da una run di tier inferiore va ri-tentato alla fonte: se il ruolo si conferma, promuovilo a nodo pieno nella fascia corretta; il fantasma resta solo per chi è ancora ignoto o non raggiungibile dopo i round Deep.
 - **Percorso**: una riga che esplicita il ponte dal contatto consigliato al target (es. "engineer Senior ★ → CTO"). Se il decisore è già raggiungibile, dichiarare "contatto diretto, nessun ponte".
 
 Questa mappa si costruisce intrecciando i contatti dal CRM (Fase 1) con l'organigramma dal web: un contatto caldo in CRM diventa quasi sempre il nodo ★.

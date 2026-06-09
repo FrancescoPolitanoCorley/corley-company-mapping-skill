@@ -4,7 +4,7 @@ La sintesi è ragionamento, non formattazione. Se il modello supporta l'extended
 
 ## Procedura
 
-1. Leggi tutti i file in `raw/{azienda}/` prima di scrivere.
+1. Leggi tutti i grezzi della run corrente prima di scrivere: `raw/{azienda}/` oppure, per il Deep su azienda già coperta in un tier inferiore, `raw-deep/{azienda}/` (vedi `research-waves.md`).
 2. Connetti i segnali tra le wave: hiring più finanza più PR danno la traiettoria; legame AWS più maturità cloud danno la priorità per Corley.
 3. Riconcilia i conflitti (vedi `honesty-protocol.md`). Il conflitto riconciliato e ogni precisazione vanno nel campo NOTE della card di QUELLA azienda, non in fondo al documento.
 4. Applica le label `[Dato]`/`[Stima]`/`[Ipotesi]` e le date.
