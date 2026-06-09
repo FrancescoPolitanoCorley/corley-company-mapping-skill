@@ -106,14 +106,58 @@ Lo scheletro HTML canonico, completo di CSS e di tutte le classi citate sopra (`
 
 Il blocco `<style>` di riferimento include già le regole `@media print` necessarie (formato A4, `print-color-adjust:exact` per mantenere i colori dei badge, `break-inside:avoid` su card/organigramma/gap per non spezzarli). Mantienile invariate: sono ciò che fa sì che il PDF conservi la stessa leggibilità dell'HTML.
 
-### Generazione del PDF
+### Generazione del PDF (portabile, nessun path hardcoded)
 
-Il PDF si ottiene stampando l'HTML con Chrome headless (fedeltà piena al layout, nessuna libreria di conversione che reinterpreta il CSS). Comando:
+Il PDF si ottiene stampando l'HTML con un browser Chromium-based in headless (fedeltà piena al layout, nessuna libreria di conversione che reinterpreta il CSS). La skill gira su macchine diverse (macOS, Linux, Windows), quindi **non assumere mai un percorso fisso**: rileva il browser disponibile e, se non c'è, consegna comunque l'HTML segnalando che il PDF va generato a parte. Non fallire l'intera run per il solo PDF.
+
+Ordine di scelta: **prima il browser predefinito di sistema, se è Chromium-based** (Chrome, Edge, Brave, Chromium, Vivaldi, Opera); se il predefinito è Safari o Firefox (che non sanno stampare via questa pipeline) o non è rilevabile, **ripiega su un Chromium installato**; se non c'è nulla, consegna solo l'HTML. Il rilevamento del predefinito è per-sistema operativo, nessun percorso assoluto fisso.
+
+Routine (POSIX sh / bash, vale anche per Git Bash su Windows):
 
 ```bash
-CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-"$CHROME" --headless --disable-gpu --no-pdf-header-footer \
+detect_default_family() {
+  case "$(uname -s)" in
+    Darwin)
+      PL="$HOME/Library/Preferences/com.apple.LaunchServices/com.apple.launchservices.secure.plist"
+      bid="$(plutil -convert json -o - "$PL" 2>/dev/null | python3 -c "import json,sys;d=json.load(sys.stdin);h=[x.get('LSHandlerRoleAll','') for x in d.get('LSHandlers',[]) if x.get('LSHandlerURLScheme')=='https'];print((h[0] if h else '').lower())" 2>/dev/null)"
+      case "$bid" in com.google.chrome*) echo chrome;; com.microsoft.edgemac) echo edge;; com.brave.browser) echo brave;; org.chromium.chromium) echo chromium;; com.vivaldi.vivaldi) echo vivaldi;; com.operasoftware.opera) echo opera;; com.apple.safari) echo safari;; org.mozilla.firefox) echo firefox;; *) echo "";; esac ;;
+    Linux)
+      d="$(xdg-settings get default-web-browser 2>/dev/null)"
+      case "$d" in *chrome*) echo chrome;; *edge*) echo edge;; *brave*) echo brave;; *chromium*) echo chromium;; *vivaldi*) echo vivaldi;; *opera*) echo opera;; *firefox*) echo firefox;; *) echo "";; esac ;;
+    *) # Windows via Git Bash
+      pid="$(reg query 'HKCU\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\https\UserChoice' //v ProgId 2>/dev/null | grep -oiE 'ChromeHTML|MSEdgeHTM|BraveHTML|FirefoxURL|ChromiumHTM')"
+      case "$pid" in ChromeHTML) echo chrome;; MSEdgeHTM) echo edge;; BraveHTML) echo brave;; ChromiumHTM) echo chromium;; FirefoxURL) echo firefox;; *) echo "";; esac ;;
+  esac
+}
+cands_for() {
+  case "$1" in
+    chrome) printf '%s\n' google-chrome google-chrome-stable chrome "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" "/c/Program Files/Google/Chrome/Application/chrome.exe" "/c/Program Files (x86)/Google/Chrome/Application/chrome.exe" ;;
+    edge) printf '%s\n' microsoft-edge msedge "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge" "/c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe" ;;
+    brave) printf '%s\n' brave-browser "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser" ;;
+    chromium) printf '%s\n' chromium chromium-browser /snap/bin/chromium /usr/bin/chromium "/Applications/Chromium.app/Contents/MacOS/Chromium" ;;
+    vivaldi) printf '%s\n' vivaldi "/Applications/Vivaldi.app/Contents/MacOS/Vivaldi" ;;
+    opera)  printf '%s\n' opera "/Applications/Opera.app/Contents/MacOS/Opera" ;;
+  esac
+}
+# Predefinito per primo (se Chromium), poi gli altri Chromium come fallback.
+pick_browser() {
+  for fam in "$1" chrome edge brave chromium vivaldi opera; do
+    [ -z "$fam" ] && continue
+    while IFS= read -r c; do
+      [ -z "$c" ] && continue
+      command -v "$c" >/dev/null 2>&1 && { command -v "$c"; return 0; }
+      [ -x "$c" ] && { printf '%s\n' "$c"; return 0; }
+    done <<EOF
+$(cands_for "$fam")
+EOF
+  done
+  return 1
+}
+
+DEF="$(detect_default_family)"
+BROWSER="$(pick_browser "$DEF")" || { echo "Nessun browser Chromium (predefinito: ${DEF:-ignoto}). Consegno solo l'HTML; il PDF va generato a parte."; exit 0; }
+"$BROWSER" --headless --disable-gpu --no-pdf-header-footer \
   --print-to-pdf="{nome-output}.pdf" "file://$(pwd)/{nome-output}.html"
 ```
 
-Se Chrome non è nel percorso standard, cercarlo tra le app installate (Chrome / Chrome Beta / Chromium) prima di procedere. Non sostituire con convertitori HTML→PDF che non supportano grid/flex e print-color-adjust (es. wkhtmltopdf, weasyprint): perderebbero il layout a colonne, l'organigramma e i colori.
+Non sostituire con convertitori HTML→PDF che non supportano grid/flex e `print-color-adjust` (es. wkhtmltopdf, weasyprint): perderebbero il layout a colonne, l'organigramma e i colori.

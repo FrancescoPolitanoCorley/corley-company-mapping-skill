@@ -50,7 +50,7 @@ Leggi `SKILL.md` e segui il flusso a 6 fasi, aprendo i file in `references/` qua
 
 - **Google Drive MCP** (o accesso equivalente) per il cross-reference CRM in Fase 1.
 - **WebSearch / WebFetch** per la ricerca.
-- **Google Chrome** installato, per generare il PDF dall'HTML (headless).
+- Per il PDF: un **browser Chromium-based** (Chrome, Chromium, Edge, Brave, Vivaldi, Opera) e accesso alla shell. La skill usa il **browser predefinito di sistema** se è Chromium, altrimenti ripiega su un Chromium installato; rileva tutto da sola su macOS/Linux/Windows, senza percorsi da configurare. Se il predefinito è Safari o Firefox (che non stampano via questa pipeline) e non c'è alcun Chromium, consegna comunque l'HTML e segnala che il PDF va generato a parte.
 
 ---
 
