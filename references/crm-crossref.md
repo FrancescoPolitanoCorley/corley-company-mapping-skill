@@ -41,17 +41,20 @@ Quando i file non sono sul filesystem (es. ambiente cloud senza mount) o manca l
 
 ## Cosa estrarre per fonte
 
-| File | Campi |
+| Tipo di fonte (nome osservato) | Campi |
 |---|---|
+| Liste lead per evento (in sottocartelle importazioni, es. "2026/05/28 AWS Summit") | Campagna/evento, Note, Status (Engaged/Greenfield), Addetto Vendite (= account manager), Utilizzo AWS, ruolo, email, telefono — spesso la fonte più ricca per i contatti caldi |
+| Raccolta lead generico manuale (Risposte) | contatti raccolti a mano: azienda, persona, ruolo, note |
+| Export cloud lead (es. "corley-cloud-lead-export-{data}", CSV/Sheet) | Notes, Level of AWS Usage, Date created (anno), TAG:* (walter, francesco, ai, migrazione, iot, ...) |
+| Aziende Greenfield e Engaged ({anno}) | Status (ENGAGED/GREENFIELD/Contattato), Outcome e Note, referenti (ruolo/mail/LinkedIn), Account Manager, Data contatto |
 | Contatti Sales Navigator | Campagna (evento), Note, anno |
-| corley-cloud-lead-export | Notes, Level of AWS Usage, Date created (anno), TAG:* |
-| Aziende Greenfield e Engaged | Status (ENGAGED/GREENFIELD/Contattato), Outcome e Note, referenti (ruolo/mail/LinkedIn), Account Manager, Data contatto |
 | Lista Newsletter clienti | AccountSource (es. AWS Event), AnnualRevenue, NumberOfEmployees |
-| Sottocartelle eventi/importazioni | liste presenze per evento |
-| Liste lead per evento (es. "{data} AWS Summit", in sottocartelle importazioni) | Campagna, Note, Status (Engaged/Greenfield), Addetto Vendite (= account manager), Utilizzo AWS, ruoli per persona |
-| Dossier aziende già sintetizzati (es. "Dossier_Aziende") | sintesi pre-esistenti su azienda e contatti |
+| Sottocartelle importazioni (ODOO / AWS APN / SalesForce) e "Moduli di Accredito Training & Liste eventi" | liste presenze e importazioni per evento |
+| Dossier aziende già sintetizzati | sintesi pre-esistenti su azienda e contatti |
 
-I nomi file in questa tabella sono indicativi: mappa i campi dal contenuto effettivo del file, non dal nome atteso. Se un file ha nome diverso ma contiene gli stessi campi, trattalo come la fonte corrispondente. Le liste lead per evento sono spesso la fonte più ricca per i contatti caldi (note per-persona, account manager, status).
+**I nomi sono indicativi, mappa dai campi non dal nome.** I file reali cambiano nome nel tempo: identifica la fonte dai campi che contiene, non dal nome atteso. In particolare un dossier può citare come propria fonte un nome (es. "Lead_Walter-AWS_Summit") che non corrisponde a nessun file con quel nome letterale nella cartella: è la lista lead di quell'evento, cercala per evento/data, non per quel nome.
+
+**Attenzione al conflitto di colonna.** Due informazioni diverse viaggiano spesso vicine e tra file diversi possono finire scambiate o in colonne inattese: lo **status commerciale** (Engaged / Greenfield / Contattato) e il **livello di utilizzo AWS** (Produzione multipla/singola, Dev/Test, In valutazione, Non usa AWS). Non sono la stessa cosa. Se trovi "Engaged" sotto un'intestazione di utilizzo AWS, o "Produzione (multipla)" sotto lo status, riconoscilo dal significato del valore e mettilo nel campo giusto; se per la stessa persona i due file divergono, riportalo nel campo NOTE della card, non scegliere in silenzio.
 
 I dossier sintetizzati vanno trattati come fonte CRM interna, non come seconda fonte web indipendente: contarli come corroborazione esterna crea falsa conferma (lo stesso dato contato due volte). Le cifre chiave riprese da un dossier vanno comunque ri-verificate su fonte pubblica in Fase 2.
 

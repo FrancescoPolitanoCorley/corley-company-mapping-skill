@@ -26,6 +26,7 @@ Questa mappa si costruisce intrecciando i contatti dal CRM (Fase 1) con l'organi
 
 - **Contatti presenti nei fogli CRM**: riporta sempre email e, se presente, telefono accanto alla persona (nel nodo dell'organigramma e nella scheda). Telefono assente nel foglio si segnala "n.d.", mai inventato.
 - **Link LinkedIn**: ogni volta che si cita una persona (nodo dell'organigramma, contatto prioritario, qualsiasi citazione) si aggiunge il link al suo profilo LinkedIn se il profilo esiste ed è stato reperito. Vale la regola di onestà: l'URL va trovato e verificato, mai costruito a indovinare. Se il profilo non è stato trovato, si omette il link (eventualmente "LinkedIn da reperire"), non si mette un URL plausibile ma non verificato.
+- **Quanto cercare il profilo, per tier**: in Standard reperisci il LinkedIn del solo contatto consigliato (★) e dei decisori, senza spendere round extra sugli altri (gli altri restano "LinkedIn da reperire" se non emergono dalla ricerca già fatta). In Deep reperisci il profilo di tutti i contatti chiave. In entrambi i casi non inventare l'URL.
 
 ## Non trovato e single-source
 

@@ -48,7 +48,7 @@ Determina il tier: `Standard` di default; `Deep` se l'utente lo richiede o se l'
 Aziende: {lista o singolo account}
 Angolo: {default Corley o override}
 Tier: {Standard | Deep}
-Fasi: [ ] 0 intake  [ ] 1 CRM  [ ] 2 ricerca  [ ] 3 sintesi  [ ] 4 verifica  [ ] 5 output
+Fasi: [ ] 0 intake  [ ] 1 CRM  [ ] 2 ricerca  [ ] 3 sintesi  [ ] 4 verifica  [ ] 5 output (HTML+PDF)
 Note: {decisioni, gap aperti, aziende ancora da completare}
 ```
 
