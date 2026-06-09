@@ -4,13 +4,40 @@ Questo componente gira prima di qualunque ricerca web. Dice se l'azienda è già
 
 ## Sorgente
 
-Cartella Drive `1biph3a8C6w7o1YvtIoIcJQqUW-Nhs9yP` e relative sottocartelle. Usa i tool Google Drive MCP: `search_files` con `parentId = '1biph3a8C6w7o1YvtIoIcJQqUW-Nhs9yP'` per elencare il contenuto, poi `read_file_content` sui file pertinenti.
+Cartella Drive `1biph3a8C6w7o1YvtIoIcJQqUW-Nhs9yP` e relative sottocartelle (liste lead per evento, importazioni, dossier). Lo stesso contenuto si raggiunge in due modi: **usa sempre prima lo scripting shell**, e solo se non è praticabile ripiega sul tool Google Drive.
 
-## Ricorsione e paginazione
+## Come cercare nei file dei lead
 
-- Ricorri nelle sottocartelle: per ogni cartella, elenca le sue sottocartelle con `search_files` query `mimeType = 'application/vnd.google-apps.folder' and parentId = '{id}'` e ripeti la scansione in ciascuna (eventi, importazioni).
-- Pagina i risultati: `search_files` restituisce una pagina alla volta. Continua a richiamarlo passando `next_page_token` finché il token non è vuoto. Non fermarti alla prima pagina.
-- Matching alternativo: oltre alla scansione cartella per cartella, usa anche `search_files` con `fullText contains '{nome azienda}'` per intercettare file dove l'azienda compare nel contenuto ma non nel nome del file o della cartella.
+### 1. Primario: scripting shell (sempre, quando i file sono sul filesystem)
+
+Cerca direttamente nei file con la shell: niente limiti di token, gestisce i fogli grandi che mandano in errore il tool Drive. Vale quando il CRM è raggiungibile dal filesystem (Google Drive Desktop montato, o una copia/export locale). I file di testo (CSV/TSV/TXT) si cercano direttamente; per gli `.xlsx` e i Google Sheet nativi (non testo grezzo) usa il fallback tool o esportali prima in CSV.
+
+Su macOS/Linux (bash): individua la cartella lead e cerca l'azienda per nome e per dominio email.
+
+```bash
+ROOT="$(find "$HOME/Library/CloudStorage" "$HOME/Google Drive" "$HOME" \
+        -maxdepth 5 -type d \( -iname '*lead*' -o -iname '*importazioni*' \) 2>/dev/null | head -1)"
+grep -rinaE 'vimar|@vimar\.com' "$ROOT" --include='*.csv' --include='*.tsv' --include='*.txt' 2>/dev/null
+```
+
+Su Windows usa **PowerShell** (`Select-String`), individuando l'unità di Google Drive:
+
+```powershell
+$root = (Get-ChildItem 'G:\','H:\',"$env:USERPROFILE" -Directory -Recurse -Depth 4 -ErrorAction SilentlyContinue |
+         Where-Object { $_.Name -match 'lead|importazioni' } | Select-Object -First 1).FullName
+Get-ChildItem -Path $root -Recurse -Include *.csv,*.tsv,*.txt -ErrorAction SilentlyContinue |
+  Select-String -Pattern 'vimar','@vimar\.com'
+```
+
+Cerca sempre due segnali (nome azienda esatto + dominio email) per evitare i falsi positivi da token comune.
+
+### 2. Alternativa: tool Google Drive MCP (solo se la shell non è praticabile)
+
+Quando i file non sono sul filesystem (es. ambiente cloud senza mount) o manca la shell:
+
+- **Priorità agli eventi più recenti**: ordina i file per data nel nome (es. "2026/05/28 AWS Summit") o per `modifiedTime` e parti da quelli; i lead freschi stanno lì. Non serve leggere tutto l'archivio storico per primo.
+- **Evita i limiti di token**: usa `search_files` con `excludeContentSnippets: true` e un `pageSize` ridotto; per i fogli grandi usa `fullText contains '{nome azienda}'` invece di `read_file_content` integrale (che su file da decine di migliaia di righe va in errore "result exceeds maximum allowed tokens").
+- **Ricorsione e paginazione**: elenca le sottocartelle con `mimeType = 'application/vnd.google-apps.folder' and parentId = '{id}'` e ricorri; pagina passando `next_page_token` finché è vuoto.
 
 ## Cosa estrarre per fonte
 
