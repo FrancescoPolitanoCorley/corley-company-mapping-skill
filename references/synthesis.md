@@ -17,6 +17,7 @@ La sintesi è ragionamento, non formattazione. Se il modello supporta l'extended
    - **Bozza apertura**: 3-4 righe pronte da incollare, personalizzate sul contatto ★ (aggancio a gancio o trigger, una frase sul valore, una call to action leggera), marcate "da rivedere".
 6. Aggrega i gap nel campo GAP & RISCHI della card, con "come verificarlo".
 7. Scrivi la scheda secondo `scheda-template.md`.
+8. **Appendi la riga al datastore** `company-mapping-db.csv` come da `references/data-store.md` (crea il file con intestazione se non esiste). Ogni azienda mappata finisce sempre nel CSV: è la memoria che consente di rigenerare HTML/PDF senza rifare la ricerca.
 
 ## Aggregati su lista
 

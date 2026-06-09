@@ -16,6 +16,8 @@ Si attiva quando l'utente fornisce una o più aziende da qualificare per la pipe
 
 L'output è un singolo file HTML self-contained, scritto nella directory di lavoro: CSS inline, nessun asset esterno, apribile con un doppio clic. Contiene una tabella riepilogativa in testa e una card per azienda raggruppate per settore. Le label `[Dato]`/`[Stima]`/`[Ipotesi]` e lo stato CRM (`CALDA`/`FREDDA`) sono evidenziati con badge colorati; le fonti sono link cliccabili. L'HTML è il formato di lavoro corrente.
 
+Ogni azienda sintetizzata viene salvata in un datastore CSV locale (`company-mapping-db.csv`): è la memoria della skill. HTML e PDF sono viste su quei dati e si possono **rigenerare leggendo il CSV, senza rifare la ricerca**. Dettaglio in `references/data-store.md`.
+
 La ricerca gira come fan-out di sub-agent in parallelo che scrivono in `raw/`; la sintesi legge `raw/` e produce le schede; un sub-agent di verifica rilegge tutto prima che l'utente veda l'output. Per il fan-out usa il tool Task (dispatch di sub-agent in parallelo, uno o più per azienda); se il dispatch di sub-agent non è disponibile nell'ambiente, esegui le wave in sequenza nello stesso contesto. In entrambi i casi i risultati grezzi finiscono in `raw/{azienda}/wave-X.md`. Gli agent non scrivono mai i deliverable finali: la separazione tra grezzo e sintesi è un vincolo.
 
 ## Reference loading (progressive disclosure)
@@ -32,6 +34,7 @@ La ricerca gira come fan-out di sub-agent in parallelo che scrivono in `raw/`; l
 | `references/synthesis.md` | inizio Fase 3 |
 | `references/verification-agent.md` | inizio Fase 4 |
 | `references/scheda-template.md` | Fase 3 (scrittura schede) |
+| `references/data-store.md` | Fase 3 (append al CSV) e per rigenerare da CSV |
 
 Leggi `references/honesty-protocol.md` all'inizio della sessione: le sue regole valgono per ogni fase, non solo per una.
 
@@ -68,7 +71,7 @@ Il tier regola la profondità (round di ricerca, fonti, ganci), come da `referen
 
 ### Fase 3 — Sintesi
 
-Leggi `references/synthesis.md` e `references/scheda-template.md`. Leggi tutti i file in `raw/`, connetti i segnali tra le wave, riconcilia i conflitti, applica le label e le date, deriva pain point, leve per Corley e approccio consigliato. La sintesi è ragionamento, non formattazione. Scrivi le schede secondo il template.
+Leggi `references/synthesis.md` e `references/scheda-template.md`. Leggi tutti i file in `raw/`, connetti i segnali tra le wave, riconcilia i conflitti, applica le label e le date, deriva pain point, leve per Corley e approccio consigliato. La sintesi è ragionamento, non formattazione. Scrivi le schede secondo il template. Per ogni azienda sintetizzata **appendi la riga al datastore CSV** come da `references/data-store.md` (crea il file con l'intestazione se non esiste): è la memoria che permette di rigenerare gli output senza ricerca.
 
 ### Fase 4 — Verifica
 
@@ -77,6 +80,8 @@ Leggi `references/verification-agent.md` e lancia il sub-agent di self-check (to
 ### Fase 5 — Output
 
 Genera il file HTML self-contained nella directory di lavoro: tabella riepilogativa ordinata per priorità (coda di lavoro), schede raggruppate per settore, e in chiusura solo la legenda (le note di una singola azienda stanno nella sua card). Segui il contratto di stile e l'implementazione di riferimento in `references/scheda-template.md`. Poi genera il PDF dall'HTML (stessa resa) come descritto nello stesso file. Aggiorna `PROGRESS.md` a sessione conclusa.
+
+**Rigenerazione senza ricerca.** Se l'utente chiede di ricreare, ri-stilizzare o ri-esportare un dossier di aziende già mappate (o di comporne uno con aziende già note), non rifare le Fasi 1-2-4: leggi `company-mapping-db.csv`, prendi la riga più recente per ciascun `id`, renderizza HTML/PDF dai dati. Vedi `references/data-store.md`.
 
 ## Standard vs Deep
 

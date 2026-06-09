@@ -95,6 +95,15 @@ Ogni affermazione porta una label: `[Dato]` (verificato), `[Stima]` (calcolato c
 
 ---
 
+## Persistenza: il datastore CSV
+
+La skill non butta via quello che ricava. Ogni azienda sintetizzata viene salvata in un unico file CSV locale, `company-mapping-db.csv`, nella directory di lavoro. È la **memoria** della skill: l'HTML e il PDF sono viste su quei dati.
+
+- **Una riga per azienda** (per run): campi piatti (anagrafica, finanza, priorità, deal stimato, perché ora, pain/leve/mossa, bozza apertura, note, gap) più due colonne JSON, `contatti_json` (l'organigramma: persone, fascia decide/influenza/usa, email, telefono, LinkedIn) e `fonti_json`. I testi conservano le label `[Dato]`/`[Stima]`/`[Ipotesi]`, così le card si ricostruiscono identiche.
+- **Crea o append**: se il file non c'è viene creato con l'intestazione, altrimenti si appende. È un registro storico: le righe vecchie non si toccano (audit trail). Su una stessa azienda mappata più volte, in rigenerazione vince la riga più recente.
+- **Locale, non versionato**: è in `.gitignore` perché contiene dati su persone e aziende. Resta sulla macchina, non finisce su git.
+- **Rigenerare senza ricerca**: per ricreare, ri-stilizzare o ri-esportare dossier di aziende già mappate, la skill legge il CSV e renderizza HTML/PDF **senza rifare la ricerca**. Legge pochi KB per azienda invece di rilanciare wave da centinaia di migliaia di token: è la via economica per iterare sulla resa o ricomporre i report. Dettaglio in `references/data-store.md`.
+
 ## Struttura
 
 ```
@@ -108,13 +117,14 @@ corley-company-mapping/
     ├── crm-crossref.md           # scansione Drive, fuzzy match, email/telefono
     ├── research-waves.md         # Wave A/B/C, scaling Standard/Deep, trigger, incumbent
     ├── people-mapping.md         # organigramma a fasce, ganci, LinkedIn
-    ├── synthesis.md              # priorità, deal, perché ora, bozza, contro-leva
+    ├── synthesis.md              # priorità, deal, perché ora, bozza, contro-leva, append al CSV
     ├── verification-agent.md     # self-check pre-output
     ├── scheda-template.md        # contratto di stile + generazione PDF
+    ├── data-store.md             # datastore CSV: schema, append, rigenerazione senza ricerca
     └── report-template.html      # template canonico di rendering (azienda di esempio)
 ```
 
-Gli output delle run (HTML/PDF dei dossier reali, grezzi, `PROGRESS.md`) restano nella directory di lavoro e non fanno parte di questo repository.
+Gli output delle run (HTML/PDF dei dossier reali, grezzi, `PROGRESS.md`) e il datastore `company-mapping-db.csv` restano nella directory di lavoro e non fanno parte di questo repository.
 
 ---
 

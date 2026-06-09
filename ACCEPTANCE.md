@@ -22,3 +22,5 @@
 - [ ] Deep tier produces 2-3 authentic ganci per priority contact, passing the creepy test.
 - [ ] Each scheda ends with a clickable sources list.
 - [ ] Verification pass runs before output and reports critical issues if any.
+- [ ] Each synthesized company is appended to the local `company-mapping-db.csv` (created with header if missing), with `contatti_json`/`fonti_json` and inline labels.
+- [ ] HTML/PDF can be regenerated from `company-mapping-db.csv` (latest row per id) without re-running research.

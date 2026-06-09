@@ -9,3 +9,5 @@ PROGRESS.md
 raw/
 raw-deep/
 .DS_Store
+# Datastore CSV: memoria locale delle mappature, contiene dati su persone/aziende
+company-mapping-db.csv
