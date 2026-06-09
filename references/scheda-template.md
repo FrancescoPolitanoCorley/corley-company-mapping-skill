@@ -7,8 +7,8 @@ Il target di rendering è un singolo file HTML self-contained (CSS inline, nessu
 ```
 AZIENDA: {nome}      Settore: {settore}      Angolo: {angolo}      Aggiornato: {data}
 PRIORITA: {Alta/Media/Bassa} [Stima] {se diverge dall'ICP fit: il perché, es. "alta per probabilità e timing, non per dimensione"}
-AZIONE: {sintesi della MOSSA in una riga: chi scrive a chi, canale, entro quando} — è la prima cosa che il sales deve vedere
-Stato CRM: {CALDA/FREDDA} {se calda: persone + evento + anno + note + livello AWS + status + account manager}
+AZIONE: {sintesi della MOSSA in una riga: "Azione proposta: scrivere a {contatto ★} ({canale})"} — proposta senza mittente interno e SENZA scadenze (il dossier non deve invecchiare), è la prima cosa che il sales deve vedere
+Stato lead: {CALDA/FREDDA/NON VERIFICATO} {se calda: lista di provenienza col nome breve del file (es. "lead AWS Summit 2026") + persone + evento + anno + note + livello AWS + status + account manager}
 
 DESCRIZIONE: {una riga: cosa fa, quotata o privata, gruppo, marchi}
 PERCHE ORA: {trigger di timing: M&A, round, nuovo CxO, hiring cloud, rinnovo contratto incumbent; se assente, dirlo}
@@ -22,7 +22,7 @@ ICP FIT: {alto/medio/basso + perché: settore, dimensione, maturità cloud}
 PAIN POINT: espliciti + [Ipotesi]
 LEVE PER CORLEY: dove tocchiamo un loro problema reale
 CONTRO-LEVA: {risposta al "perché non in casa / perché non l'incumbent"}
-MOSSA: chi contattare per primo, canale, entro quando (next action con scadenza) + obiettivo di chiusura della call (con cosa si esce)
+MOSSA: chi contattare per primo, canale + obiettivo di chiusura della call (con cosa si esce). Niente scadenze né riferimenti temporali relativi
 BOZZA APERTURA: {riga Oggetto + 3-4 righe pronte da incollare, personalizzate sul contatto ★; marcata "da rivedere"}
 NOTE: {verifiche e smentite sui dati di QUESTA azienda: conflitti riconciliati (es. consolidato vs civilistico), precisazioni su un dato o un contatto; ogni caveat per esteso una sola volta, altrove solo rimando}
 GAP & RISCHI: cosa manca + come verificarlo
@@ -49,8 +49,8 @@ L'ordine è operativo-prima: chi prepara la call cerca cosa dire e su che canale
 
 Header: N aziende · N settori · N contatti · aggiornato {data} · nota fonti.
 
-"N contatti" = numero di contatti **azionabili**: persone con almeno un recapito reperito (email, telefono o LinkedIn verificato), deduplicate tra CRM e web. Le persone citate senza recapito non si contano: un masthead che promette 5 contatti quando il sales ne può lavorare 1 brucia la fiducia nel resto dei numeri. Con una sola azienda i conteggi diventano descrittivi (es. "1 contatto diretto (CTO) · percorso al CEO mappato").
-Tabella riepilogativa = coda di lavoro, ordinata per priorità decrescente: Priorità | Azienda | Settore | Perché ora | Stato CRM | Primo contatto. L'ordinamento per priorità fa sì che la prima riga sia il lead da lavorare per primo.
+"N contatti" = numero di contatti **azionabili**: persone con almeno un recapito reperito (email, telefono o LinkedIn verificato), deduplicate tra fogli lead e web. Le persone citate senza recapito non si contano: un masthead che promette 5 contatti quando il sales ne può lavorare 1 brucia la fiducia nel resto dei numeri. Con una sola azienda i conteggi diventano descrittivi (es. "1 contatto diretto (CTO) · percorso al CEO mappato").
+Tabella riepilogativa = coda di lavoro, ordinata per priorità decrescente: Priorità | Azienda | Settore | Perché ora | Stato lead | Primo contatto. L'ordinamento per priorità fa sì che la prima riga sia il lead da lavorare per primo.
 Poi le schede di dettaglio raggruppate per settore.
 Chiusura: **solo la legenda** (come leggere label, badge, priorità/deal, dati stale). Le note specifiche di una singola azienda (conflitti riconciliati, precisazioni su un dato o un contatto) NON vanno in fondo: vanno nel campo NOTE della card di quell'azienda.
 
@@ -61,24 +61,24 @@ Il rendering finale è un dossier leggibile e scannabile, non un muro di testo. 
 **Estetica.** Stile dossier da analista, sobrio (tono Corley). Sfondo carta caldo, card bianche; serif (Georgia) per i titoli e i nomi azienda, sans di sistema per il testo, monospace maiuscoletto per le label dei campi e numeri tabellari. Primario navy Corley `#1b4f72`, accento caldo `#b5512a` per la parte commerciale. Self-contained (CSS inline), print-friendly, responsive (le colonne collassano sotto i 760px).
 
 **Struttura della pagina.**
-- Masthead sticky con titolo, conteggi (aziende · settori · contatti · tier) e nav ad ancore per azienda.
-- Riga di lead con angolo, tier, data, fonti.
+- Masthead sticky con titolo, conteggi (aziende · settori · contatti azionabili) e nav ad ancore per azienda.
+- Riga di lead con angolo, profondità in linguaggio piano ("dossier approfondito" per il Deep), data, fonti.
 - Tabella riepilogativa (numeri tabellari, badge stato, link all'ancora dell'azienda).
 - Una `<section>` per settore con intestazione, poi una card `<article>` per azienda.
 
 **Dossier su singola azienda.** Con una sola azienda la tabella riepilogativa si omette (una coda di lavoro da una riga duplica l'header della card): si va dritti alla scheda. In più il `<body>` prende `class="single"`: in stampa la card può spezzarsi tra le pagine (i componenti interni restano interi grazie ai loro `break-inside:avoid`), altrimenti la prima pagina del PDF resta quasi vuota.
 
 **Struttura della card azienda.**
-- Header: nome (serif) + eventuale alias gruppo + descrizione di una riga; a destra (`.co__meta`) il badge priorità (`.prio`) e la pill stato CRM.
+- Header: nome (serif) + eventuale alias gruppo + descrizione di una riga; a destra (`.co__meta`) il badge priorità (`.prio`) e la pill stato lead (la lista di provenienza si cita per nome dentro la card).
 - Striscia di fatti chiave (`.stats`, griglia a 6): Sede · Dimensione · Ricavi · Utile/Risultato · Salute · AWS. Leggibili a colpo d'occhio. Nella striscia vanno solo numeri verificati o stime solide: un numero con caveat forte (es. un utile single-source da verificare) NON va in evidenza, perché è quello che il sales ricorda e cita; al suo posto un dato verificato che vende (es. la crescita %), il dettaglio col caveat sta nella riga Finanza.
-- Callout `.why` ("Perché ora") subito sotto la striscia: il trigger di timing in una riga, chiuso dalla riga AZIONE in grassetto ("→ Azione: {chi} scrive a {contatto ★} entro {data}"): la risposta a "chi contatto per primo?" deve stare sulla prima schermata, non in fondo alla rail. Attenzione: `.why` è un flex container, quindi tutto il contenuto dopo il `<b>` va racchiuso in un unico `<span>` (testo e tag sciolti diventano flex item separati e il testo si spezza in colonne).
-- Corpo a due colonne: a sinistra (`.main`) i blocchi descrittivi come righe `label / valore` (`.row`), l'organigramma e le schede persona; a destra la rail evidenziata (`.rail`) "Per Corley" con ICP fit / Pain / Leve / Contro-leva / Mossa (con scadenza e obiettivo di chiusura) e il box `.draft` con la bozza di apertura (riga Oggetto inclusa). La rail è la parte che serve al sales: tenerla in evidenza.
+- Callout `.why` ("Perché ora") subito sotto la striscia: il trigger di timing in una riga, chiuso dalla riga AZIONE in grassetto ("→ Azione proposta: scrivere a {contatto ★} ({canale})"): la risposta a "chi contatto per primo?" deve stare sulla prima schermata, non in fondo alla rail. Attenzione: `.why` è un flex container, quindi tutto il contenuto dopo il `<b>` va racchiuso in un unico `<span>` (testo e tag sciolti diventano flex item separati e il testo si spezza in colonne).
+- Corpo a due colonne: a sinistra (`.main`) i blocchi descrittivi come righe `label / valore` (`.row`), l'organigramma e le schede persona; a destra la rail evidenziata (`.rail`) "Per Corley" con ICP fit / Pain / Leve / Contro-leva / Mossa (contatto, canale, obiettivo di chiusura; mai scadenze) e il box `.draft` con la bozza di apertura (riga Oggetto inclusa). La rail è la parte che serve al sales: tenerla in evidenza.
 - Il campo NOTE si rende come callout a tutta larghezza (riusa lo stile `.gap`) etichettato "Verifiche sui dati", subito sopra Gap & rischi: dentro la colonna, dopo le schede persona, sembrerebbe riferito all'ultima persona invece che all'azienda.
 - Callout `.gap` (bordo tratteggiato) per Gap & rischi.
 - Footer `.src` con le fonti come chip-link.
 
 **Mappatura e colori.**
-- Stato CRM: pill `.pill--calda` (verde) / `.pill--fredda` (grigia). Se il CRM non era accessibile (vedi `crm-crossref.md`): pill con testo `NON VERIFICATO` (riusa lo stile della fredda) e spiegazione in legenda.
+- Stato lead: pill `.pill--calda` (verde) / `.pill--fredda` (grigia). Se le liste lead non erano accessibili (vedi `lead-crossref.md`): pill con testo `NON VERIFICATO` (riusa lo stile della fredda) e spiegazione in legenda.
 - Priorità: badge `.prio--alta` (rosso) / `.prio--media` (ambra) / `.prio--bassa` (grigio).
 - Label affidabilità inline come tag `.t`: `.t--d` Dato (verde), `.t--s` Stima (ambra), `.t--i` Ipotesi/gap (rust). Priorità e ICP fit portano sempre `.t--s` (sono giudizi).
 - Ogni riga `CHIAVE: valore` dei layout diventa una `.row` (label monospace a sinistra, valore a destra).
@@ -89,10 +89,10 @@ Il rendering finale è un dossier leggibile e scannabile, non un muro di testo. 
 I contatti si rendono come organigramma a tre fasce, non come elenco piatto:
 
 - Tre colonne: **Decide** (budget/firma, accento caldo) · **Influenza** (tecnici/champion) · **Usa**.
-- Ogni persona è un nodo `.node` (nome in navy + ruolo). Il contatto consigliato per il primo approccio è `.node--star` (★). Chi è decisore ma ignoto o non raggiungibile (es. CTO non in CRM, direttore IT da identificare) è un nodo `.node--ghost` (tratteggiato).
-- Dentro il nodo, una riga `.c` con i dati di contatto: email (✉, come `mailto:`) e telefono (☎) per le persone presenti nei fogli CRM; telefono assente si rende "n.d.". Quando esiste un profilo LinkedIn verificato, aggiungi la pillola `.li` (testo "in") che linka al profilo. Mai inventare email, telefono o URL LinkedIn: si riportano solo se reperiti.
+- Ogni persona è un nodo `.node` (nome in navy + ruolo). Il contatto consigliato per il primo approccio è `.node--star` (★). Chi è decisore ma ignoto o non raggiungibile (es. CTO non nei lead, direttore IT da identificare) è un nodo `.node--ghost` (tratteggiato).
+- Dentro il nodo, una riga `.c` con i dati di contatto: email (✉, come `mailto:`) e telefono (☎) per le persone presenti nei fogli lead; telefono assente si rende "n.d.". Quando esiste un profilo LinkedIn verificato, aggiungi la pillola `.li` (testo "in") che linka al profilo. Mai inventare email, telefono o URL LinkedIn: si riportano solo se reperiti.
 - Riga finale `.org__path`: il percorso consigliato, da chi contattare al target, con la freccia del ponte (es. "engineer Senior ★ → CTO"). Questo rende esplicito al sales chi scrivere per primo e dove vuole arrivare.
-- Sotto l'organigramma, una riga sintetica sul contatto prioritario (note CRM/web, email, link), con le label di affidabilità dove serve.
+- Sotto l'organigramma, una riga sintetica sul contatto prioritario (note lead/web, email, link), con le label di affidabilità dove serve.
 - Le figure di contorno (contractor, maintainer esterni, consulenti: vedi `people-mapping.md`) non occupano nodi: si riassumono in una seconda riga stile `.org__path` etichettata "Contorno", come segnale (es. capacità interna minima).
 
 ### Scheda persona (componente `.person`)
@@ -104,7 +104,7 @@ La scheda persona (Standard: contatto prioritario; Deep: tutti i contatti chiave
 La sezione finale è SOLO la legenda: spiega come leggere il dossier, in linguaggio per un sales non tecnico. NON contiene osservazioni su singole aziende. Glossa in parole semplici:
 
 - cosa significano le label: `[Dato]` = verificato su fonte affidabile; `[Stima]` = calcolato/valutato da noi con un'assunzione dichiarata (incluse priorità e ICP fit); `[Ipotesi]` = da confermare, non ancora verificato;
-- cosa significano i badge di stato: `CALDA` = l'azienda è già nota a Corley (contatto o evento passato); `FREDDA` = nessun contatto pregresso nel CRM;
+- cosa significano i badge di stato: `CALDA` = l'azienda è già nelle liste lead Corley (contatto o evento passato, con la lista citata per nome); `FREDDA` = nessun contatto pregresso nelle liste lead su Drive; `NON VERIFICATO` = liste non accessibili in questa run;
 - cosa significano i badge di priorità: `Alta/Media/Bassa` ordinano la coda di lavoro in base a fit, timing e raggiungibilità (il valore economico del lead non viene stimato: lo dimensiona il sales in offerta);
 - cosa vuol dire "dato datato/stale": un numero che fa riferimento a un periodo ormai passato (tipicamente un bilancio di oltre 12-18 mesi) e che potrebbe essere superato.
 

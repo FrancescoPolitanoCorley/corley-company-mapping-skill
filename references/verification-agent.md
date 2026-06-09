@@ -13,7 +13,8 @@ Lancia un sub-agent (tool Task) che rilegge i contenuti sintetizzati (le righe C
 
 ## Check specifici company-mapping
 
-- [ ] Stato CRM (`CALDA`/`FREDDA` con evento, anno, note) presente e coerente con la Fase 1.
+- [ ] Stato lead (`CALDA`/`FREDDA`/`NON VERIFICATO`, con lista di provenienza citata per nome, evento, anno, note) presente e coerente con la Fase 1.
+- [ ] La mossa è formulata come proposta: nessun mittente interno prescritto, nessuna scadenza né riferimento temporale relativo (il dossier non deve invecchiare; le date assolute sui fatti sono ok). Il dossier non chiama mai "CRM" le liste lead.
 - [ ] Persone classificate decisore/influencer/utente.
 - [ ] (Deep) ganci presenti e che passano il creepy test.
 - [ ] Lista fonti cliccabile in ogni scheda.

@@ -1,6 +1,6 @@
 # Corley Company Mapping Skill
 
-Skill per [Claude Code](https://claude.com/claude-code) (e agenti compatibili con il formato skill) che trasforma un elenco di aziende, o una singola azienda, in un **dossier di mappatura azionabile** per il team sales/marketing di Corley: business, dati finanziari aggiornati, maturità tecnologica e iniziative AI, legame con AWS, organigramma con contatti, stato nel CRM Corley (calda/fredda), priorità del lead e mossa consigliata. Output: un file **HTML** dossier più il **PDF** corrispondente.
+Skill per [Claude Code](https://claude.com/claude-code) (e agenti compatibili con il formato skill) che trasforma un elenco di aziende, o una singola azienda, in un **dossier di mappatura azionabile** per il team sales/marketing di Corley: business, dati finanziari aggiornati, maturità tecnologica e iniziative AI, legame con AWS, organigramma con contatti, stato nelle liste lead Corley su Drive (calda/fredda), priorità del lead e mossa proposta. Output: un file **HTML** dossier più il **PDF** corrispondente.
 
 È pensata per qualificare lead, preparare call e personalizzare l'outreach (ABM), con onestà delle fonti integrata: ogni numero è etichettato e datato, i dati mancanti sono dichiarati, niente viene inventato.
 
@@ -11,11 +11,11 @@ Skill per [Claude Code](https://claude.com/claude-code) (e agenti compatibili co
 Per ogni azienda, una scheda con:
 
 - **Priorità** (Alta/Media/Bassa), per ordinare la coda di lavoro, con il perché quando diverge dal fit (es. alta per timing, non per dimensione). Il valore economico del lead non viene stimato: lo dimensiona il sales in offerta.
-- **Perché ora** con la riga **Azione** in testa (chi scrive a chi, entro quando): la risposta a "chi contatto per primo?" sta sulla prima schermata.
+- **Perché ora** con la riga **Azione** in testa (a chi scrivere e su che canale, senza scadenze: il dossier non deve invecchiare): la risposta a "chi contatto per primo?" sta sulla prima schermata.
 - Anagrafica, **finanza datata**, salute, gruppo/round.
 - **Tecnologia & AI**, incumbent attuale, **legame con AWS**.
-- **Organigramma a fasce** Decide / Influenza / Usa con solo le persone rilevanti per la decisione: contatto consigliato (★), nodi "fantasma" per decisori non raggiungibili, riga "percorso" (chi contattare per primo, dove arrivare); contractor e figure di contorno in una riga sotto. Email e telefono per i contatti presenti nel CRM; link LinkedIn solo se verificato.
-- Rail **"Per Corley"**: ICP fit, pain, leve, contro-leva (perché non in casa / non l'incumbent), mossa con scadenza e obiettivo della call, e **bozza di apertura** (oggetto incluso) pronta da incollare.
+- **Organigramma a fasce** Decide / Influenza / Usa con solo le persone rilevanti per la decisione: contatto consigliato (★), nodi "fantasma" per decisori non raggiungibili, riga "percorso" (chi contattare per primo, dove arrivare); contractor e figure di contorno in una riga sotto. Email e telefono per i contatti presenti nei fogli lead; link LinkedIn solo se verificato.
+- Rail **"Per Corley"**: ICP fit, pain, leve, contro-leva (perché non in casa / non l'incumbent), mossa proposta (contatto, canale e obiettivo della call; senza prescrivere chi scrive internamente e senza scadenze: il dossier non deve invecchiare) e **bozza di apertura** (oggetto incluso) pronta da incollare.
 - Gap & rischi (con "come verificarlo") e fonti cliccabili.
 
 A livello di lista: tabella riepilogativa ordinata per priorità (coda di lavoro), schede raggruppate per settore, e in chiusura solo la legenda.
@@ -52,9 +52,9 @@ Leggi `SKILL.md` e segui il flusso a 6 fasi, aprendo i file in `references/` qua
 
 ### Requisiti dell'ambiente
 
-> **Prerequisito obbligatorio: accesso al CRM su Google Drive.** La Fase 1 (cross-reference) legge i file lead Corley che vivono su Google Drive. L'accesso può avvenire in due modi, in quest'ordine: **mount locale** (Google Drive Desktop o un export dei file) cercato via shell, oppure **connettore Google Drive (MCP)** quando non c'è nessun mount (es. ambiente cloud). Serve almeno uno dei due: senza, la Fase 1 non parte (niente stato CALDA/FREDDA né contatti dal CRM, dossier basato solo sul web). Se lavori in un ambiente senza filesystem condiviso con Drive, installa e autorizza il connettore **prima** di usare la skill.
+> **Prerequisito obbligatorio: accesso alle liste lead su Google Drive.** La Fase 1 (cross-reference) legge i file lead Corley che vivono su Google Drive. L'accesso può avvenire in due modi, in quest'ordine: **mount locale** (Google Drive Desktop o un export dei file) cercato via shell, oppure **connettore Google Drive (MCP)** quando non c'è nessun mount (es. ambiente cloud). Serve almeno uno dei due: senza, la Fase 1 non parte (niente stato CALDA/FREDDA né contatti dalle liste, dossier basato solo sul web). Se lavori in un ambiente senza filesystem condiviso con Drive, installa e autorizza il connettore **prima** di usare la skill.
 
-- **Accesso al CRM**: mount locale di Google Drive **oppure** connettore Google Drive (MCP). Almeno uno dei due, vedi sopra. Senza nessuno dei due la skill prosegue con le sole fonti web e marca lo stato CRM "NON VERIFICATO" (non "fredda": l'assenza non è stata verificata).
+- **Accesso alle liste lead**: mount locale di Google Drive **oppure** connettore Google Drive (MCP). Almeno uno dei due, vedi sopra. Senza nessuno dei due la skill prosegue con le sole fonti web e marca lo stato lead "NON VERIFICATO" (non "fredda": l'assenza non è stata verificata).
 - **WebSearch / WebFetch** per la ricerca.
 - Per il PDF: un **browser Chromium-based** (Chrome, Chromium, Edge, Brave, Vivaldi, Opera) e accesso alla shell. La skill usa il **browser predefinito di sistema** se è Chromium, altrimenti ripiega su un Chromium installato; rileva tutto da sola su macOS/Linux/Windows, senza percorsi da configurare. Se il predefinito è Safari o Firefox (che non stampano via questa pipeline) e non c'è alcun Chromium, consegna comunque l'HTML e segnala che il PDF va generato a parte.
 
@@ -64,7 +64,7 @@ Leggi `SKILL.md` e segui il flusso a 6 fasi, aprendo i file in `references/` qua
 
 Frase tipo: *"mappa queste aziende: …"*, *"qualifica questi lead"*, *"prepara la call su {azienda}"*, *"company mapping di {azienda}"*.
 
-**Input:** un elenco di aziende o una singola azienda. Opzionali: l'angolo (default: lead per consulenza AWS) e il tier.
+**Input:** un elenco di aziende o una singola azienda. Opzionale: l'angolo (default: lead per consulenza AWS). Come prima azione la skill pone una **domanda a risposta multipla Standard/Deep** con le implicazioni di costo e profondità (saltata se il tier è già nella richiesta; senza risposta procede in Standard).
 
 **Output:** nella directory di lavoro, un HTML + il PDF corrispondente. Naming: singola azienda `{id}.html` (slug dell'azienda, es. `kedrion-biopharma.html`), lista `company-mapping-{data}.html`; un nome indicato dall'utente vince sulla convenzione.
 
@@ -86,16 +86,16 @@ L'utente può sempre forzare il tier.
 
 ## Come funziona (flusso a 6 fasi)
 
-0. **Intake & angolo** — lista o singola azienda; angolo default Corley con override; tier; crea/riprende `PROGRESS.md`.
-1. **CRM cross-reference** (sempre, prima del web) — cerca nei file lead Corley (shell sul mount locale di Drive se c'è, altrimenti tool Drive con query mirate), fuzzy match sul nome azienda, classifica calda/fredda, estrae evento, anno, note, livello AWS, status, account manager, email e telefono.
-2. **Ricerca web in wave** (fan-out) — A azienda & finanza (+ trigger di timing, segnali di deal), B tecnologia & AWS (+ incumbent), C persone (organigramma; in Deep layer personale + ganci). I grezzi vanno in `raw/`.
+0. **Intake & angolo** — prima azione: domanda a risposta multipla Standard/Deep (implicazioni esplicite); poi lista o singola azienda, angolo default Corley con override, crea/riprende `PROGRESS.md`.
+1. **Cross-reference lead Drive** (sempre, prima del web) — cerca nei file lead Corley (shell sul mount locale di Drive se c'è, altrimenti tool Drive con query mirate), fuzzy match sul nome azienda, classifica calda/fredda, estrae lista di provenienza, evento, anno, note, livello AWS, status, account manager, email e telefono. Nel dossier la fonte si cita col nome del file (es. "lead AWS Summit 2026"), mai come "CRM".
+2. **Ricerca web in wave** (fan-out) — A azienda & finanza (+ trigger di timing, segnali di dimensione), B tecnologia & AWS (+ incumbent), C persone (organigramma; in Deep layer personale + ganci). I grezzi vanno in `raw/`.
 3. **Sintesi** — connette i segnali, calcola priorità e ICP fit, deriva pain/leve/contro-leva/mossa/bozza, applica le label, riconcilia i conflitti, dichiara i gap, prepara la riga del datastore.
 4. **Verifica** — un controllo rilegge i contenuti (claim senza fonte, contraddizioni, dati stale, gap non dichiarati) prima del rendering; a verifica superata le righe vengono scritte nel datastore CSV.
 5. **Output** — HTML dossier + PDF (Chrome headless).
 
 ### Onestà delle fonti (regola non negoziabile)
 
-Ogni affermazione porta una label: `[Dato]` (verificato), `[Stima]` (calcolato con assunzione dichiarata; include priorità, deal e ICP fit), `[Ipotesi]` (da confermare). Mai inventare: un gap dichiarato con "come verificarlo" è sempre preferibile a un valore tirato a indovinare. Vale per dati finanziari, email, telefono e URL LinkedIn. Solo fonti pubbliche; sui ganci personali si applica il "creepy test".
+Ogni affermazione porta una label: `[Dato]` (verificato), `[Stima]` (calcolato con assunzione dichiarata; include priorità e ICP fit), `[Ipotesi]` (da confermare). Mai inventare: un gap dichiarato con "come verificarlo" è sempre preferibile a un valore tirato a indovinare. Vale per dati finanziari, email, telefono e URL LinkedIn. Solo fonti pubbliche; sui ganci personali si applica il "creepy test".
 
 ---
 
@@ -118,7 +118,7 @@ corley-company-mapping/
 └── references/
     ├── research-principles.md    # source tier, recency, triangolazione
     ├── honesty-protocol.md       # label, no-invenzione, GDPR, creepy test
-    ├── crm-crossref.md           # scansione Drive, fuzzy match, email/telefono
+    ├── lead-crossref.md          # scansione liste lead su Drive, fuzzy match, email/telefono
     ├── research-waves.md         # Wave A/B/C, scaling Standard/Deep, trigger, incumbent
     ├── people-mapping.md         # organigramma a fasce, ganci, LinkedIn
     ├── synthesis.md              # priorità, deal, perché ora, bozza, contro-leva, append al CSV
@@ -134,4 +134,4 @@ Gli output delle run (HTML/PDF dei dossier reali, grezzi, `PROGRESS.md`) e il da
 
 ## Configurazione specifica Corley
 
-Il cross-reference CRM punta a una cartella Google Drive interna di Corley (lead da eventi, export, dossier). L'ID della cartella è in `references/crm-crossref.md`: cambiandolo si adatta la skill a un altro archivio. Tono e posizionamento seguono le convenzioni Corley (partner tecnico, non vendor; i numeri parlano da soli).
+Il cross-reference dei lead punta a una cartella Google Drive interna di Corley (liste lead da eventi, export, dossier). L'ID della cartella è in `references/lead-crossref.md`: cambiandolo si adatta la skill a un altro archivio. Tono e posizionamento seguono le convenzioni Corley (partner tecnico, non vendor; i numeri parlano da soli).

@@ -20,7 +20,7 @@ Obiettivo: maturità cloud, stack tecnologico, iniziative AI pubbliche (anche da
 
 ## Wave C — Persone
 
-Obiettivo: organigramma (vedi `people-mapping.md`), classificazione decisore/influencer/utente, contatti prioritari. Parte dall'output CRM della Fase 1: i contatti già noti si arricchiscono. In Deep aggiunge il layer personale e i ganci.
+Obiettivo: organigramma (vedi `people-mapping.md`), classificazione decisore/influencer/utente, contatti prioritari. Parte dall'output lead della Fase 1: i contatti già noti si arricchiscono. In Deep aggiunge il layer personale e i ganci.
 
 ## Scaling Standard vs Deep
 

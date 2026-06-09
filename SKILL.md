@@ -1,6 +1,6 @@
 ---
 name: corley-company-mapping
-description: Mappa potenziali aziende clienti per il team sales/marketing Corley. Data una lista di aziende (o una singola) produce un dossier HTML+PDF di qualificazione lead con cross-reference sul CRM Corley. Due profondità, Standard e Deep. Trigger: "mappa queste aziende", "company mapping", "qualifica questi lead", "scheda azienda", "chi contatto in [azienda]", "prepara la call su [azienda]", "analizza questa lista di aziende", "company intelligence", "dossier azienda".
+description: Mappa potenziali aziende clienti per il team sales/marketing Corley. Data una lista di aziende (o una singola) produce un dossier HTML+PDF di qualificazione lead con cross-reference sulle liste lead Corley su Drive. Due profondità, Standard e Deep. Trigger: "mappa queste aziende", "company mapping", "qualifica questi lead", "scheda azienda", "chi contatto in [azienda]", "prepara la call su [azienda]", "analizza questa lista di aziende", "company intelligence", "dossier azienda".
 ---
 
 # Corley Company Mapping
@@ -15,7 +15,7 @@ Trasforma una lista di aziende (o una singola) in un dossier di qualificazione l
 |---|---|
 | `references/research-principles.md` | una volta, inizio Fase 2 |
 | `references/honesty-protocol.md` | una volta, inizio sessione |
-| `references/crm-crossref.md` | inizio Fase 1 |
+| `references/lead-crossref.md` | inizio Fase 1 |
 | `references/research-waves.md` | quando si lanciano gli agent di Fase 2 |
 | `references/people-mapping.md` | all'avvio della Wave C (Fase 2) |
 | `references/synthesis.md` | inizio Fase 3 |
@@ -30,22 +30,29 @@ Leggi `references/honesty-protocol.md` all'inizio della sessione: le sue regole 
 
 ### Fase 0 — Intake & angolo
 
+**Prima azione, prima di tutto il resto: chiedi all'utente la profondità con una domanda a risposta multipla** (tool AskUserQuestion se disponibile; altrimenti stampala in chat e attendi la risposta). Salta la domanda solo se l'utente ha già dichiarato il tier nella richiesta. Le due opzioni, con implicazioni esplicite:
+
+1. **Standard (consigliata per liste)** — qualifica essenziale: azienda & finanza, tecnologia & AWS, organigramma con contatto prioritario (senza ganci personali). 2-3 round di ricerca per wave. Costa circa un terzo del Deep in tempo e token. Serve a sgrezzare e ordinare la coda di lavoro.
+2. **Deep (consigliata per un singolo account da preparare per una call)** — tutto lo Standard più: layer personale e 2-3 ganci per ogni contatto chiave, studio del prodotto alla fonte (docs, repository, demo), triangolazione aggressiva, schede persona complete. 4-6 round per wave. Costa ~3x lo Standard (riferimento misurato: ~9 minuti e ~150k token per azienda).
+
+Se la risposta non arriva (ambiente non interattivo), procedi in Standard e dichiaralo.
+
 Ricevi la lista o la singola azienda. L'angolo di default è quello Corley: "è un buon lead per consulenza AWS (migrazione, modernizzazione, GenAI) e chi contatto per primo?". L'utente può fornire un angolo diverso per la run, che vince sempre.
 
-Determina il tier: `Standard` di default; `Deep` se l'utente lo richiede o se l'input è un singolo account da preparare per una call. Crea o riprendi `PROGRESS.md` nella directory di lavoro. Se esiste già, riparti dalla prima fase incompleta. Spunta ogni fase in `PROGRESS.md` al suo completamento, non a fine sessione: è ciò che rende possibile riprendere una run interrotta. Scheletro di `PROGRESS.md`:
+Crea o riprendi `PROGRESS.md` nella directory di lavoro. Se esiste già, riparti dalla prima fase incompleta. Spunta ogni fase in `PROGRESS.md` al suo completamento, non a fine sessione: è ciò che rende possibile riprendere una run interrotta. Scheletro di `PROGRESS.md`:
 
 ```
 # Company Mapping — {data}
 Aziende: {lista o singolo account}
 Angolo: {default Corley o override}
 Tier: {Standard | Deep}
-Fasi: [ ] 0 intake  [ ] 1 CRM  [ ] 2 ricerca  [ ] 3 sintesi  [ ] 4 verifica + append CSV  [ ] 5 output (HTML+PDF)
+Fasi: [ ] 0 intake  [ ] 1 lead Drive  [ ] 2 ricerca  [ ] 3 sintesi  [ ] 4 verifica + append CSV  [ ] 5 output (HTML+PDF)
 Note: {decisioni, gap aperti, aziende ancora da completare}
 ```
 
-### Fase 1 — CRM cross-reference (sempre, prima del web)
+### Fase 1 — Cross-reference lead Drive (sempre, prima del web)
 
-Prima di qualunque ricerca web, leggi `references/crm-crossref.md` ed esegui la scansione del CRM Corley (shell-first sul mount locale, tool Drive come alternativa; lì c'è anche il fallback se il CRM non è accessibile). Matching fuzzy sul nome azienda. Per ogni azienda classifica `CALDA` (almeno un match) o `FREDDA`; se calda, raccogli per ciascuna persona evento, anno, note, livello AWS, status, account manager, email e telefono. Questo output informa la Wave C: i contatti già in CRM vanno arricchiti, non ricostruiti da zero.
+Prima di qualunque ricerca web, leggi `references/lead-crossref.md` ed esegui la scansione delle liste lead Corley su Drive (shell-first sul mount locale, tool Drive come alternativa; lì c'è anche il fallback se le liste non sono accessibili). Matching fuzzy sul nome azienda. Per ogni azienda classifica `CALDA` (almeno un match) o `FREDDA`; se calda, raccogli per ciascuna persona evento, anno, note, livello AWS, status, account manager, email e telefono. Questo output informa la Wave C: i contatti già nei lead Drive vanno arricchiti, non ricostruiti da zero.
 
 ### Fase 2 — Ricerca in wave (fan-out parallelo per azienda)
 
@@ -73,7 +80,7 @@ Genera il file HTML self-contained nella directory di lavoro: tabella riepilogat
 
 ## Standard vs Deep
 
-`Standard` (default) sgrezza e qualifica. `Deep` costa ~3x tempo e token e aggiunge layer personale, ganci sui contatti chiave e studio del prodotto alla fonte: usalo sull'account che vale la call. Scaling e dettagli in `references/research-waves.md`. L'override dell'utente vince sempre.
+Il tier lo sceglie l'utente con la domanda di Fase 0 (Standard se non risponde). `Standard` sgrezza e qualifica; `Deep` costa ~3x tempo e token e aggiunge layer personale, ganci sui contatti chiave e studio del prodotto alla fonte: vale per l'account che vale la call. Scaling e dettagli in `references/research-waves.md`. L'override dell'utente vince sempre, anche a run avviata.
 
 ## Regole non negoziabili
 

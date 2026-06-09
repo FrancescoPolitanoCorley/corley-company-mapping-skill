@@ -13,18 +13,18 @@ La skill non deve perdere quello che ricava: ogni azienda sintetizzata viene sal
 Colonne (in quest'ordine):
 
 ```
-id,data_aggiornamento,angolo,tier,azienda,alias,settore,sede,dimensione,dipendenti,ricavi,ricavi_anno,ricavi_label,utile_perdita,utile_label,situazione_finanziaria,salute,gruppo_round,tech_ai,incumbent,legame_aws,crm_stato,crm_evento,crm_anno,crm_status,crm_account_manager,perche_ora,icp_fit,priorita,pain,leve,contro_leva,mossa,bozza_apertura,note,gap_rischi,contatti_json,fonti_json
+id,data_aggiornamento,angolo,tier,azienda,alias,settore,sede,dimensione,dipendenti,ricavi,ricavi_anno,ricavi_label,utile_perdita,utile_label,situazione_finanziaria,salute,gruppo_round,tech_ai,incumbent,legame_aws,lead_stato,lead_evento,lead_anno,lead_lista,lead_status,lead_account_manager,perche_ora,icp_fit,priorita,pain,leve,contro_leva,mossa,bozza_apertura,note,gap_rischi,contatti_json,fonti_json
 ```
 
-Compatibilità: i CSV creati prima della v1.1.2 hanno una colonna in più, `deal_stimato` (rimossa dagli output). Se il file esistente la contiene, mantieni la SUA intestazione e lascia il campo vuoto nelle righe nuove; in rigenerazione la colonna si ignora.
+Compatibilità: i CSV creati prima della v1.3.0 possono avere la colonna `deal_stimato` (rimossa) e le colonne `crm_*` al posto di `lead_*` (senza `lead_lista`). Se il file esistente ha la vecchia intestazione, mantieni LA SUA intestazione (campi rimossi vuoti, `crm_*` = i corrispondenti `lead_*`); in rigenerazione le colonne legacy si leggono con la stessa mappatura.
 
 - `id`: slug stabile dell'azienda (kebab-case, senza forma societaria: "Kedrion Biopharma" → `kedrion-biopharma`). Le run successive sulla stessa azienda riusano lo stesso `id`.
 - `data_aggiornamento`: data della run (YYYY-MM-DD).
 - I campi testuali (`ricavi`, `pain`, `leve`, `mossa`, `bozza_apertura`, `note`, ...) **mantengono le label inline** `[Dato]`/`[Stima]`/`[Ipotesi]` così la card si ricostruisce identica.
 - `priorita` (Alta/Media/Bassa), `icp_fit`: i giudizi, già con `[Stima]`.
-- `crm_stato`: `CALDA`/`FREDDA`. `perche_ora`: il trigger di timing.
+- `lead_stato`: `CALDA`/`FREDDA`/`NON VERIFICATO`. `lead_lista`: nome breve del file lead di provenienza (es. "lead AWS Summit 2026"). `perche_ora`: il trigger di timing.
 - `contatti_json`: array JSON, un oggetto per persona dell'organigramma:
-  `{"nome","fascia":"decide|influenza|usa","ruolo","star":bool,"ghost":bool,"email","telefono","linkedin","fonte_crm","note"}`
+  `{"nome","fascia":"decide|influenza|usa","ruolo","star":bool,"ghost":bool,"email","telefono","linkedin","fonte_lead","note"}`
 - `fonti_json`: array JSON `[{"label","url"}, ...]`.
 
 Queste due colonne JSON gestiscono la cardinalità variabile (più contatti, più fonti) restando dentro un solo CSV.
@@ -40,7 +40,7 @@ Esempio (Python, append-safe):
 
 ```python
 import csv, os, json
-COLS = ["id","data_aggiornamento","angolo","tier","azienda","alias","settore","sede","dimensione","dipendenti","ricavi","ricavi_anno","ricavi_label","utile_perdita","utile_label","situazione_finanziaria","salute","gruppo_round","tech_ai","incumbent","legame_aws","crm_stato","crm_evento","crm_anno","crm_status","crm_account_manager","perche_ora","icp_fit","priorita","pain","leve","contro_leva","mossa","bozza_apertura","note","gap_rischi","contatti_json","fonti_json"]
+COLS = ["id","data_aggiornamento","angolo","tier","azienda","alias","settore","sede","dimensione","dipendenti","ricavi","ricavi_anno","ricavi_label","utile_perdita","utile_label","situazione_finanziaria","salute","gruppo_round","tech_ai","incumbent","legame_aws","lead_stato","lead_evento","lead_anno","lead_lista","lead_status","lead_account_manager","perche_ora","icp_fit","priorita","pain","leve","contro_leva","mossa","bozza_apertura","note","gap_rischi","contatti_json","fonti_json"]
 # row = dict con i campi della scheda; "contatti" e "fonti" sono liste Python (vengono serializzate qui)
 row = {"id": "kedrion-biopharma", "data_aggiornamento": "2026-06-09", "contatti": [], "fonti": []}  # esempio
 path = "company-mapping-db.csv"
@@ -55,7 +55,7 @@ with open(path, "a", newline="", encoding="utf-8") as f:
 
 ## Rigenerare HTML/PDF senza ricerca (il punto del datastore)
 
-Quando l'utente chiede di **ricreare, ri-stilizzare o ri-esportare** un dossier di aziende già mappate (o di metterne alcune già note in un nuovo report), NON rifare le Fasi 1-4 (CRM, ricerca, sintesi e verifica sono già consolidate nel CSV): leggi il CSV e renderizza.
+Quando l'utente chiede di **ricreare, ri-stilizzare o ri-esportare** un dossier di aziende già mappate (o di metterne alcune già note in un nuovo report), NON rifare le Fasi 1-4 (lead Drive, ricerca, sintesi e verifica sono già consolidate nel CSV): leggi il CSV e renderizza.
 
 1. Carica `company-mapping-db.csv`. Per ogni `id` tieni **solo la riga più recente** (`data_aggiornamento` massima; a parità di data vince l'ultima riga in ordine di file, cioè l'append più recente): le run vecchie restano nel file come storico ma non si renderizzano.
 2. Filtra alle aziende richieste (se l'utente ne indica un sottoinsieme).

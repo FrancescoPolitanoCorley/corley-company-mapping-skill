@@ -1,6 +1,6 @@
-# CRM cross-reference (Fase 1, sempre prima del web)
+# Cross-reference lead Drive (Fase 1, sempre prima del web)
 
-Questo componente gira prima di qualunque ricerca web. Dice se l'azienda è già nota a Corley e con quale storia.
+Questo componente gira prima di qualunque ricerca web. Dice se l'azienda è già nelle liste lead Corley su Drive e con quale storia. Nel dossier la fonte interna si cita sempre col nome breve del file (es. "lead AWS Summit 2026", "lead formazione febbraio 25"), mai come "CRM": è una cartella di fogli lead, non un sistema.
 
 ## Sorgente
 
@@ -10,7 +10,7 @@ Cartella Drive `1biph3a8C6w7o1YvtIoIcJQqUW-Nhs9yP` e relative sottocartelle (lis
 
 ### 1. Primario: scripting shell (sempre, quando i file sono sul filesystem)
 
-Cerca direttamente nei file con la shell: niente limiti di token, gestisce i fogli grandi che mandano in errore il tool Drive. Vale quando il CRM è raggiungibile dal filesystem (Google Drive Desktop montato, o una copia/export locale). I file di testo (CSV/TSV/TXT) si cercano direttamente; per gli `.xlsx` e i Google Sheet nativi (non testo grezzo) usa il fallback tool o esportali prima in CSV.
+Cerca direttamente nei file con la shell: niente limiti di token, gestisce i fogli grandi che mandano in errore il tool Drive. Vale quando le liste sono raggiungibili dal filesystem (Google Drive Desktop montato, o una copia/export locale). I file di testo (CSV/TSV/TXT) si cercano direttamente; per gli `.xlsx` e i Google Sheet nativi (non testo grezzo) usa il fallback tool o esportali prima in CSV.
 
 Prima cosa: verifica se esiste un mount/copia locale (vedi `find`/`Get-ChildItem` sotto). **Se non c'è nessun mount né copia locale (es. ambiente cloud), salta subito al punto 2**: non perdere tempo a cercare file inesistenti sul filesystem.
 
@@ -43,9 +43,9 @@ Quando i file non sono sul filesystem (es. ambiente cloud senza mount) o manca l
 - **search_files snello**: `excludeContentSnippets: true` e `pageSize` ridotto, per non gonfiare la risposta.
 - **Ricorsione e paginazione**: elenca le sottocartelle con `mimeType = 'application/vnd.google-apps.folder' and parentId = '{id}'` e ricorri; pagina passando `next_page_token` finché è vuoto.
 
-### 3. Senza accesso al CRM (né mount né connettore Drive)
+### 3. Senza accesso alle liste lead (né mount né connettore Drive)
 
-Avvisa subito l'utente e non bloccarti: prosegui con le sole fonti web. In ogni scheda marca lo stato CRM come `NON VERIFICATO`, mai `FREDDA`: FREDDA è un'assenza verificata nel CRM, qui non hai verificato niente. Dichiara il limite nelle note metodologiche e suggerisci di rilanciare il cross-reference quando l'accesso torna disponibile.
+Avvisa subito l'utente e non bloccarti: prosegui con le sole fonti web. In ogni scheda marca lo stato lead come `NON VERIFICATO`, mai `FREDDA`: FREDDA è un'assenza verificata nelle liste, qui non hai verificato niente. Dichiara il limite nelle note metodologiche e suggerisci di rilanciare il cross-reference quando l'accesso torna disponibile.
 
 ## Cosa estrarre per fonte
 
@@ -64,7 +64,7 @@ Avvisa subito l'utente e non bloccarti: prosegui con le sole fonti web. In ogni 
 
 **Attenzione al conflitto di colonna.** Due informazioni diverse viaggiano spesso vicine e tra file diversi possono finire scambiate o in colonne inattese: lo **status commerciale** (Engaged / Greenfield / Contattato) e il **livello di utilizzo AWS** (Produzione multipla/singola, Dev/Test, In valutazione, Non usa AWS). Non sono la stessa cosa. Se trovi "Engaged" sotto un'intestazione di utilizzo AWS, o "Produzione (multipla)" sotto lo status, riconoscilo dal significato del valore e mettilo nel campo giusto; se per la stessa persona i due file divergono, riportalo nel campo NOTE della card, non scegliere in silenzio.
 
-I dossier sintetizzati vanno trattati come fonte CRM interna, non come seconda fonte web indipendente: contarli come corroborazione esterna crea falsa conferma (lo stesso dato contato due volte). Le cifre chiave riprese da un dossier vanno comunque ri-verificate su fonte pubblica in Fase 2.
+I dossier sintetizzati vanno trattati come fonte interna, non come seconda fonte web indipendente: contarli come corroborazione esterna crea falsa conferma (lo stesso dato contato due volte). Le cifre chiave riprese da un dossier vanno comunque ri-verificate su fonte pubblica in Fase 2.
 
 ## Matching
 
@@ -75,6 +75,6 @@ Nota operativa sul matching: `fullText contains '{token}'` è rumoroso sui token
 ## Output del componente (per azienda)
 
 - Classificazione: `CALDA` (almeno un match) o `FREDDA`.
-- Se calda: elenco delle persone già in CRM, ciascuna con evento, anno, note, livello AWS, status, account manager.
-- **Email e telefono**: per ogni persona presente nei fogli, riporta sempre l'email e, se presente nel foglio, il telefono. Sono i dati di contatto che il sales userà per scrivere o chiamare. Leggi sempre la colonna telefono del foglio per esteso: "n.d." va scritto solo se la cella è davvero vuota, non se la colonna non è stata letta (errore già osservato in un test: numero presente nel foglio, scheda uscita con "n.d."). In una run Deep su un'azienda già coperta, ri-verifica i campi di contatto alla fonte CRM invece di ereditarli dal raw della run precedente.
-- Questo output informa la Wave C: se il contatto esiste già, la wave lo arricchisce invece di ripartire da zero. Email e telefono dal CRM vanno mantenuti nella scheda finale accanto alla persona.
+- Se calda: elenco delle persone già nelle liste, ciascuna con la lista di provenienza (nome breve del file), evento, anno, note, livello AWS, status, account manager. L'account manager è un'informazione di contesto, non il mittente della mossa: il dossier non prescrive chi scrive.
+- **Email e telefono**: per ogni persona presente nei fogli, riporta sempre l'email e, se presente nel foglio, il telefono. Sono i dati di contatto che il sales userà per scrivere o chiamare. Leggi sempre la colonna telefono del foglio per esteso: "n.d." va scritto solo se la cella è davvero vuota, non se la colonna non è stata letta (errore già osservato in un test: numero presente nel foglio, scheda uscita con "n.d."). In una run Deep su un'azienda già coperta, ri-verifica i campi di contatto sul foglio lead invece di ereditarli dal raw della run precedente.
+- Questo output informa la Wave C: se il contatto esiste già, la wave lo arricchisce invece di ripartire da zero. Email e telefono dai fogli lead vanno mantenuti nella scheda finale accanto alla persona.
