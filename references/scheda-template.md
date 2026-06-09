@@ -97,7 +97,7 @@ I contatti si rendono come organigramma a tre fasce, non come elenco piatto:
 
 ### Scheda persona (componente `.person`)
 
-La scheda persona (Standard: contatto prioritario; Deep: tutti i contatti chiave) si rende dentro un blocco `.person` annidato nella card dell'azienda, usando righe `.row` (label monospace / valore) per i campi PERCORSO / OPINIONI-TEMI / PASSIONI / STILE / GANCI / CANALE del layout testuale; le FONTI della persona chiudono il blocco come link a pillola (stesso stile del footer `.src`). I ganci portano inline il tag di affidabilità e l'esito del creepy test (passa / scartato con motivo). Non introdurre classi nuove: nel template canonico `.person` ha solo la regola di stampa `break-inside:avoid` e il blocco si compone con le `.row` esistenti.
+La scheda persona (Standard: contatto prioritario; Deep: tutti i contatti chiave) si rende dentro un blocco `.person` annidato nella card dell'azienda, usando righe `.row` (label monospace / valore) per i campi PERCORSO / OPINIONI-TEMI / PASSIONI / STILE / GANCI / CANALE del layout testuale; le FONTI della persona chiudono il blocco come link a pillola (stesso stile del footer `.src`). I ganci portano inline il tag di affidabilità e l'uso consigliato — "(ok in apertura)" / "(per qualificare)" / "(solo in call)" — con gli scartati e il loro motivo (mai nominare il test nel testo, vedi regola sul gergo). Non introdurre classi nuove: nel template canonico `.person` ha solo la regola di stampa `break-inside:avoid` e il blocco si compone con le `.row` esistenti.
 
 ### Legenda in chiusura (solo glossario, niente note per-azienda)
 
