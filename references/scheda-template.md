@@ -59,15 +59,17 @@ Il rendering finale è un dossier leggibile e scannabile, non un muro di testo. 
 **Estetica.** Stile dossier da analista, sobrio (tono Corley). Sfondo carta caldo, card bianche; serif (Georgia) per i titoli e i nomi azienda, sans di sistema per il testo, monospace maiuscoletto per le label dei campi e numeri tabellari. Primario navy Corley `#1b4f72`, accento caldo `#b5512a` per la parte commerciale. Self-contained (CSS inline), print-friendly, responsive (le colonne collassano sotto i 760px).
 
 **Struttura della pagina.**
-- Masthead sticky con titolo, conteggi e nav ad ancore per azienda.
+- Masthead sticky con titolo, conteggi (aziende · settori · contatti · tier) e nav ad ancore per azienda.
 - Riga di lead con angolo, tier, data, fonti.
 - Tabella riepilogativa (numeri tabellari, badge stato, link all'ancora dell'azienda).
 - Una `<section>` per settore con intestazione, poi una card `<article>` per azienda.
 
+**Dossier su singola azienda.** Con una sola azienda la tabella riepilogativa si omette (una coda di lavoro da una riga duplica l'header della card): si va dritti alla scheda. In più il `<body>` prende `class="single"`: in stampa la card può spezzarsi tra le pagine (i componenti interni restano interi grazie ai loro `break-inside:avoid`), altrimenti la prima pagina del PDF resta quasi vuota.
+
 **Struttura della card azienda.**
 - Header: nome (serif) + eventuale alias gruppo + descrizione di una riga; a destra (`.co__meta`) il badge priorità (`.prio`) e la pill stato CRM.
 - Striscia di fatti chiave (`.stats`, griglia a 6): Sede · Dimensione · Ricavi · Utile/Risultato · Salute · AWS. Leggibili a colpo d'occhio.
-- Callout `.why` ("Perché ora") subito sotto la striscia: il trigger di timing in una riga.
+- Callout `.why` ("Perché ora") subito sotto la striscia: il trigger di timing in una riga. Attenzione: `.why` è un flex container, quindi tutto il contenuto dopo il `<b>` va racchiuso in un unico `<span>` (testo e tag sciolti diventano flex item separati e il testo si spezza in colonne).
 - Corpo a due colonne: a sinistra (`.main`) i blocchi descrittivi come righe `label / valore` (`.row`), l'organigramma, e il campo NOTE specifico dell'azienda; a destra la rail evidenziata (`.rail`) "Per Corley" con ICP fit / Pain / Leve / Contro-leva / Mossa (con scadenza) e il box `.draft` con la bozza di apertura. La rail è la parte che serve al sales: tenerla in evidenza.
 - Callout `.gap` (bordo tratteggiato) per Gap & rischi.
 - Footer `.src` con le fonti come chip-link.
@@ -108,7 +110,7 @@ Niente gergo tecnico qui. **Le note specifiche di una singola azienda** (un conf
 
 Lo scheletro HTML canonico, completo di CSS e di tutte le classi citate sopra (`.mast`, `.stats`, `.co__meta`, `.prio`, `.why`, `.co__body`, `.rail`, `.draft`, `.org`, `.pill`, `.t`, ecc.), è il file `references/report-template.html`. In fase di rendering, partire da quel file: riusarne il blocco `<style>` invariato e popolare i contenuti al posto dell'azienda di esempio. Non reintrodurre stili generici (Arial, card piatte a tutta larghezza): l'obiettivo della resa è la leggibilità a colpo d'occhio.
 
-Il blocco `<style>` di riferimento include già le regole `@media print` necessarie (formato A4, `print-color-adjust:exact` per mantenere i colori dei badge, `break-inside:avoid` su card/organigramma/gap per non spezzarli). Mantienile invariate: sono ciò che fa sì che il PDF conservi la stessa leggibilità dell'HTML.
+Il blocco `<style>` di riferimento include già le regole `@media print` necessarie (formato A4, `print-color-adjust:exact` per mantenere i colori dei badge, `break-inside:avoid` su card/organigramma/gap per non spezzarli, e il ripristino delle griglie a due colonne: senza, la media query responsive da 760px scatterebbe anche in stampa A4 e il PDF collasserebbe a una colonna). Mantienile invariate: sono ciò che fa sì che il PDF conservi la stessa leggibilità dell'HTML.
 
 ### Generazione del PDF (portabile, nessun path hardcoded)
 

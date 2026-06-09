@@ -128,6 +128,12 @@
     .co,.notes,table{box-shadow:none;}
     .co{break-inside:avoid;} .sector-h{break-after:avoid;}
     .org,.gap,.person,.draft,.why{break-inside:avoid;}
+    .stats{grid-template-columns:repeat(3,1fr);}
+    .stats > div{border-right:1px solid var(--line-2);}
+    .stats > div:nth-child(3n){border-right:0;}
+    .co__body{grid-template-columns:1.45fr 1fr;}
+    .rail{border-left:1px solid var(--line-2); border-top:0;}
+    body.single .co{break-inside:auto;}
     a{text-decoration:none;}
   }
 </style>
@@ -137,7 +143,7 @@
 <header class="mast">
   <div class="inner">
     <h1>Company Mapping · Corley</h1>
-    <span class="counts">{N} aziende · {N} settori · {N} contatti CRM</span>
+    <span class="counts">{N} aziende · {N} settori · {N} contatti · tier {standard/deep}</span>
     <nav><a href="#esempio">Esempio S.p.A.</a></nav>
   </div>
 </header>
@@ -191,7 +197,7 @@
       <div><dt>AWS</dt><dd>In valutazione</dd></div>
     </dl>
 
-    <div class="why"><b>Perché ora</b> Il trigger di timing: evento M&amp;A, round, nuovo CTO, hiring cloud, scadenza contratto incumbent. Se non c'è un trigger chiaro, dirlo. <span class="t t--i">Ipotesi</span></div>
+    <div class="why"><b>Perché ora</b><span>Il trigger di timing: evento M&amp;A, round, nuovo CTO, hiring cloud, scadenza contratto incumbent. Se non c'è un trigger chiaro, dirlo. <span class="t t--i">Ipotesi</span></span></div>
 
     <div class="co__body">
       <div class="main">

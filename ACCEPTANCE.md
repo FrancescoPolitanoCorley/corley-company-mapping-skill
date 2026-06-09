@@ -6,7 +6,7 @@
 - [ ] SKILL.md ≤ 500 lines.
 - [ ] Every reference file is loaded by name somewhere in SKILL.md.
 - [ ] No file contains TBD/TODO/placeholder text.
-- [ ] Output is a single self-contained HTML file (inline CSS, no external assets) with summary table + per-sector cards.
+- [ ] Output is a single self-contained HTML file (inline CSS, no external assets) with summary table + per-sector cards (summary table omitted for single-company dossiers, body gets class="single").
 - [ ] A PDF is generated from the HTML via headless Chrome, preserving layout, colors, and the org chart.
 - [ ] CRM-present contacts show email and phone (or "n.d." only when the sheet cell is actually empty); every cited person links to LinkedIn when a verified profile exists.
 - [ ] Org chart renders as tiered Decide/Influenza/Usa with a starred recommended contact, ghost nodes, and a path line.

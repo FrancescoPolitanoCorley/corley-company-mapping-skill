@@ -80,7 +80,7 @@ Leggi `references/verification-agent.md` e lancia il sub-agent di self-check (to
 
 ### Fase 5 — Output
 
-Genera il file HTML self-contained nella directory di lavoro: tabella riepilogativa ordinata per priorità (coda di lavoro), schede raggruppate per settore, e in chiusura solo la legenda (le note di una singola azienda stanno nella sua card). Segui il contratto di stile e l'implementazione di riferimento in `references/scheda-template.md`. Poi genera il PDF dall'HTML (stessa resa) come descritto nello stesso file. Aggiorna `PROGRESS.md` a sessione conclusa.
+Genera il file HTML self-contained nella directory di lavoro: tabella riepilogativa ordinata per priorità (coda di lavoro), schede raggruppate per settore, e in chiusura solo la legenda (le note di una singola azienda stanno nella sua card). Con una sola azienda la tabella riepilogativa si omette: si va dritti alla scheda (vedi `scheda-template.md`). Segui il contratto di stile e l'implementazione di riferimento in `references/scheda-template.md`. Poi genera il PDF dall'HTML (stessa resa) come descritto nello stesso file. Aggiorna `PROGRESS.md` a sessione conclusa.
 
 **Nome dei file di output.** Singola azienda: `{id}.html` (lo slug del datastore, es. `kedrion-biopharma.html`). Lista: `company-mapping-{YYYY-MM-DD}.html`. Il PDF prende lo stesso nome con estensione `.pdf`. Se l'utente indica un nome, quello vince.
 
