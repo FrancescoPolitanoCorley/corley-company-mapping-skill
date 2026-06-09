@@ -12,6 +12,8 @@ Cartella Drive `1biph3a8C6w7o1YvtIoIcJQqUW-Nhs9yP` e relative sottocartelle (lis
 
 Cerca direttamente nei file con la shell: niente limiti di token, gestisce i fogli grandi che mandano in errore il tool Drive. Vale quando il CRM è raggiungibile dal filesystem (Google Drive Desktop montato, o una copia/export locale). I file di testo (CSV/TSV/TXT) si cercano direttamente; per gli `.xlsx` e i Google Sheet nativi (non testo grezzo) usa il fallback tool o esportali prima in CSV.
 
+Prima cosa: verifica se esiste un mount/copia locale (vedi `find`/`Get-ChildItem` sotto). **Se non c'è nessun mount né copia locale (es. ambiente cloud), salta subito al punto 2**: non perdere tempo a cercare file inesistenti sul filesystem.
+
 Su macOS/Linux (bash): individua la cartella lead e cerca l'azienda per nome e per dominio email.
 
 ```bash
@@ -35,8 +37,10 @@ Cerca sempre due segnali (nome azienda esatto + dominio email) per evitare i fal
 
 Quando i file non sono sul filesystem (es. ambiente cloud senza mount) o manca la shell:
 
+- **Regola dura sui token (non opzionale)**: **non leggere mai un foglio grande integralmente con `read_file_content`** — su file da decine di migliaia di righe restituisce "result exceeds maximum allowed tokens" e blocca il flusso. Per trovare un'azienda in un foglio usa **sempre** `search_files` con `fullText contains '{nome azienda}'`, che restituisce solo i file rilevanti senza scaricarne il contenuto integrale. Apri un file per intero solo se è piccolo o se l'hai già ristretto.
+- **Se devi proprio ispezionare un file grande**: se il tool lo materializza/scarica in locale (spill), **non rileggerlo col tool, grep-alo con la shell** (nessun limite di token). Questa è la via di recupero canonica, non un'eccezione.
 - **Priorità agli eventi più recenti**: ordina i file per data nel nome (es. "2026/05/28 AWS Summit") o per `modifiedTime` e parti da quelli; i lead freschi stanno lì. Non serve leggere tutto l'archivio storico per primo.
-- **Evita i limiti di token**: usa `search_files` con `excludeContentSnippets: true` e un `pageSize` ridotto; per i fogli grandi usa `fullText contains '{nome azienda}'` invece di `read_file_content` integrale (che su file da decine di migliaia di righe va in errore "result exceeds maximum allowed tokens").
+- **search_files snello**: `excludeContentSnippets: true` e `pageSize` ridotto, per non gonfiare la risposta.
 - **Ricorsione e paginazione**: elenca le sottocartelle con `mimeType = 'application/vnd.google-apps.folder' and parentId = '{id}'` e ricorri; pagina passando `next_page_token` finché è vuoto.
 
 ## Cosa estrarre per fonte
