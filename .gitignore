@@ -1,0 +1,11 @@
+# Output delle run e artefatti temporanei: non vanno nel repository della skill
+*.pdf
+SAMPLE-OUTPUT.html
+DEEP-*.html
+SAMPLE-RUN.md
+DEEP-RUN.md
+CMO-REVIEW.md
+PROGRESS.md
+raw/
+raw-deep/
+.DS_Store

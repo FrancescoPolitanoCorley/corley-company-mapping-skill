@@ -1,0 +1,258 @@
+<!doctype html>
+<!--
+  TEMPLATE CANONICO DI STILE — Corley Company Mapping.
+  Riferimento di rendering per l'output HTML della skill. NON contiene dati reali:
+  l'azienda "Esempio S.p.A." e le persone sono fittizie e servono solo a mostrare
+  struttura, classi CSS e i campi azionabili. In fase di rendering, riusare il
+  blocco <style> invariato e popolare i contenuti con i dati reali.
+-->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Company Mapping Corley</title>
+<style>
+  :root{
+    --ink:#1a2531; --navy:#1b4f72; --navy-2:#2e6a99;
+    --paper:#f6f3ec; --card:#ffffff; --line:#e4ddd0; --line-2:#efe9dd;
+    --muted:#6a7480; --accent:#b5512a; --accent-soft:#fbf0e9;
+    --d:#2f7d4f; --d-bg:#eaf4ee; --s:#9a6d10; --s-bg:#f7efd9; --i:#b5512a; --i-bg:#f9ebe3;
+    --hot:#1f6b3f; --hot-bg:#e7f3ec; --warn:#9a3b12;
+    --mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+    --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+    --sans:ui-sans-serif,"Segoe UI",Roboto,Helvetica,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{font-family:var(--sans); color:var(--ink); background:var(--paper); margin:0; line-height:1.55; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 24px 64px;}
+  .mast{position:sticky; top:0; z-index:10; background:var(--navy); color:#fff; padding:14px 24px; box-shadow:0 1px 0 rgba(0,0,0,.15);}
+  .mast .inner{max-width:1080px; margin:0 auto; display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 16px;}
+  .mast h1{font-family:var(--serif); font-weight:600; font-size:1.15rem; margin:0; letter-spacing:.2px;}
+  .mast .counts{font-family:var(--mono); font-size:.72rem; letter-spacing:.5px; text-transform:uppercase; color:#bcd4e6;}
+  .mast nav{margin-left:auto; display:flex; gap:14px; font-size:.82rem;}
+  .mast nav a{color:#dce8f1; text-decoration:none; border-bottom:1px solid transparent;}
+  .mast nav a:hover{border-color:#dce8f1;}
+  .lead{margin:26px 0 30px; font-size:.95rem; color:#3a4654; max-width:74ch;}
+  .lead b{color:var(--navy);}
+  .summary{margin:0 0 48px;}
+  table{border-collapse:collapse; width:100%; background:var(--card); border:1px solid var(--line); border-radius:10px; overflow:hidden; font-size:.88rem;}
+  thead th{background:#12384f; color:#fff; font-family:var(--mono); font-weight:500; text-transform:uppercase; letter-spacing:.6px; font-size:.66rem; text-align:left; padding:10px 12px;}
+  tbody td{padding:11px 12px; border-top:1px solid var(--line-2); vertical-align:top;}
+  tbody tr:hover{background:#faf8f3;}
+  td.num{font-family:var(--mono); font-size:.82rem; white-space:nowrap;}
+  .co-name{font-weight:600; color:var(--navy);}
+  .co-name a{color:inherit; text-decoration:none;}
+  .co-name a:hover{text-decoration:underline;}
+  .sector-h{font-size:.74rem; text-transform:uppercase; letter-spacing:2px; color:var(--accent); font-family:var(--mono); margin:42px 0 14px; padding-bottom:6px; border-bottom:1px solid var(--line);}
+  .co{background:var(--card); border:1px solid var(--line); border-radius:12px; margin:0 0 26px; overflow:hidden; box-shadow:0 1px 2px rgba(20,40,60,.05);}
+  .co__head{display:flex; gap:16px; align-items:flex-start; justify-content:space-between; padding:20px 24px 16px; border-bottom:1px solid var(--line-2);}
+  .co__head h3{font-family:var(--serif); font-weight:600; font-size:1.4rem; margin:0; color:var(--ink);}
+  .co__alias{font-family:var(--sans); font-weight:400; font-size:.8rem; color:var(--muted); border:1px solid var(--line); border-radius:20px; padding:1px 9px; vertical-align:middle; margin-left:8px;}
+  .co__desc{margin:7px 0 0; color:#3a4654; font-size:.92rem; max-width:70ch;}
+  .co__meta{display:flex; flex-direction:column; gap:6px; align-items:flex-end; white-space:nowrap;}
+  .stats{display:grid; grid-template-columns:repeat(6,1fr); gap:0; border-bottom:1px solid var(--line-2); background:#fbfaf7;}
+  .stats > div{padding:12px 14px; border-right:1px solid var(--line-2);}
+  .stats > div:last-child{border-right:0;}
+  .stats dt{font-family:var(--mono); font-size:.6rem; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); margin:0 0 3px;}
+  .stats dd{margin:0; font-size:.86rem; font-weight:600; color:var(--ink); line-height:1.3;}
+  .why{display:flex; gap:10px; align-items:baseline; padding:11px 24px; background:#fff8ef; border-bottom:1px solid var(--line-2); font-size:.88rem; color:#5a3a1a;}
+  .why b{font-family:var(--mono); font-size:.6rem; text-transform:uppercase; letter-spacing:.8px; color:var(--warn);}
+  .co__body{display:grid; grid-template-columns:1.45fr 1fr; gap:0;}
+  .main{padding:18px 24px;}
+  .rail{padding:18px 22px; background:var(--accent-soft); border-left:1px solid var(--line-2);}
+  .row{display:grid; grid-template-columns:96px 1fr; gap:12px; margin:0 0 12px; align-items:baseline;}
+  .row .lab{font-family:var(--mono); font-size:.62rem; text-transform:uppercase; letter-spacing:.7px; color:var(--navy-2); padding-top:2px;}
+  .row .val{font-size:.9rem; color:#2c3744;}
+  .val .sub{color:var(--muted); font-size:.84em;}
+  .rail h4{font-family:var(--mono); font-size:.66rem; text-transform:uppercase; letter-spacing:1.2px; color:var(--accent); margin:0 0 12px; padding-bottom:7px; border-bottom:1px solid #ecd9cd;}
+  .rail .row{grid-template-columns:72px 1fr;}
+  .rail .row .lab{color:var(--accent);}
+  .draft{margin:12px 0 0; background:#fff; border:1px solid #e6d3c4; border-radius:8px; padding:11px 13px;}
+  .draft h5{font-family:var(--mono); font-size:.6rem; text-transform:uppercase; letter-spacing:.8px; color:var(--accent); margin:0 0 7px; display:flex; justify-content:space-between;}
+  .draft p{margin:0; font-size:.85rem; color:#33414e; font-style:italic;}
+  .org{border:1px solid var(--line-2); border-radius:8px; overflow:hidden; margin:0 0 14px;}
+  .orglab{font-family:var(--mono); font-size:.62rem; text-transform:uppercase; letter-spacing:.7px; color:var(--navy-2); margin:6px 0 8px;}
+  .org__grid{display:grid; grid-template-columns:repeat(3,1fr);}
+  .org__col{padding:11px 12px; border-right:1px solid var(--line-2); background:#fcfbf8;}
+  .org__col:last-child{border-right:0;}
+  .org__col h5{font-family:var(--mono); font-size:.58rem; text-transform:uppercase; letter-spacing:.9px; margin:0 0 9px; color:var(--muted); display:flex; align-items:center; gap:5px;}
+  .org__col--decide h5{color:var(--accent);}
+  .org__col--decide h5::before,.org__col--infl h5::before,.org__col--use h5::before{content:""; width:7px; height:7px; border-radius:50%; background:currentColor; display:inline-block;}
+  .node{display:block; background:#fff; border:1px solid #dde6ee; border-radius:6px; padding:6px 9px; margin:0 0 7px;}
+  .node:last-child{margin-bottom:0;}
+  .node b{display:block; color:var(--navy); font-size:.82rem; line-height:1.3;}
+  .node .r{color:var(--muted); font-size:.72rem;}
+  .node--star{background:#fff6ec; border-color:#e6c4a4; box-shadow:0 0 0 1px #e6c4a4 inset;}
+  .node--star b::after{content:" ★"; color:var(--accent);}
+  .node--ghost{border-style:dashed; background:transparent; opacity:.78;}
+  .org__path{padding:9px 12px; background:#f3f7fb; border-top:1px solid var(--line-2); font-size:.8rem; color:#2c3744;}
+  .org__path b{font-family:var(--mono); font-size:.6rem; text-transform:uppercase; letter-spacing:.6px; color:var(--navy-2); margin-right:6px;}
+  .org__path .arr{color:var(--accent); font-weight:700; padding:0 4px;}
+  .node .c{display:block; margin-top:4px; font-family:var(--mono); font-size:.66rem; color:var(--muted); line-height:1.45; word-break:break-word;}
+  .node .c a{color:var(--navy-2); text-decoration:none;}
+  .li{display:inline-block; font-family:var(--mono); font-size:.58rem; font-weight:700; color:#0a66c2; border:1px solid #cfe0f0; border-radius:4px; padding:0 5px; text-decoration:none; margin-left:3px; vertical-align:middle;}
+  .li:hover{background:#eaf2fb;}
+  .gap{margin:4px 24px 0; padding:12px 16px; background:#fcfaf5; border:1px dashed #d8c9a8; border-radius:8px; font-size:.85rem; color:#5a4a2a;}
+  .gap .lab{font-family:var(--mono); font-size:.62rem; text-transform:uppercase; letter-spacing:.7px; color:var(--s); display:block; margin-bottom:3px;}
+  .src{padding:14px 24px 20px; display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+  .src .lab{font-family:var(--mono); font-size:.62rem; text-transform:uppercase; letter-spacing:.7px; color:var(--muted); margin-right:4px;}
+  .src a{font-size:.78rem; color:var(--navy-2); text-decoration:none; background:#f1f4f7; border:1px solid #e1e8ee; border-radius:16px; padding:3px 11px;}
+  .src a:hover{background:#e7eef4;}
+  .pill{display:inline-block; font-family:var(--mono); font-size:.66rem; font-weight:600; text-transform:uppercase; letter-spacing:.6px; padding:4px 11px; border-radius:20px; white-space:nowrap;}
+  .pill--calda{background:var(--hot-bg); color:var(--hot); border:1px solid #bfe0cc;}
+  .pill--fredda{background:#eef0f2; color:#5b6670; border:1px solid #dde1e5;}
+  .pill--calda::before{content:"●"; color:#2f9d5b; margin-right:6px; font-size:.8em;}
+  .pill--fredda::before{content:"○"; margin-right:6px;}
+  .prio{display:inline-block; font-family:var(--mono); font-size:.64rem; font-weight:700; text-transform:uppercase; letter-spacing:.6px; padding:3px 10px; border-radius:20px;}
+  .prio--alta{background:#fdeceb; color:#b3261e; border:1px solid #f0c4c0;}
+  .prio--media{background:#fdf3df; color:#9a6d10; border:1px solid #ecd9a8;}
+  .prio--bassa{background:#eef0f2; color:#5b6670; border:1px solid #dde1e5;}
+  .deal{font-family:var(--mono); font-size:.7rem; color:var(--muted);}
+  .t{display:inline-block; font-family:var(--mono); font-size:.64rem; font-weight:600; letter-spacing:.4px; padding:1px 7px; border-radius:5px; vertical-align:middle; margin-left:2px;}
+  .t--d{background:var(--d-bg); color:var(--d);} .t--s{background:var(--s-bg); color:var(--s);} .t--i{background:var(--i-bg); color:var(--i);}
+  .notes{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:22px 26px; margin-top:8px;}
+  .notes h2{font-family:var(--serif); color:var(--navy); margin:0 0 4px; font-size:1.2rem;}
+  .notes h3{font-size:.92rem; color:var(--ink); margin:18px 0 4px;}
+  .notes p, .notes li{font-size:.88rem; color:#3a4654;}
+  .notes ul{margin:6px 0 0; padding-left:18px;}
+  @media (max-width:760px){
+    .stats{grid-template-columns:repeat(2,1fr);} .stats > div:nth-child(2n){border-right:0;}
+    .co__body{grid-template-columns:1fr;} .rail{border-left:0; border-top:1px solid var(--line-2);}
+    .mast nav{display:none;}
+  }
+  @media print{
+    @page{ size:A4; margin:13mm; }
+    *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    html,body{background:#fff; font-size:11.5px;}
+    .wrap{padding:0;}
+    .mast{position:static; box-shadow:none;} .mast nav{display:none;}
+    .co,.notes,table{box-shadow:none;}
+    .co{break-inside:avoid;} .sector-h{break-after:avoid;}
+    .org,.gap,.person,.draft,.why{break-inside:avoid;}
+    a{text-decoration:none;}
+  }
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="inner">
+    <h1>Company Mapping · Corley</h1>
+    <span class="counts">{N} aziende · {N} settori · {N} contatti CRM</span>
+    <nav><a href="#esempio">Esempio S.p.A.</a></nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <p class="lead">
+    Angolo: <b>{angolo}</b>. Tier {Standard/Deep} · aggiornato {data} · fonti: CRM Corley (Google Drive) + web pubblico.
+    La tabella è ordinata per priorità: è una coda di lavoro, non un elenco.
+  </p>
+
+  <!-- TABELLA = CODA DI LAVORO, ordinata per priorità decrescente -->
+  <section class="summary">
+    <table>
+      <thead>
+        <tr><th>Priorità</th><th>Azienda</th><th>Settore</th><th>Deal stimato</th><th>Perché ora</th><th>CRM</th><th>Primo contatto</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="prio prio--alta">Alta</span></td>
+          <td class="co-name"><a href="#esempio">Esempio S.p.A.</a></td>
+          <td>Manifattura</td>
+          <td class="num">€30-60k/anno <span class="t t--s">Stima</span></td>
+          <td>Round / M&amp;A / hiring cloud recente</td>
+          <td><span class="pill pill--calda">Calda</span></td>
+          <td>Nome ★ (ruolo) — email</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <h2 class="sector-h">Manifattura</h2>
+
+  <article class="co" id="esempio">
+    <div class="co__head">
+      <div>
+        <h3>Esempio S.p.A. <span class="co__alias">alias gruppo</span></h3>
+        <p class="co__desc">Una riga: cosa fa, quotata o privata, gruppo, marchi.</p>
+      </div>
+      <div class="co__meta">
+        <span class="prio prio--alta">Priorità alta</span>
+        <span class="pill pill--calda">CRM · Calda</span>
+        <span class="deal">Deal ~€30-60k/anno</span>
+      </div>
+    </div>
+
+    <dl class="stats">
+      <div><dt>Sede</dt><dd>Città (PR)</dd></div>
+      <div><dt>Dimensione</dt><dd>Media impresa</dd></div>
+      <div><dt>Ricavi</dt><dd>€XXX mln <span class="t t--d">2024</span></dd></div>
+      <div><dt>Utile</dt><dd>+€XX mln <span class="t t--d">2024</span></dd></div>
+      <div><dt>Salute</dt><dd>Solida</dd></div>
+      <div><dt>AWS</dt><dd>In valutazione</dd></div>
+    </dl>
+
+    <div class="why"><b>Perché ora</b> Il trigger di timing: evento M&amp;A, round, nuovo CTO, hiring cloud, scadenza contratto incumbent. Se non c'è un trigger chiaro, dirlo. <span class="t t--i">Ipotesi</span></div>
+
+    <div class="co__body">
+      <div class="main">
+        <div class="row"><span class="lab">Finanza</span><span class="val">Ricavi e utile datati con label; situazione finanziaria; salute. <span class="t t--d">Dato</span></span></div>
+        <div class="row"><span class="lab">Tech &amp; AI</span><span class="val">Maturità cloud, iniziative AI pubbliche, incumbent/stack attuale. <span class="t t--d">Dato</span></span></div>
+        <div class="row"><span class="lab">AWS</span><span class="val">Legame con AWS o cloud concorrente. <span class="t t--d">Dato</span></span></div>
+
+        <p class="orglab">Organigramma &amp; contatti</p>
+        <div class="org">
+          <div class="org__grid">
+            <div class="org__col org__col--decide"><h5>Decide · budget</h5>
+              <span class="node node--ghost"><b>Ruolo decisore</b><span class="r">da identificare</span></span>
+            </div>
+            <div class="org__col org__col--infl"><h5>Influenza · tecnici</h5>
+              <span class="node node--star"><b>Nome Cognome</b><span class="r">ruolo reale · da quando</span><span class="c">✉ <a href="mailto:x@y.it">x@y.it</a> · ☎ n.d. <a class="li" href="https://www.linkedin.com/in/...">in</a></span></span>
+            </div>
+            <div class="org__col org__col--use"><h5>Usa</h5>
+              <span class="node"><b>Team</b><span class="r">utenti tecnici</span></span>
+            </div>
+          </div>
+          <div class="org__path"><b>Percorso</b> contatto ★ <span class="arr">→</span> decisore di budget</div>
+        </div>
+
+        <div class="row"><span class="lab">Note</span><span class="val">Note specifiche di questa azienda: conflitto riconciliato (es. consolidato vs civilistico), precisazione su un dato o un contatto. Stanno qui, non in fondo al documento.</span></div>
+      </div>
+
+      <aside class="rail">
+        <h4>Per Corley</h4>
+        <div class="row"><span class="lab">ICP fit</span><span class="val">Quanto è in target (settore, dimensione, maturità cloud): alto/medio/basso, con il perché.</span></div>
+        <div class="row"><span class="lab">Pain</span><span class="val">Pain espliciti + ipotizzati, con label.</span></div>
+        <div class="row"><span class="lab">Leve</span><span class="val">Dove l'offerta Corley tocca un problema reale.</span></div>
+        <div class="row"><span class="lab">Contro-leva</span><span class="val">Risposta al "perché non lo facciamo in casa / perché non l'incumbent": l'argomento che disinnesca l'obiezione probabile.</span></div>
+        <div class="row"><span class="lab">Mossa</span><span class="val">Chi contattare per primo, canale, e <strong>entro quando</strong> (next action con scadenza).</span></div>
+        <div class="draft">
+          <h5>Bozza apertura <span style="font-weight:400; text-transform:none; letter-spacing:0;">da rivedere</span></h5>
+          <p>3-4 righe pronte da incollare: aggancio specifico (gancio o trigger), una frase su cosa Corley può fare per quel problema, una call to action leggera. Personalizzata sulla persona ★.</p>
+        </div>
+      </aside>
+    </div>
+
+    <div class="gap"><span class="lab">Gap &amp; rischi</span> Cosa manca + come verificarlo. Nessun valore inventato.</div>
+    <div class="src"><span class="lab">Fonti</span><a href="https://...">fonte 1</a><a href="https://...">fonte 2</a></div>
+  </article>
+
+  <section class="notes">
+    <h2>Legenda</h2>
+    <h3>Come leggere le etichette</h3>
+    <ul>
+      <li><span class="t t--d">Dato</span> verificato su fonte affidabile.</li>
+      <li><span class="t t--s">Stima</span> calcolato da noi con assunzione dichiarata (incluse priorità e deal stimato, che sono valutazioni).</li>
+      <li><span class="t t--i">Ipotesi</span> / gap da confermare o non trovato: indichiamo come recuperarlo, nessun valore inventato.</li>
+    </ul>
+    <h3>Priorità e deal stimato</h3>
+    <p>La priorità (Alta/Media/Bassa) e il deal stimato sono giudizi nostri, non dati certi: nascono da fit con l'ICP, segnali di intent/timing, raggiungibilità del contatto e dimensione potenziale. Servono a ordinare il lavoro, vanno tarati dal sales.</p>
+    <h3>Badge di stato</h3>
+    <p><span class="pill pill--calda">Calda</span> già nota a Corley (contatto o evento passato). <span class="pill pill--fredda">Fredda</span> nessun contatto pregresso nel CRM.</p>
+  </section>
+
+</div>
+</body>
+</html>
