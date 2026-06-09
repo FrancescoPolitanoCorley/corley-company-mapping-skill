@@ -107,7 +107,6 @@
   .prio--alta{background:#fdeceb; color:#b3261e; border:1px solid #f0c4c0;}
   .prio--media{background:#fdf3df; color:#9a6d10; border:1px solid #ecd9a8;}
   .prio--bassa{background:#eef0f2; color:#5b6670; border:1px solid #dde1e5;}
-  .deal{font-family:var(--mono); font-size:.7rem; color:var(--muted);}
   .t{display:inline-block; font-family:var(--mono); font-size:.64rem; font-weight:600; letter-spacing:.4px; padding:1px 7px; border-radius:5px; vertical-align:middle; margin-left:2px;}
   .t--d{background:var(--d-bg); color:var(--d);} .t--s{background:var(--s-bg); color:var(--s);} .t--i{background:var(--i-bg); color:var(--i);}
   .notes{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:22px 26px; margin-top:8px;}
@@ -154,14 +153,13 @@
   <section class="summary">
     <table>
       <thead>
-        <tr><th>Priorità</th><th>Azienda</th><th>Settore</th><th>Deal stimato</th><th>Perché ora</th><th>CRM</th><th>Primo contatto</th></tr>
+        <tr><th>Priorità</th><th>Azienda</th><th>Settore</th><th>Perché ora</th><th>CRM</th><th>Primo contatto</th></tr>
       </thead>
       <tbody>
         <tr>
           <td><span class="prio prio--alta">Alta</span></td>
           <td class="co-name"><a href="#esempio">Esempio S.p.A.</a></td>
           <td>Manifattura</td>
-          <td class="num">€30-60k/anno <span class="t t--s">Stima</span></td>
           <td>Round / M&amp;A / hiring cloud recente</td>
           <td><span class="pill pill--calda">Calda</span></td>
           <td>Nome ★ (ruolo) — email</td>
@@ -181,7 +179,6 @@
       <div class="co__meta">
         <span class="prio prio--alta">Priorità alta</span>
         <span class="pill pill--calda">CRM · Calda</span>
-        <span class="deal">Deal ~€30-60k/anno</span>
       </div>
     </div>
 
@@ -244,11 +241,11 @@
     <h3>Come leggere le etichette</h3>
     <ul>
       <li><span class="t t--d">Dato</span> verificato su fonte affidabile.</li>
-      <li><span class="t t--s">Stima</span> calcolato da noi con assunzione dichiarata (incluse priorità e deal stimato, che sono valutazioni).</li>
+      <li><span class="t t--s">Stima</span> calcolato da noi con assunzione dichiarata (inclusa la priorità, che è una valutazione).</li>
       <li><span class="t t--i">Ipotesi</span> / gap da confermare o non trovato: indichiamo come recuperarlo, nessun valore inventato.</li>
     </ul>
-    <h3>Priorità e deal stimato</h3>
-    <p>La priorità (Alta/Media/Bassa) e il deal stimato sono giudizi nostri, non dati certi: nascono da fit con l'ICP, segnali di intent/timing, raggiungibilità del contatto e dimensione potenziale. Servono a ordinare il lavoro, vanno tarati dal sales.</p>
+    <h3>Priorità</h3>
+    <p>La priorità (Alta/Media/Bassa) è un giudizio nostro, non un dato certo: nasce da fit con l'ICP, segnali di intent/timing, raggiungibilità del contatto e dimensione potenziale. Serve a ordinare il lavoro, va tarata dal sales. Il valore economico del lead non viene stimato: lo dimensiona il sales in offerta.</p>
     <h3>Badge di stato</h3>
     <p><span class="pill pill--calda">Calda</span> già nota a Corley (contatto o evento passato). <span class="pill pill--fredda">Fredda</span> nessun contatto pregresso nel CRM.</p>
   </section>

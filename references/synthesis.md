@@ -10,8 +10,8 @@ La sintesi è ragionamento, non formattazione. Se il modello supporta l'extended
 4. Applica le label `[Dato]`/`[Stima]`/`[Ipotesi]` e le date.
 5. Deriva la parte azionabile (è il valore del dossier, non un riempitivo):
    - **Perché ora**: il trigger di timing (M&A, round, nuovo CxO, hiring cloud, rinnovo contratto incumbent). Se non c'è, dichiararlo.
-   - **ICP fit** (alto/medio/basso, con il perché) e **deal stimato** (banda €/anno dedotta da dimensione e utilizzo AWS). Entrambi `[Stima]`.
-   - **Priorità** (Alta/Media/Bassa, `[Stima]`): sintesi di ICP fit, intent/timing, raggiungibilità del contatto e dimensione del deal. NON far sembrare debole un lead solo perché ha gap sui ricavi: un lead con need verbalizzato e decisore raggiungibile può essere Alta anche senza fatturato pubblico.
+   - **ICP fit** (alto/medio/basso, con il perché), `[Stima]`. Niente bande economiche o "deal stimato": tariffe e valore del deal non sono deducibili dalla ricerca, il dimensionamento economico spetta al sales in fase di offerta.
+   - **Priorità** (Alta/Media/Bassa, `[Stima]`): sintesi di ICP fit, intent/timing, raggiungibilità del contatto e dimensione potenziale dell'azienda. NON far sembrare debole un lead solo perché ha gap sui ricavi: un lead con need verbalizzato e decisore raggiungibile può essere Alta anche senza fatturato pubblico.
    - **Pain** (espliciti e ipotizzati), **leve** per Corley, **contro-leva** (risposta al "perché non in casa / perché non l'incumbent").
    - **Mossa**: chi contattare per primo, su quale canale, ed entro quando.
    - **Bozza apertura**: 3-4 righe pronte da incollare, personalizzate sul contatto ★ (aggancio a gancio o trigger, una frase sul valore, una call to action leggera), marcate "da rivedere".

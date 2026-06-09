@@ -10,7 +10,7 @@ Skill per [Claude Code](https://claude.com/claude-code) (e agenti compatibili co
 
 Per ogni azienda, una scheda con:
 
-- **Priorità** (Alta/Media/Bassa) e **deal stimato**, per ordinare la coda di lavoro.
+- **Priorità** (Alta/Media/Bassa), per ordinare la coda di lavoro. Il valore economico del lead non viene stimato: lo dimensiona il sales in offerta.
 - **Perché ora**: il trigger di timing (M&A, round, nuovo CxO, hiring cloud, rinnovo contratto incumbent).
 - Anagrafica, **finanza datata**, salute, gruppo/round.
 - **Tecnologia & AI**, incumbent attuale, **legame con AWS**.
@@ -89,7 +89,7 @@ L'utente può sempre forzare il tier.
 0. **Intake & angolo** — lista o singola azienda; angolo default Corley con override; tier; crea/riprende `PROGRESS.md`.
 1. **CRM cross-reference** (sempre, prima del web) — cerca nei file lead Corley (shell sul mount locale di Drive se c'è, altrimenti tool Drive con query mirate), fuzzy match sul nome azienda, classifica calda/fredda, estrae evento, anno, note, livello AWS, status, account manager, email e telefono.
 2. **Ricerca web in wave** (fan-out) — A azienda & finanza (+ trigger di timing, segnali di deal), B tecnologia & AWS (+ incumbent), C persone (organigramma; in Deep layer personale + ganci). I grezzi vanno in `raw/`.
-3. **Sintesi** — connette i segnali, calcola priorità/deal/ICP fit, deriva pain/leve/contro-leva/mossa/bozza, applica le label, riconcilia i conflitti, dichiara i gap.
+3. **Sintesi** — connette i segnali, calcola priorità e ICP fit, deriva pain/leve/contro-leva/mossa/bozza, applica le label, riconcilia i conflitti, dichiara i gap.
 4. **Verifica** — un controllo finale rilegge l'output (claim senza fonte, contraddizioni, dati stale, gap non dichiarati) prima della consegna.
 5. **Output** — HTML dossier + PDF (Chrome headless).
 
@@ -103,7 +103,7 @@ Ogni affermazione porta una label: `[Dato]` (verificato), `[Stima]` (calcolato c
 
 La skill non butta via quello che ricava. Ogni azienda sintetizzata viene salvata in un unico file CSV locale, `company-mapping-db.csv`, nella directory di lavoro. È la **memoria** della skill: l'HTML e il PDF sono viste su quei dati.
 
-- **Una riga per azienda** (per run): campi piatti (anagrafica, finanza, priorità, deal stimato, perché ora, pain/leve/mossa, bozza apertura, note, gap) più due colonne JSON, `contatti_json` (l'organigramma: persone, fascia decide/influenza/usa, email, telefono, LinkedIn) e `fonti_json`. I testi conservano le label `[Dato]`/`[Stima]`/`[Ipotesi]`, così le card si ricostruiscono identiche.
+- **Una riga per azienda** (per run): campi piatti (anagrafica, finanza, priorità, perché ora, pain/leve/mossa, bozza apertura, note, gap) più due colonne JSON, `contatti_json` (l'organigramma: persone, fascia decide/influenza/usa, email, telefono, LinkedIn) e `fonti_json`. I testi conservano le label `[Dato]`/`[Stima]`/`[Ipotesi]`, così le card si ricostruiscono identiche.
 - **Crea o append**: se il file non c'è viene creato con l'intestazione, altrimenti si appende. È un registro storico: le righe vecchie non si toccano (audit trail). Su una stessa azienda mappata più volte, in rigenerazione vince la riga più recente.
 - **Locale, non versionato**: è in `.gitignore` perché contiene dati su persone e aziende. Resta sulla macchina, non finisce su git.
 - **Rigenerare senza ricerca**: per ricreare, ri-stilizzare o ri-esportare dossier di aziende già mappate, la skill legge il CSV e renderizza HTML/PDF **senza rifare la ricerca**. Legge pochi KB per azienda invece di rilanciare wave da centinaia di migliaia di token: è la via economica per iterare sulla resa o ricomporre i report. Dettaglio in `references/data-store.md`.

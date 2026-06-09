@@ -13,13 +13,15 @@ La skill non deve perdere quello che ricava: ogni azienda sintetizzata viene sal
 Colonne (in quest'ordine):
 
 ```
-id,data_aggiornamento,angolo,tier,azienda,alias,settore,sede,dimensione,dipendenti,ricavi,ricavi_anno,ricavi_label,utile_perdita,utile_label,situazione_finanziaria,salute,gruppo_round,tech_ai,incumbent,legame_aws,crm_stato,crm_evento,crm_anno,crm_status,crm_account_manager,perche_ora,icp_fit,priorita,deal_stimato,pain,leve,contro_leva,mossa,bozza_apertura,note,gap_rischi,contatti_json,fonti_json
+id,data_aggiornamento,angolo,tier,azienda,alias,settore,sede,dimensione,dipendenti,ricavi,ricavi_anno,ricavi_label,utile_perdita,utile_label,situazione_finanziaria,salute,gruppo_round,tech_ai,incumbent,legame_aws,crm_stato,crm_evento,crm_anno,crm_status,crm_account_manager,perche_ora,icp_fit,priorita,pain,leve,contro_leva,mossa,bozza_apertura,note,gap_rischi,contatti_json,fonti_json
 ```
+
+Compatibilità: i CSV creati prima della v1.1.2 hanno una colonna in più, `deal_stimato` (rimossa dagli output). Se il file esistente la contiene, mantieni la SUA intestazione e lascia il campo vuoto nelle righe nuove; in rigenerazione la colonna si ignora.
 
 - `id`: slug stabile dell'azienda (kebab-case, senza forma societaria: "Kedrion Biopharma" → `kedrion-biopharma`). Le run successive sulla stessa azienda riusano lo stesso `id`.
 - `data_aggiornamento`: data della run (YYYY-MM-DD).
 - I campi testuali (`ricavi`, `pain`, `leve`, `mossa`, `bozza_apertura`, `note`, ...) **mantengono le label inline** `[Dato]`/`[Stima]`/`[Ipotesi]` così la card si ricostruisce identica.
-- `priorita` (Alta/Media/Bassa), `deal_stimato`, `icp_fit`: i giudizi, già con `[Stima]`.
+- `priorita` (Alta/Media/Bassa), `icp_fit`: i giudizi, già con `[Stima]`.
 - `crm_stato`: `CALDA`/`FREDDA`. `perche_ora`: il trigger di timing.
 - `contatti_json`: array JSON, un oggetto per persona dell'organigramma:
   `{"nome","fascia":"decide|influenza|usa","ruolo","star":bool,"ghost":bool,"email","telefono","linkedin","fonte_crm","note"}`
@@ -38,7 +40,7 @@ Esempio (Python, append-safe):
 
 ```python
 import csv, os, json
-COLS = ["id","data_aggiornamento","angolo","tier","azienda","alias","settore","sede","dimensione","dipendenti","ricavi","ricavi_anno","ricavi_label","utile_perdita","utile_label","situazione_finanziaria","salute","gruppo_round","tech_ai","incumbent","legame_aws","crm_stato","crm_evento","crm_anno","crm_status","crm_account_manager","perche_ora","icp_fit","priorita","deal_stimato","pain","leve","contro_leva","mossa","bozza_apertura","note","gap_rischi","contatti_json","fonti_json"]
+COLS = ["id","data_aggiornamento","angolo","tier","azienda","alias","settore","sede","dimensione","dipendenti","ricavi","ricavi_anno","ricavi_label","utile_perdita","utile_label","situazione_finanziaria","salute","gruppo_round","tech_ai","incumbent","legame_aws","crm_stato","crm_evento","crm_anno","crm_status","crm_account_manager","perche_ora","icp_fit","priorita","pain","leve","contro_leva","mossa","bozza_apertura","note","gap_rischi","contatti_json","fonti_json"]
 # row = dict con i campi della scheda; "contatti" e "fonti" sono liste Python (vengono serializzate qui)
 row = {"id": "kedrion-biopharma", "data_aggiornamento": "2026-06-09", "contatti": [], "fonti": []}  # esempio
 path = "company-mapping-db.csv"

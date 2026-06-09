@@ -6,7 +6,7 @@ Il target di rendering è un singolo file HTML self-contained (CSS inline, nessu
 
 ```
 AZIENDA: {nome}      Settore: {settore}      Angolo: {angolo}      Aggiornato: {data}
-PRIORITA: {Alta/Media/Bassa} [Stima]   DEAL STIMATO: {banda €/anno} [Stima]
+PRIORITA: {Alta/Media/Bassa} [Stima]
 Stato CRM: {CALDA/FREDDA} {se calda: persone + evento + anno + note + livello AWS + status + account manager}
 
 DESCRIZIONE: {una riga: cosa fa, quotata o privata, gruppo, marchi}
@@ -28,7 +28,7 @@ GAP & RISCHI: cosa manca + come verificarlo
 FONTI: [link cliccabili]
 ```
 
-PRIORITA, DEAL STIMATO e ICP FIT sono giudizi, sempre marcati `[Stima]`: nascono da fit con l'ICP, segnali di intent/timing, raggiungibilità del contatto e dimensione potenziale. Servono a ordinare il lavoro e vanno tarati dal sales, non sono dati certi.
+PRIORITA e ICP FIT sono giudizi, sempre marcati `[Stima]`: nascono da fit con l'ICP, segnali di intent/timing, raggiungibilità del contatto e dimensione potenziale. Servono a ordinare il lavoro e vanno tarati dal sales, non sono dati certi. Nessun "deal stimato" in euro: il valore economico non è deducibile dalla ricerca e va dimensionato dal sales in offerta.
 
 ## Scheda persona (contatti prioritari)
 
@@ -48,7 +48,7 @@ FONTI: [link]
 Header: N aziende · N settori · N contatti · aggiornato {data} · nota fonti.
 
 "N contatti" = numero di contatti distinti, conteggiati come unione di contatti CRM e contatti web deduplicati per persona (la stessa persona presente sia in CRM sia sul web conta una volta sola). Usare questo criterio rende il conteggio coerente tra run diverse.
-Tabella riepilogativa = coda di lavoro, ordinata per priorità decrescente: Priorità | Azienda | Settore | Deal stimato | Perché ora | Stato CRM | Primo contatto. L'ordinamento per priorità fa sì che la prima riga sia il lead da lavorare per primo.
+Tabella riepilogativa = coda di lavoro, ordinata per priorità decrescente: Priorità | Azienda | Settore | Perché ora | Stato CRM | Primo contatto. L'ordinamento per priorità fa sì che la prima riga sia il lead da lavorare per primo.
 Poi le schede di dettaglio raggruppate per settore.
 Chiusura: **solo la legenda** (come leggere label, badge, priorità/deal, dati stale). Le note specifiche di una singola azienda (conflitti riconciliati, precisazioni su un dato o un contatto) NON vanno in fondo: vanno nel campo NOTE della card di quell'azienda.
 
@@ -65,7 +65,7 @@ Il rendering finale è un dossier leggibile e scannabile, non un muro di testo. 
 - Una `<section>` per settore con intestazione, poi una card `<article>` per azienda.
 
 **Struttura della card azienda.**
-- Header: nome (serif) + eventuale alias gruppo + descrizione di una riga; a destra (`.co__meta`) il badge priorità (`.prio`), la pill stato CRM e il deal stimato (`.deal`).
+- Header: nome (serif) + eventuale alias gruppo + descrizione di una riga; a destra (`.co__meta`) il badge priorità (`.prio`) e la pill stato CRM.
 - Striscia di fatti chiave (`.stats`, griglia a 6): Sede · Dimensione · Ricavi · Utile/Risultato · Salute · AWS. Leggibili a colpo d'occhio.
 - Callout `.why` ("Perché ora") subito sotto la striscia: il trigger di timing in una riga.
 - Corpo a due colonne: a sinistra (`.main`) i blocchi descrittivi come righe `label / valore` (`.row`), l'organigramma, e il campo NOTE specifico dell'azienda; a destra la rail evidenziata (`.rail`) "Per Corley" con ICP fit / Pain / Leve / Contro-leva / Mossa (con scadenza) e il box `.draft` con la bozza di apertura. La rail è la parte che serve al sales: tenerla in evidenza.
@@ -75,7 +75,7 @@ Il rendering finale è un dossier leggibile e scannabile, non un muro di testo. 
 **Mappatura e colori.**
 - Stato CRM: pill `.pill--calda` (verde) / `.pill--fredda` (grigia).
 - Priorità: badge `.prio--alta` (rosso) / `.prio--media` (ambra) / `.prio--bassa` (grigio).
-- Label affidabilità inline come tag `.t`: `.t--d` Dato (verde), `.t--s` Stima (ambra), `.t--i` Ipotesi/gap (rust). Priorità, deal stimato e ICP fit portano sempre `.t--s` (sono giudizi).
+- Label affidabilità inline come tag `.t`: `.t--d` Dato (verde), `.t--s` Stima (ambra), `.t--i` Ipotesi/gap (rust). Priorità e ICP fit portano sempre `.t--s` (sono giudizi).
 - Ogni riga `CHIAVE: valore` dei layout diventa una `.row` (label monospace a sinistra, valore a destra).
 - Fonti come `<a>` a pillola.
 
@@ -97,9 +97,9 @@ La scheda persona (Standard: contatto prioritario; Deep: tutti i contatti chiave
 
 La sezione finale è SOLO la legenda: spiega come leggere il dossier, in linguaggio per un sales non tecnico. NON contiene osservazioni su singole aziende. Glossa in parole semplici:
 
-- cosa significano le label: `[Dato]` = verificato su fonte affidabile; `[Stima]` = calcolato/valutato da noi con un'assunzione dichiarata (incluse priorità, deal stimato e ICP fit); `[Ipotesi]` = da confermare, non ancora verificato;
+- cosa significano le label: `[Dato]` = verificato su fonte affidabile; `[Stima]` = calcolato/valutato da noi con un'assunzione dichiarata (incluse priorità e ICP fit); `[Ipotesi]` = da confermare, non ancora verificato;
 - cosa significano i badge di stato: `CALDA` = l'azienda è già nota a Corley (contatto o evento passato); `FREDDA` = nessun contatto pregresso nel CRM;
-- cosa significano i badge di priorità: `Alta/Media/Bassa` ordinano la coda di lavoro in base a fit, timing e raggiungibilità;
+- cosa significano i badge di priorità: `Alta/Media/Bassa` ordinano la coda di lavoro in base a fit, timing e raggiungibilità (il valore economico del lead non viene stimato: lo dimensiona il sales in offerta);
 - cosa vuol dire "dato datato/stale": un numero che fa riferimento a un periodo ormai passato (tipicamente un bilancio di oltre 12-18 mesi) e che potrebbe essere superato.
 
 Niente gergo tecnico qui. **Le note specifiche di una singola azienda** (un conflitto consolidato/civilistico riconciliato, una precisazione su un contatto, un'avvertenza su un dato) vanno nel campo NOTE della card di quell'azienda, mai accumulate in fondo.
