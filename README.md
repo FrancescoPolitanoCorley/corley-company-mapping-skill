@@ -10,12 +10,12 @@ Skill per [Claude Code](https://claude.com/claude-code) (e agenti compatibili co
 
 Per ogni azienda, una scheda con:
 
-- **Priorità** (Alta/Media/Bassa), per ordinare la coda di lavoro. Il valore economico del lead non viene stimato: lo dimensiona il sales in offerta.
-- **Perché ora**: il trigger di timing (M&A, round, nuovo CxO, hiring cloud, rinnovo contratto incumbent).
+- **Priorità** (Alta/Media/Bassa), per ordinare la coda di lavoro, con il perché quando diverge dal fit (es. alta per timing, non per dimensione). Il valore economico del lead non viene stimato: lo dimensiona il sales in offerta.
+- **Perché ora** con la riga **Azione** in testa (chi scrive a chi, entro quando): la risposta a "chi contatto per primo?" sta sulla prima schermata.
 - Anagrafica, **finanza datata**, salute, gruppo/round.
 - **Tecnologia & AI**, incumbent attuale, **legame con AWS**.
-- **Organigramma a fasce** Decide / Influenza / Usa, con contatto consigliato (★), nodi "fantasma" per decisori non raggiungibili, e la riga "percorso" (chi contattare per primo, dove arrivare). Email e telefono per i contatti presenti nel CRM; link LinkedIn per ogni persona citata se il profilo esiste.
-- Rail **"Per Corley"**: ICP fit, pain, leve, contro-leva (perché non in casa / non l'incumbent), mossa con scadenza e **bozza di apertura** pronta da incollare.
+- **Organigramma a fasce** Decide / Influenza / Usa con solo le persone rilevanti per la decisione: contatto consigliato (★), nodi "fantasma" per decisori non raggiungibili, riga "percorso" (chi contattare per primo, dove arrivare); contractor e figure di contorno in una riga sotto. Email e telefono per i contatti presenti nel CRM; link LinkedIn solo se verificato.
+- Rail **"Per Corley"**: ICP fit, pain, leve, contro-leva (perché non in casa / non l'incumbent), mossa con scadenza e obiettivo della call, e **bozza di apertura** (oggetto incluso) pronta da incollare.
 - Gap & rischi (con "come verificarlo") e fonti cliccabili.
 
 A livello di lista: tabella riepilogativa ordinata per priorità (coda di lavoro), schede raggruppate per settore, e in chiusura solo la legenda.
@@ -54,7 +54,7 @@ Leggi `SKILL.md` e segui il flusso a 6 fasi, aprendo i file in `references/` qua
 
 > **Prerequisito obbligatorio: accesso al CRM su Google Drive.** La Fase 1 (cross-reference) legge i file lead Corley che vivono su Google Drive. L'accesso può avvenire in due modi, in quest'ordine: **mount locale** (Google Drive Desktop o un export dei file) cercato via shell, oppure **connettore Google Drive (MCP)** quando non c'è nessun mount (es. ambiente cloud). Serve almeno uno dei due: senza, la Fase 1 non parte (niente stato CALDA/FREDDA né contatti dal CRM, dossier basato solo sul web). Se lavori in un ambiente senza filesystem condiviso con Drive, installa e autorizza il connettore **prima** di usare la skill.
 
-- **Accesso al CRM**: mount locale di Google Drive **oppure** connettore Google Drive (MCP). Almeno uno dei due, vedi sopra.
+- **Accesso al CRM**: mount locale di Google Drive **oppure** connettore Google Drive (MCP). Almeno uno dei due, vedi sopra. Senza nessuno dei due la skill prosegue con le sole fonti web e marca lo stato CRM "NON VERIFICATO" (non "fredda": l'assenza non è stata verificata).
 - **WebSearch / WebFetch** per la ricerca.
 - Per il PDF: un **browser Chromium-based** (Chrome, Chromium, Edge, Brave, Vivaldi, Opera) e accesso alla shell. La skill usa il **browser predefinito di sistema** se è Chromium, altrimenti ripiega su un Chromium installato; rileva tutto da sola su macOS/Linux/Windows, senza percorsi da configurare. Se il predefinito è Safari o Firefox (che non stampano via questa pipeline) e non c'è alcun Chromium, consegna comunque l'HTML e segnala che il PDF va generato a parte.
 
@@ -89,8 +89,8 @@ L'utente può sempre forzare il tier.
 0. **Intake & angolo** — lista o singola azienda; angolo default Corley con override; tier; crea/riprende `PROGRESS.md`.
 1. **CRM cross-reference** (sempre, prima del web) — cerca nei file lead Corley (shell sul mount locale di Drive se c'è, altrimenti tool Drive con query mirate), fuzzy match sul nome azienda, classifica calda/fredda, estrae evento, anno, note, livello AWS, status, account manager, email e telefono.
 2. **Ricerca web in wave** (fan-out) — A azienda & finanza (+ trigger di timing, segnali di deal), B tecnologia & AWS (+ incumbent), C persone (organigramma; in Deep layer personale + ganci). I grezzi vanno in `raw/`.
-3. **Sintesi** — connette i segnali, calcola priorità e ICP fit, deriva pain/leve/contro-leva/mossa/bozza, applica le label, riconcilia i conflitti, dichiara i gap.
-4. **Verifica** — un controllo finale rilegge l'output (claim senza fonte, contraddizioni, dati stale, gap non dichiarati) prima della consegna.
+3. **Sintesi** — connette i segnali, calcola priorità e ICP fit, deriva pain/leve/contro-leva/mossa/bozza, applica le label, riconcilia i conflitti, dichiara i gap, prepara la riga del datastore.
+4. **Verifica** — un controllo rilegge i contenuti (claim senza fonte, contraddizioni, dati stale, gap non dichiarati) prima del rendering; a verifica superata le righe vengono scritte nel datastore CSV.
 5. **Output** — HTML dossier + PDF (Chrome headless).
 
 ### Onestà delle fonti (regola non negoziabile)
@@ -104,7 +104,7 @@ Ogni affermazione porta una label: `[Dato]` (verificato), `[Stima]` (calcolato c
 La skill non butta via quello che ricava. Ogni azienda sintetizzata viene salvata in un unico file CSV locale, `company-mapping-db.csv`, nella directory di lavoro. È la **memoria** della skill: l'HTML e il PDF sono viste su quei dati.
 
 - **Una riga per azienda** (per run): campi piatti (anagrafica, finanza, priorità, perché ora, pain/leve/mossa, bozza apertura, note, gap) più due colonne JSON, `contatti_json` (l'organigramma: persone, fascia decide/influenza/usa, email, telefono, LinkedIn) e `fonti_json`. I testi conservano le label `[Dato]`/`[Stima]`/`[Ipotesi]`, così le card si ricostruiscono identiche.
-- **Crea o append**: se il file non c'è viene creato con l'intestazione, altrimenti si appende. È un registro storico: le righe vecchie non si toccano (audit trail). Su una stessa azienda mappata più volte, in rigenerazione vince la riga più recente.
+- **Crea o append, dopo la verifica**: se il file non c'è viene creato con l'intestazione, altrimenti si appende; la scrittura avviene solo a verifica superata, così il registro non conserva righe sbagliate. È un registro storico: le righe vecchie non si toccano (audit trail). Su una stessa azienda mappata più volte, in rigenerazione vince la riga più recente (a parità di data, l'ultima appesa).
 - **Locale, non versionato**: è in `.gitignore` perché contiene dati su persone e aziende. Resta sulla macchina, non finisce su git.
 - **Rigenerare senza ricerca**: per ricreare, ri-stilizzare o ri-esportare dossier di aziende già mappate, la skill legge il CSV e renderizza HTML/PDF **senza rifare la ricerca**. Legge pochi KB per azienda invece di rilanciare wave da centinaia di migliaia di token: è la via economica per iterare sulla resa o ricomporre i report. Dettaglio in `references/data-store.md`.
 

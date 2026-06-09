@@ -66,4 +66,4 @@ Questo legge pochi KB per azienda invece di rilanciare wave di ricerca da centin
 
 ## Quando scrivere
 
-La Fase 3 (sintesi), dopo aver prodotto i dati di un'azienda, **appende la sua riga** al CSV prima o insieme al rendering. Ogni azienda mappata finisce sempre nel datastore, anche quando l'output richiesto è un singolo HTML.
+La Fase 3 (sintesi) **prepara** la riga; l'**append avviene dopo la Fase 4**, a verifica superata e con le eventuali correzioni applicate, prima o insieme al rendering di Fase 5. Così il registro append-only non conserva mai una riga sbagliata come "più recente". Ogni azienda mappata finisce sempre nel datastore, anche quando l'output richiesto è un singolo HTML.

@@ -11,18 +11,20 @@ La sintesi è ragionamento, non formattazione. Se il modello supporta l'extended
 5. Deriva la parte azionabile (è il valore del dossier, non un riempitivo):
    - **Perché ora**: il trigger di timing (M&A, round, nuovo CxO, hiring cloud, rinnovo contratto incumbent). Se non c'è, dichiararlo.
    - **ICP fit** (alto/medio/basso, con il perché), `[Stima]`. Niente bande economiche o "deal stimato": tariffe e valore del deal non sono deducibili dalla ricerca, il dimensionamento economico spetta al sales in fase di offerta.
-   - **Priorità** (Alta/Media/Bassa, `[Stima]`): sintesi di ICP fit, intent/timing, raggiungibilità del contatto e dimensione potenziale dell'azienda. NON far sembrare debole un lead solo perché ha gap sui ricavi: un lead con need verbalizzato e decisore raggiungibile può essere Alta anche senza fatturato pubblico.
+   - **Priorità** (Alta/Media/Bassa, `[Stima]`): sintesi di ICP fit, intent/timing, raggiungibilità del contatto e dimensione potenziale dell'azienda. NON far sembrare debole un lead solo perché ha gap sui ricavi: un lead con need verbalizzato e decisore raggiungibile può essere Alta anche senza fatturato pubblico. Se priorità e ICP fit divergono (es. Alta con fit Medio), esplicita il perché accanto alla priorità: "alta per probabilità e timing, non per dimensione", così il sales tara tempo e proposta.
    - **Pain** (espliciti e ipotizzati), **leve** per Corley, **contro-leva** (risposta al "perché non in casa / perché non l'incumbent").
-   - **Mossa**: chi contattare per primo, su quale canale, ed entro quando.
-   - **Bozza apertura**: 3-4 righe pronte da incollare, personalizzate sul contatto ★ (aggancio a gancio o trigger, una frase sul valore, una call to action leggera), marcate "da rivedere".
+   - **Mossa**: chi contattare per primo, su quale canale, entro quando, e **l'obiettivo di chiusura della call** (con cosa si esce: es. un assessment proposto e una data). Una call senza exit definito produce una chiacchierata.
+   - **Bozza apertura**: riga di **Oggetto** + 3-4 righe pronte da incollare, personalizzate sul contatto ★ (aggancio a gancio o trigger, una frase sul valore, una call to action leggera), marcate "da rivedere". Niente claim non verificabili ("è il lavoro che facciamo più spesso"): meglio dire cosa il destinatario ottiene dalla call.
 6. Aggrega i gap nel campo GAP & RISCHI della card, con "come verificarlo".
 7. Scrivi la scheda secondo `scheda-template.md`.
-8. **Appendi la riga al datastore** `company-mapping-db.csv` come da `references/data-store.md` (crea il file con intestazione se non esiste). Ogni azienda mappata finisce sempre nel CSV: è la memoria che consente di rigenerare HTML/PDF senza rifare la ricerca.
+8. **Prepara la riga del datastore** `company-mapping-db.csv` come da `references/data-store.md`, ma NON appenderla ancora: l'append avviene a verifica superata (Fase 4), così il registro append-only non conserva righe sbagliate. Ogni azienda mappata finisce sempre nel CSV: è la memoria che consente di rigenerare HTML/PDF senza rifare la ricerca.
+
+Un caveat si spiega per esteso una sola volta, nella sezione pertinente (es. un utile da verificare: in FINANZA); altrove solo un rimando o l'azione di verifica. Quattro mezzi allarmi pesano meno di un avvertimento detto bene.
 
 ## Aggregati su lista
 
 Header con i conteggi (N aziende, N settori, N contatti). La tabella riepilogativa è la coda di lavoro, **ordinata per priorità decrescente**. Schede di dettaglio raggruppate per settore. In chiusura solo la legenda, niente note per-azienda.
 
-## Rendering finale
+## Confine della fase
 
-Un unico file HTML self-contained (CSS inline) scritto nella directory di lavoro, più il PDF generato da esso. Segui il contratto di stile HTML in `scheda-template.md` e parti dal template `references/report-template.html`. Le label `[Dato]`/`[Stima]`/`[Ipotesi]`, lo stato CRM (`CALDA`/`FREDDA`) e la priorità sono evidenziati con badge colorati; le fonti sono link cliccabili. La sezione di chiusura contiene SOLO la legenda in linguaggio piano: le note di una singola azienda stanno nella sua card.
+L'output della Fase 3 sono le righe preparate per il datastore e i contenuti delle schede: è ciò che la Fase 4 verifica. Il rendering HTML/PDF avviene solo in Fase 5, dopo la verifica, secondo `scheda-template.md`: non renderizzare prima, o l'utente vede un output non verificato.

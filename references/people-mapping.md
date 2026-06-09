@@ -15,7 +15,7 @@ LinkedIn come fonte primaria (ruolo reale e stile della persona, "che tipo è") 
 
 L'organigramma non è un elenco piatto di nomi, è una mappa che dice al sales chi contattare per primo e dove vuole arrivare. Si rende come tre fasce (vedi componente `.org` in `scheda-template.md`):
 
-- **Decide / Influenza / Usa**: ogni persona va collocata nella fascia giusta.
+- **Decide / Influenza / Usa**: ogni persona va collocata nella fascia giusta. Nell'organigramma vanno solo le persone rilevanti per la decisione d'acquisto (decisori, influencer reali, utenti interni). Le figure di contorno (contractor, maintainer esterni, consulenti) non occupano nodi: si citano in una riga di contorno sotto l'organigramma, come segnale (es. "mobile esternalizzato: capacità interna minima").
 - **Contatto consigliato (★)**: marca la persona da cui partire per il primo approccio. Di norma è chi è già nel CRM o il decisore raggiungibile.
 - **Nodi fantasma (tratteggiati)**: chi è rilevante ma ignoto o non raggiungibile (es. decisore di budget da identificare, CTO non presente nel CRM). Vanno mostrati come obiettivo, non nascosti. In Deep, ogni nodo fantasma ereditato da una run di tier inferiore va ri-tentato alla fonte: se il ruolo si conferma, promuovilo a nodo pieno nella fascia corretta; il fantasma resta solo per chi è ancora ignoto o non raggiungibile dopo i round Deep.
 - **Percorso**: una riga che esplicita il ponte dal contatto consigliato al target (es. "engineer Senior ★ → CTO"). Se il decisore è già raggiungibile, dichiarare "contatto diretto, nessun ponte".

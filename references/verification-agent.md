@@ -1,6 +1,6 @@
 # Verification agent (Fase 4, sub-agent self-check)
 
-Lancia un sub-agent (tool Task) che rilegge le schede prodotte prima che l'utente le veda. Se non puoi lanciare un sub-agent, esegui questa checklist nello stesso contesto prima di produrre l'output. Produce `raw/verification-report.md` (o `raw-deep/verification-report.md` se i grezzi della run stanno in `raw-deep/`, vedi `research-waves.md`).
+Lancia un sub-agent (tool Task) che rilegge i contenuti sintetizzati (le righe CSV preparate e i testi delle schede) prima del rendering. Se non puoi lanciare un sub-agent, esegui questa checklist nello stesso contesto. Il report `raw/verification-report.md` (o `raw-deep/verification-report.md` se i grezzi della run stanno in `raw-deep/`, vedi `research-waves.md`) va scritto in ogni caso, anche nel fallback senza sub-agent: è l'evidenza che la Fase 4 è avvenuta.
 
 ## Check universali
 
@@ -21,4 +21,5 @@ Lancia un sub-agent (tool Task) che rilegge le schede prodotte prima che l'utent
 ## Esito
 
 - Problemi critici (almeno uno): fermati, presentali all'utente, chiedi se correggere o procedere.
-- Solo warning: riportali in una riga di sintesi e procedi.
+- Solo warning: correggili (o riportali in una riga di sintesi) e procedi.
+- **A verifica superata** (con le eventuali correzioni applicate): appendi le righe preparate al datastore `company-mapping-db.csv` (vedi `data-store.md`) e passa alla Fase 5.

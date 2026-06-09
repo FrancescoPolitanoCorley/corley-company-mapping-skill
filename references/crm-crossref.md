@@ -43,6 +43,10 @@ Quando i file non sono sul filesystem (es. ambiente cloud senza mount) o manca l
 - **search_files snello**: `excludeContentSnippets: true` e `pageSize` ridotto, per non gonfiare la risposta.
 - **Ricorsione e paginazione**: elenca le sottocartelle con `mimeType = 'application/vnd.google-apps.folder' and parentId = '{id}'` e ricorri; pagina passando `next_page_token` finché è vuoto.
 
+### 3. Senza accesso al CRM (né mount né connettore Drive)
+
+Avvisa subito l'utente e non bloccarti: prosegui con le sole fonti web. In ogni scheda marca lo stato CRM come `NON VERIFICATO`, mai `FREDDA`: FREDDA è un'assenza verificata nel CRM, qui non hai verificato niente. Dichiara il limite nelle note metodologiche e suggerisci di rilanciare il cross-reference quando l'accesso torna disponibile.
+
 ## Cosa estrarre per fonte
 
 | Tipo di fonte (nome osservato) | Campi |

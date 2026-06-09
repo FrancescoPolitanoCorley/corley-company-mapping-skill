@@ -12,7 +12,7 @@
 - [ ] Org chart renders as tiered Decide/Influenza/Usa with a starred recommended contact, ghost nodes, and a path line.
 - [ ] Output files follow the naming convention (single company: `{id}.html`; list: `company-mapping-{YYYY-MM-DD}.html`; PDF same basename), unless the user overrides it.
 
-## Behavioral (verified on the sample run, Task 11)
+## Behavioral (verified on a sample run: 1 company Standard + 1 company Deep, any company)
 - [ ] Phase 1 CRM cross-reference runs BEFORE any web search.
 - [ ] Each company is classified warm/cold with CRM evidence (event + year + notes) when warm.
 - [ ] Every number carries [Dato]/[Stima]/[Ipotesi] and a date.
@@ -20,9 +20,9 @@
 - [ ] Data gaps are declared explicitly with "how to verify"; no fabricated values.
 - [ ] Source conflicts are reconciled out loud.
 - [ ] People are classified decisore/influencer/utente.
-- [ ] Deep tier produces 2-3 authentic ganci per priority contact, passing the creepy test.
+- [ ] Deep tier produces 2-3 ganci per priority contact, each citing a public source and a stated usage (apertura / qualifica / call); rejected hooks listed with reasons. The dossier text never names internal jargon (tier, wave, creepy test).
 - [ ] Each scheda ends with a clickable sources list.
-- [ ] Verification pass runs before output and reports critical issues if any.
-- [ ] Each synthesized company is appended to the local `company-mapping-db.csv` (created with header if missing), with `contatti_json`/`fonti_json` and inline labels.
+- [ ] A verification report file is written before rendering (even in the no-sub-agent fallback); critical issues stop the run.
+- [ ] Each synthesized company is appended to the local `company-mapping-db.csv` (created with header if missing) only after verification passes, with `contatti_json`/`fonti_json` and inline labels.
 - [ ] HTML/PDF can be regenerated from `company-mapping-db.csv` (latest row per id, last-appended wins on same date) without re-running phases 1-4.
 - [ ] A Deep run on a company already covered at a lower tier writes raw files to `raw-deep/{company}/` (previous raw preserved), re-verifies contact fields at the CRM source, and re-attempts ghost nodes (promoting confirmed ones to full nodes).

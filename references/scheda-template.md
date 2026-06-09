@@ -1,12 +1,13 @@
 # Template schede
 
-Il target di rendering è un singolo file HTML self-contained (CSS inline, nessun asset esterno): un `<h1>` con i conteggi, una `<table>` riepilogativa ordinata per priorità, poi una `<section>` per settore contenente le card azienda, e in chiusura una sezione di sola legenda. Le schede persona sono blocchi annidati dentro la card della loro azienda. Tier e tono seguono lo stile Corley (sobrio, da collega tecnico). I layout sottostanti definiscono i campi che ogni card deve contenere; i segnaposto in `{}` sono campi del template.
+Il target di rendering è un singolo file HTML self-contained (CSS inline, nessun asset esterno): un `<h1>` con i conteggi, una `<table>` riepilogativa ordinata per priorità (omessa per dossier su singola azienda, vedi sotto), poi una `<section>` per settore contenente le card azienda, e in chiusura una sezione di sola legenda. Le schede persona sono blocchi annidati dentro la card della loro azienda. Tono da stile Corley (sobrio, da collega tecnico). **Niente gergo di pipeline nel dossier**: il lettore è un sales, non chi ha eseguito la skill. Mai "tier", "wave", "Deep conferma", "creepy test": scrivi "dossier approfondito", "verifica diretta sulle fonti", e sui ganci "(ok in apertura)" / "(per qualificare)" / "(solo in call)" / scartato con motivo. I layout sottostanti definiscono i campi che ogni card deve contenere; i segnaposto in `{}` sono campi del template.
 
 ## Scheda azienda
 
 ```
 AZIENDA: {nome}      Settore: {settore}      Angolo: {angolo}      Aggiornato: {data}
-PRIORITA: {Alta/Media/Bassa} [Stima]
+PRIORITA: {Alta/Media/Bassa} [Stima] {se diverge dall'ICP fit: il perché, es. "alta per probabilità e timing, non per dimensione"}
+AZIONE: {sintesi della MOSSA in una riga: chi scrive a chi, canale, entro quando} — è la prima cosa che il sales deve vedere
 Stato CRM: {CALDA/FREDDA} {se calda: persone + evento + anno + note + livello AWS + status + account manager}
 
 DESCRIZIONE: {una riga: cosa fa, quotata o privata, gruppo, marchi}
@@ -21,9 +22,9 @@ ICP FIT: {alto/medio/basso + perché: settore, dimensione, maturità cloud}
 PAIN POINT: espliciti + [Ipotesi]
 LEVE PER CORLEY: dove tocchiamo un loro problema reale
 CONTRO-LEVA: {risposta al "perché non in casa / perché non l'incumbent"}
-MOSSA: chi contattare per primo, canale, ed entro quando (next action con scadenza)
-BOZZA APERTURA: {3-4 righe pronte da incollare, personalizzate sul contatto ★; marcata "da rivedere"}
-NOTE: {note specifiche di QUESTA azienda: conflitti riconciliati (es. consolidato vs civilistico), precisazioni su un dato o un contatto}
+MOSSA: chi contattare per primo, canale, entro quando (next action con scadenza) + obiettivo di chiusura della call (con cosa si esce)
+BOZZA APERTURA: {riga Oggetto + 3-4 righe pronte da incollare, personalizzate sul contatto ★; marcata "da rivedere"}
+NOTE: {verifiche e smentite sui dati di QUESTA azienda: conflitti riconciliati (es. consolidato vs civilistico), precisazioni su un dato o un contatto; ogni caveat per esteso una sola volta, altrove solo rimando}
 GAP & RISCHI: cosa manca + come verificarlo
 FONTI: [link cliccabili]
 ```
@@ -34,20 +35,21 @@ PRIORITA e ICP FIT sono giudizi, sempre marcati `[Stima]`: nascono da fit con l'
 
 ```
 NOME, ruolo reale, da quando, decide su: {...}
-PERCORSO: formazione + esperienze
-OPINIONI/TEMI: 2-3 cose che dice o scrive
-PASSIONI: {solo Deep}
-STILE: dati vs storie / builder vs narratore / social vs riservato
-GANCI: {solo Deep} 2-3 appigli autentici (creepy test superato)
+GANCI: {solo Deep} 2-3 appigli autentici, ciascuno con l'uso consigliato: (ok in apertura) / (per qualificare) / (solo in call); gli scartati con il motivo
 CANALE MIGLIORE: {DM, commento, intro, 1:1}
+STILE: dati vs storie / builder vs narratore / social vs riservato {eventuali interessi personali qui, solo se trovati: niente riga dedicata per un gap}
+OPINIONI/TEMI: 2-3 cose che dice o scrive
+PERCORSO: formazione + esperienze
 FONTI: [link]
 ```
+
+L'ordine è operativo-prima: chi prepara la call cerca cosa dire e su che canale; la biografia è approfondimento e sta in fondo.
 
 ## Aggregati (lista)
 
 Header: N aziende · N settori · N contatti · aggiornato {data} · nota fonti.
 
-"N contatti" = numero di contatti distinti, conteggiati come unione di contatti CRM e contatti web deduplicati per persona (la stessa persona presente sia in CRM sia sul web conta una volta sola). Usare questo criterio rende il conteggio coerente tra run diverse.
+"N contatti" = numero di contatti **azionabili**: persone con almeno un recapito reperito (email, telefono o LinkedIn verificato), deduplicate tra CRM e web. Le persone citate senza recapito non si contano: un masthead che promette 5 contatti quando il sales ne può lavorare 1 brucia la fiducia nel resto dei numeri. Con una sola azienda i conteggi diventano descrittivi (es. "1 contatto diretto (CTO) · percorso al CEO mappato").
 Tabella riepilogativa = coda di lavoro, ordinata per priorità decrescente: Priorità | Azienda | Settore | Perché ora | Stato CRM | Primo contatto. L'ordinamento per priorità fa sì che la prima riga sia il lead da lavorare per primo.
 Poi le schede di dettaglio raggruppate per settore.
 Chiusura: **solo la legenda** (come leggere label, badge, priorità/deal, dati stale). Le note specifiche di una singola azienda (conflitti riconciliati, precisazioni su un dato o un contatto) NON vanno in fondo: vanno nel campo NOTE della card di quell'azienda.
@@ -68,14 +70,15 @@ Il rendering finale è un dossier leggibile e scannabile, non un muro di testo. 
 
 **Struttura della card azienda.**
 - Header: nome (serif) + eventuale alias gruppo + descrizione di una riga; a destra (`.co__meta`) il badge priorità (`.prio`) e la pill stato CRM.
-- Striscia di fatti chiave (`.stats`, griglia a 6): Sede · Dimensione · Ricavi · Utile/Risultato · Salute · AWS. Leggibili a colpo d'occhio.
-- Callout `.why` ("Perché ora") subito sotto la striscia: il trigger di timing in una riga. Attenzione: `.why` è un flex container, quindi tutto il contenuto dopo il `<b>` va racchiuso in un unico `<span>` (testo e tag sciolti diventano flex item separati e il testo si spezza in colonne).
-- Corpo a due colonne: a sinistra (`.main`) i blocchi descrittivi come righe `label / valore` (`.row`), l'organigramma, e il campo NOTE specifico dell'azienda; a destra la rail evidenziata (`.rail`) "Per Corley" con ICP fit / Pain / Leve / Contro-leva / Mossa (con scadenza) e il box `.draft` con la bozza di apertura. La rail è la parte che serve al sales: tenerla in evidenza.
+- Striscia di fatti chiave (`.stats`, griglia a 6): Sede · Dimensione · Ricavi · Utile/Risultato · Salute · AWS. Leggibili a colpo d'occhio. Nella striscia vanno solo numeri verificati o stime solide: un numero con caveat forte (es. un utile single-source da verificare) NON va in evidenza, perché è quello che il sales ricorda e cita; al suo posto un dato verificato che vende (es. la crescita %), il dettaglio col caveat sta nella riga Finanza.
+- Callout `.why` ("Perché ora") subito sotto la striscia: il trigger di timing in una riga, chiuso dalla riga AZIONE in grassetto ("→ Azione: {chi} scrive a {contatto ★} entro {data}"): la risposta a "chi contatto per primo?" deve stare sulla prima schermata, non in fondo alla rail. Attenzione: `.why` è un flex container, quindi tutto il contenuto dopo il `<b>` va racchiuso in un unico `<span>` (testo e tag sciolti diventano flex item separati e il testo si spezza in colonne).
+- Corpo a due colonne: a sinistra (`.main`) i blocchi descrittivi come righe `label / valore` (`.row`), l'organigramma e le schede persona; a destra la rail evidenziata (`.rail`) "Per Corley" con ICP fit / Pain / Leve / Contro-leva / Mossa (con scadenza e obiettivo di chiusura) e il box `.draft` con la bozza di apertura (riga Oggetto inclusa). La rail è la parte che serve al sales: tenerla in evidenza.
+- Il campo NOTE si rende come callout a tutta larghezza (riusa lo stile `.gap`) etichettato "Verifiche sui dati", subito sopra Gap & rischi: dentro la colonna, dopo le schede persona, sembrerebbe riferito all'ultima persona invece che all'azienda.
 - Callout `.gap` (bordo tratteggiato) per Gap & rischi.
 - Footer `.src` con le fonti come chip-link.
 
 **Mappatura e colori.**
-- Stato CRM: pill `.pill--calda` (verde) / `.pill--fredda` (grigia).
+- Stato CRM: pill `.pill--calda` (verde) / `.pill--fredda` (grigia). Se il CRM non era accessibile (vedi `crm-crossref.md`): pill con testo `NON VERIFICATO` (riusa lo stile della fredda) e spiegazione in legenda.
 - Priorità: badge `.prio--alta` (rosso) / `.prio--media` (ambra) / `.prio--bassa` (grigio).
 - Label affidabilità inline come tag `.t`: `.t--d` Dato (verde), `.t--s` Stima (ambra), `.t--i` Ipotesi/gap (rust). Priorità e ICP fit portano sempre `.t--s` (sono giudizi).
 - Ogni riga `CHIAVE: valore` dei layout diventa una `.row` (label monospace a sinistra, valore a destra).
@@ -90,6 +93,7 @@ I contatti si rendono come organigramma a tre fasce, non come elenco piatto:
 - Dentro il nodo, una riga `.c` con i dati di contatto: email (✉, come `mailto:`) e telefono (☎) per le persone presenti nei fogli CRM; telefono assente si rende "n.d.". Quando esiste un profilo LinkedIn verificato, aggiungi la pillola `.li` (testo "in") che linka al profilo. Mai inventare email, telefono o URL LinkedIn: si riportano solo se reperiti.
 - Riga finale `.org__path`: il percorso consigliato, da chi contattare al target, con la freccia del ponte (es. "engineer Senior ★ → CTO"). Questo rende esplicito al sales chi scrivere per primo e dove vuole arrivare.
 - Sotto l'organigramma, una riga sintetica sul contatto prioritario (note CRM/web, email, link), con le label di affidabilità dove serve.
+- Le figure di contorno (contractor, maintainer esterni, consulenti: vedi `people-mapping.md`) non occupano nodi: si riassumono in una seconda riga stile `.org__path` etichettata "Contorno", come segnale (es. capacità interna minima).
 
 ### Scheda persona (componente `.person`)
 
