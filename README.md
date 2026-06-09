@@ -88,7 +88,7 @@ L'utente può sempre forzare il tier.
 
 0. **Intake & angolo** — prima azione: domanda a risposta multipla Standard/Deep (implicazioni esplicite); poi lista o singola azienda, angolo default Corley con override, crea/riprende `PROGRESS.md`.
 1. **Cross-reference lead Drive** (sempre, prima del web) — cerca nei file lead Corley (shell sul mount locale di Drive se c'è, altrimenti tool Drive con query mirate), fuzzy match sul nome azienda, classifica calda/fredda, estrae lista di provenienza, evento, anno, note, livello AWS, status, account manager, email e telefono. Nel dossier la fonte si cita col nome del file (es. "lead AWS Summit 2026"), mai come "CRM".
-2. **Ricerca web in wave** (fan-out) — A azienda & finanza (+ trigger di timing, segnali di dimensione), B tecnologia & AWS (+ incumbent), C persone (organigramma; in Deep layer personale + ganci). I grezzi vanno in `raw/`.
+2. **Ricerca web in wave** (fan-out parallelo di sub-agent) — A azienda & finanza (+ trigger di timing, segnali di dimensione), B tecnologia & AWS (+ incumbent), C persone (organigramma; in Deep layer personale + ganci). I grezzi vanno in `raw/`. Su liste lunghe si lavora a lotti di 5-8 aziende (Fasi 2-4 per lotto, PROGRESS aggiornato per lotto): una run interrotta riprende dal primo lotto incompleto.
 3. **Sintesi** — connette i segnali, calcola priorità e ICP fit, deriva pain/leve/contro-leva/mossa/bozza, applica le label, riconcilia i conflitti, dichiara i gap, prepara la riga del datastore.
 4. **Verifica** — un controllo rilegge i contenuti (claim senza fonte, contraddizioni, dati stale, gap non dichiarati) prima del rendering; a verifica superata le righe vengono scritte nel datastore CSV.
 5. **Output** — HTML dossier + PDF (Chrome headless).

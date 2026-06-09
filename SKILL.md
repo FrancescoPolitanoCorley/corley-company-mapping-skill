@@ -47,7 +47,9 @@ Aziende: {lista o singolo account}
 Angolo: {default Corley o override}
 Tier: {Standard | Deep}
 Fasi: [ ] 0 intake  [ ] 1 lead Drive  [ ] 2 ricerca  [ ] 3 sintesi  [ ] 4 verifica + append CSV  [ ] 5 output (HTML+PDF)
-Note: {decisioni, gap aperti, aziende ancora da completare}
+Lotto corrente: {n/k, aziende del lotto} (solo liste lunghe)
+Completate: {aziende già verificate e appese al CSV}
+Note: {decisioni, gap aperti}
 ```
 
 ### Fase 1 — Cross-reference lead Drive (sempre, prima del web)
@@ -56,7 +58,7 @@ Prima di qualunque ricerca web, leggi `references/lead-crossref.md` ed esegui la
 
 ### Fase 2 — Ricerca in wave (fan-out parallelo per azienda)
 
-Leggi `references/research-waves.md` e `references/research-principles.md`: lì vivono il dispatch dei sub-agent (tool Task), il fallback senza sub-agent, i path dei grezzi (`raw/{slug}/`, e `raw-deep/{slug}/` per il Deep su azienda già coperta) e il template di prompt per gli agent.
+Leggi `references/research-waves.md` e `references/research-principles.md`: lì vivono il dispatch dei sub-agent (tool Task), la regola dei lotti per le liste lunghe (oltre ~8 aziende: lotti di 5-8, ciclo Fasi 2-4 per lotto, rendering unico alla fine), il fallback senza sub-agent, i path dei grezzi (`raw/{slug}/`, e `raw-deep/{slug}/` per il Deep su azienda già coperta) e il template di prompt per gli agent.
 
 - Wave A: azienda e finanza (business, dimensione, ricavi e utile datati, gruppo, round, salute, trigger di timing, segnali di dimensione).
 - Wave B: tecnologia e AWS (maturità cloud, stack, iniziative AI pubbliche, legame AWS, incumbent).

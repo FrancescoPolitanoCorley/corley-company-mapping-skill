@@ -25,6 +25,7 @@
 - [ ] Deep tier produces 2-3 ganci per priority contact, each citing a public source and a stated usage (apertura / qualifica / call); rejected hooks listed with reasons. The dossier text never names internal jargon (tier, wave, creepy test).
 - [ ] Each scheda ends with a clickable sources list.
 - [ ] A verification report file is written before rendering (even in the no-sub-agent fallback); critical issues stop the run.
+- [ ] On lists larger than ~8 companies, work proceeds in batches of 5-8 (phases 2-4 per batch, verified rows appended per batch, PROGRESS updated per batch); rendering happens once at the end from the CSV.
 - [ ] Each synthesized company is appended to the local `company-mapping-db.csv` (created with header if missing) only after verification passes, with `contatti_json`/`fonti_json` and inline labels.
 - [ ] HTML/PDF can be regenerated from `company-mapping-db.csv` (latest row per id, last-appended wins on same date) without re-running phases 1-4.
 - [ ] A Deep run on a company already covered at a lower tier writes raw files to `raw-deep/{company}/` (previous raw preserved), re-verifies contact fields on the lead sheets, and re-attempts ghost nodes (promoting confirmed ones to full nodes).
