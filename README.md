@@ -48,7 +48,9 @@ Leggi `SKILL.md` e segui il flusso a 6 fasi, aprendo i file in `references/` qua
 
 ### Requisiti dell'ambiente
 
-- **Google Drive MCP** (o accesso equivalente) per il cross-reference CRM in Fase 1.
+> **Prerequisito obbligatorio: connettore Google Drive.** La skill legge il CRM da Google Drive nella Fase 1 (cross-reference). Serve quindi avere installato e autorizzato il **connettore/skill Google Drive** (MCP) nell'ambiente dove gira (Claude Code, Cowork, ecc.). Senza il connettore Drive la Fase 1 non parte: niente stato CALDA/FREDDA né contatti dal CRM, e il dossier si basa solo sul web. Installa e collega il connettore Google Drive **prima** di usare la skill.
+
+- **Connettore Google Drive** (MCP) per il cross-reference CRM in Fase 1. **Obbligatorio** (vedi sopra).
 - **WebSearch / WebFetch** per la ricerca.
 - Per il PDF: un **browser Chromium-based** (Chrome, Chromium, Edge, Brave, Vivaldi, Opera) e accesso alla shell. La skill usa il **browser predefinito di sistema** se è Chromium, altrimenti ripiega su un Chromium installato; rileva tutto da sola su macOS/Linux/Windows, senza percorsi da configurare. Se il predefinito è Safari o Firefox (che non stampano via questa pipeline) e non c'è alcun Chromium, consegna comunque l'HTML e segnala che il PDF va generato a parte.
 
