@@ -18,16 +18,16 @@ Cattura anche i **trigger di timing** ("perché ora"): operazioni M&A, round rec
 
 ## Wave B — Tecnologia & AWS
 
-Obiettivo: maturità cloud, stack tecnologico, iniziative AI pubbliche (anche da piano industriale), legame con AWS (case study, partnership, job posting su competenze cloud), livello di utilizzo AWS. Identifica l'**incumbent** (il fornitore o il cloud concorrente già in casa, es. OCI, Azure, un system integrator): serve alla sintesi per costruire la contro-leva al "perché non l'incumbent". Le claim tecniche vanno verificate su fonte primaria (documentazione, repository, demo).
+Obiettivo: maturità cloud, stack tecnologico, iniziative AI pubbliche (anche da piano industriale), legame con AWS (case study, partnership, job posting su competenze cloud), livello di utilizzo AWS. Identifica l'**incumbent** (il fornitore o il cloud concorrente già in casa, es. OCI, Azure, un system integrator): è parte della fotografia tecnologica e il sales ne ha bisogno per leggere il contesto. Le claim tecniche vanno verificate su fonte primaria (documentazione, repository, demo).
 
 ## Wave C — Persone
 
-Obiettivo: organigramma (vedi `people-mapping.md`), classificazione decisore/influencer/utente, contatti prioritari. Parte dall'output lead della Fase 1: i contatti già noti si arricchiscono. In Deep aggiunge il layer personale e i ganci.
+Obiettivo: organigramma (vedi `people-mapping.md`), classificazione decisore/influencer/utente, contatti prioritari. Parte dall'output lead della Fase 1: i contatti già noti si arricchiscono. In Deep aggiunge il layer personale (percorso, temi, stile, canale).
 
 ## Scaling Standard vs Deep
 
-- Standard: Wave A + Wave B + organigramma essenziale (Wave C), contatto prioritario senza ganci. 2-3 round di ricerca per wave.
-- Deep: aggiunge il layer personale completo e i ganci su tutti i contatti chiave, lo studio del prodotto alla fonte e una triangolazione più aggressiva. 4-6 round per wave.
+- Standard: Wave A + Wave B + organigramma essenziale (Wave C) con contatto prioritario. 2-3 round di ricerca per wave.
+- Deep: aggiunge il layer personale completo dei contatti chiave, lo studio del prodotto alla fonte e una triangolazione più aggressiva. 4-6 round per wave.
 - L'override dell'utente vince sempre.
 
 ## Template di prompt agente (per wave, per azienda)

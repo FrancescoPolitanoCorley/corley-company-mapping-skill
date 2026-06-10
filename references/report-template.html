@@ -50,6 +50,9 @@
   .co__alias{font-family:var(--sans); font-weight:400; font-size:.8rem; color:var(--muted); border:1px solid var(--line); border-radius:20px; padding:1px 9px; vertical-align:middle; margin-left:8px;}
   .co__desc{margin:7px 0 0; color:#3a4654; font-size:.92rem; max-width:70ch;}
   .co__meta{display:flex; flex-direction:column; gap:6px; align-items:flex-end; white-space:nowrap;}
+  .quick{margin:8px 0 0; font-size:.76rem;}
+  .quick a{color:var(--navy-2); text-decoration:none; background:#f1f4f7; border:1px solid #e1e8ee; border-radius:16px; padding:2px 10px; margin:0 6px 4px 0; display:inline-block;}
+  .quick a:hover{background:#e7eef4;}
   .stats{display:grid; grid-template-columns:repeat(6,1fr); gap:0; border-bottom:1px solid var(--line-2); background:#fbfaf7;}
   .stats > div{padding:12px 14px; border-right:1px solid var(--line-2);}
   .stats > div:last-child{border-right:0;}
@@ -67,9 +70,6 @@
   .rail h4{font-family:var(--mono); font-size:.66rem; text-transform:uppercase; letter-spacing:1.2px; color:var(--accent); margin:0 0 12px; padding-bottom:7px; border-bottom:1px solid #ecd9cd;}
   .rail .row{grid-template-columns:72px 1fr;}
   .rail .row .lab{color:var(--accent);}
-  .draft{margin:12px 0 0; background:#fff; border:1px solid #e6d3c4; border-radius:8px; padding:11px 13px;}
-  .draft h5{font-family:var(--mono); font-size:.6rem; text-transform:uppercase; letter-spacing:.8px; color:var(--accent); margin:0 0 7px; display:flex; justify-content:space-between;}
-  .draft p{margin:0; font-size:.85rem; color:#33414e; font-style:italic;}
   .org{border:1px solid var(--line-2); border-radius:8px; overflow:hidden; margin:0 0 14px;}
   .orglab{font-family:var(--mono); font-size:.62rem; text-transform:uppercase; letter-spacing:.7px; color:var(--navy-2); margin:6px 0 8px;}
   .org__grid{display:grid; grid-template-columns:repeat(3,1fr);}
@@ -127,7 +127,7 @@
     .mast{position:static; box-shadow:none;} .mast nav{display:none;}
     .co,.notes,table{box-shadow:none;}
     .co{break-inside:avoid;} .sector-h{break-after:avoid;}
-    .org,.gap,.person,.draft,.why{break-inside:avoid;}
+    .org,.gap,.person,.why{break-inside:avoid;}
     .stats{grid-template-columns:repeat(3,1fr);}
     .stats > div{border-right:1px solid var(--line-2);}
     .stats > div:nth-child(3n){border-right:0;}
@@ -181,6 +181,7 @@
       <div>
         <h3>Esempio S.p.A. <span class="co__alias">alias gruppo</span></h3>
         <p class="co__desc">Una riga: cosa fa, quotata o privata, gruppo, marchi.</p>
+        <p class="quick"><a href="https://...">sito</a><a href="https://...">LinkedIn azienda</a><a href="https://...">GitHub/docs</a><a href="https://...">bilanci/visura</a></p>
       </div>
       <div class="co__meta">
         <span class="prio prio--alta">Priorità alta</span>
@@ -197,7 +198,7 @@
       <div><dt>AWS</dt><dd>In valutazione</dd></div>
     </dl>
 
-    <div class="why"><b>Perché ora</b><span>Il trigger di timing: evento M&amp;A, round, nuovo CTO, hiring cloud, scadenza contratto incumbent. Se non c'è un trigger chiaro, dirlo. <span class="t t--i">Ipotesi</span> <strong>→ Azione proposta: scrivere a {contatto ★} ({canale}) · bozza email in scheda.</strong></span></div>
+    <div class="why"><b>Perché ora</b><span>Il trigger di timing: evento M&amp;A, round, nuovo CTO, hiring cloud, scadenza contratto incumbent. Se non c'è un trigger chiaro, dirlo. <span class="t t--i">Ipotesi</span></span></div>
 
     <div class="co__body">
       <div class="main">
@@ -228,12 +229,6 @@
         <div class="row"><span class="lab">ICP fit</span><span class="val">Quanto è in target (settore, dimensione, maturità cloud): alto/medio/basso, con il perché.</span></div>
         <div class="row"><span class="lab">Pain</span><span class="val">Pain espliciti + ipotizzati, con label.</span></div>
         <div class="row"><span class="lab">Leve</span><span class="val">Dove l'offerta Corley tocca un problema reale.</span></div>
-        <div class="row"><span class="lab">Contro-leva</span><span class="val">Risposta al "perché non lo facciamo in casa / perché non l'incumbent": l'argomento che disinnesca l'obiezione probabile.</span></div>
-        <div class="row"><span class="lab">Mossa</span><span class="val">Chi contattare per primo, canale, e l'obiettivo di chiusura della call. Niente scadenze: il dossier non deve invecchiare.</span></div>
-        <div class="draft">
-          <h5>Bozza apertura <span style="font-weight:400; text-transform:none; letter-spacing:0;">da rivedere</span></h5>
-          <p>Oggetto: {riga di oggetto concreta}. Poi 3-4 righe pronte da incollare: aggancio specifico (gancio o trigger), una frase su cosa il destinatario ottiene dalla call, una call to action leggera. Personalizzata sulla persona ★, niente claim non verificabili.</p>
-        </div>
       </aside>
     </div>
 

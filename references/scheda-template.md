@@ -1,13 +1,12 @@
 # Template schede
 
-Il target di rendering è un singolo file HTML self-contained (CSS inline, nessun asset esterno): un `<h1>` con i conteggi, una `<table>` riepilogativa ordinata per priorità (omessa per dossier su singola azienda, vedi sotto), poi una `<section>` per settore contenente le card azienda, e in chiusura una sezione di sola legenda. Le schede persona sono blocchi annidati dentro la card della loro azienda. Tono da stile Corley (sobrio, da collega tecnico). **Niente gergo di pipeline nel dossier**: il lettore è un sales, non chi ha eseguito la skill. Mai "tier", "wave", "Deep conferma", "creepy test": scrivi "dossier approfondito", "verifica diretta sulle fonti", e sui ganci "(ok in apertura)" / "(per qualificare)" / "(solo in call)" / scartato con motivo. I layout sottostanti definiscono i campi che ogni card deve contenere; i segnaposto in `{}` sono campi del template.
+Il target di rendering è un singolo file HTML self-contained (CSS inline, nessun asset esterno): un `<h1>` con i conteggi, una `<table>` riepilogativa ordinata per priorità (omessa per dossier su singola azienda, vedi sotto), poi una `<section>` per settore contenente le card azienda, e in chiusura una sezione di sola legenda. Le schede persona sono blocchi annidati dentro la card della loro azienda. Tono da stile Corley (sobrio, da collega tecnico). **Niente gergo di pipeline nel dossier**: il lettore è un sales, non chi ha eseguito la skill. Mai "tier", "wave", "Deep conferma", "creepy test": scrivi "dossier approfondito", "verifica diretta sulle fonti". I layout sottostanti definiscono i campi che ogni card deve contenere; i segnaposto in `{}` sono campi del template.
 
 ## Scheda azienda
 
 ```
 AZIENDA: {nome}      Settore: {settore}      Angolo: {angolo}      Aggiornato: {data}
 PRIORITA: {Alta/Media/Bassa} [Stima] {se diverge dall'ICP fit: il perché, es. "alta per probabilità e timing, non per dimensione"}
-AZIONE: {sintesi della MOSSA in una riga: "Azione proposta: scrivere a {contatto ★} ({canale})"} — proposta senza mittente interno e SENZA scadenze (il dossier non deve invecchiare), è la prima cosa che il sales deve vedere
 Stato lead: {CALDA/FREDDA/NON VERIFICATO} {se calda: lista di provenienza col nome breve del file (es. "lead AWS Summit 2026") + persone + evento + anno + note + livello AWS + status + account manager}
 
 DESCRIZIONE: {una riga: cosa fa, quotata o privata, gruppo, marchi}
@@ -21,9 +20,6 @@ CONTATTI: organigramma a fasce decide/influenza/usa + contatto consigliato (vedi
 ICP FIT: {alto/medio/basso + perché: settore, dimensione, maturità cloud}
 PAIN POINT: espliciti + [Ipotesi]
 LEVE PER CORLEY: dove tocchiamo un loro problema reale
-CONTRO-LEVA: {risposta al "perché non in casa / perché non l'incumbent"}
-MOSSA: chi contattare per primo, canale + obiettivo di chiusura della call (con cosa si esce). Niente scadenze né riferimenti temporali relativi
-BOZZA APERTURA: {riga Oggetto + 3-4 righe pronte da incollare, personalizzate sul contatto ★; marcata "da rivedere"}
 NOTE: {verifiche e smentite sui dati di QUESTA azienda: conflitti riconciliati (es. consolidato vs civilistico), precisazioni su un dato o un contatto; ogni caveat per esteso una sola volta, altrove solo rimando}
 GAP & RISCHI: cosa manca + come verificarlo
 FONTI: [link cliccabili]
@@ -35,7 +31,6 @@ PRIORITA e ICP FIT sono giudizi, sempre marcati `[Stima]`: nascono da fit con l'
 
 ```
 NOME, ruolo reale, da quando, decide su: {...}
-GANCI: {solo Deep} 2-3 appigli autentici, ciascuno con l'uso consigliato: (ok in apertura) / (per qualificare) / (solo in call); gli scartati con il motivo
 CANALE MIGLIORE: {DM, commento, intro, 1:1}
 STILE: dati vs storie / builder vs narratore / social vs riservato {eventuali interessi personali qui, solo se trovati: niente riga dedicata per un gap}
 OPINIONI/TEMI: 2-3 cose che dice o scrive
@@ -52,7 +47,7 @@ Header: N aziende · N settori · N contatti · aggiornato {data} · nota fonti.
 "N contatti" = numero di contatti **azionabili**: persone con almeno un recapito reperito (email, telefono o LinkedIn verificato), deduplicate tra fogli lead e web. Le persone citate senza recapito non si contano: un masthead che promette 5 contatti quando il sales ne può lavorare 1 brucia la fiducia nel resto dei numeri. Con una sola azienda i conteggi diventano descrittivi (es. "1 contatto diretto (CTO) · percorso al CEO mappato").
 Tabella riepilogativa = coda di lavoro, ordinata per priorità decrescente: Priorità | Azienda | Settore | Perché ora | Stato lead | Primo contatto. L'ordinamento per priorità fa sì che la prima riga sia il lead da lavorare per primo.
 Poi le schede di dettaglio raggruppate per settore.
-Chiusura: **solo la legenda** (come leggere label, badge, priorità/deal, dati stale). Le note specifiche di una singola azienda (conflitti riconciliati, precisazioni su un dato o un contatto) NON vanno in fondo: vanno nel campo NOTE della card di quell'azienda.
+Chiusura: **solo la legenda** (come leggere label, badge, priorità, dati stale). Le note specifiche di una singola azienda (conflitti riconciliati, precisazioni su un dato o un contatto) NON vanno in fondo: vanno nel campo NOTE della card di quell'azienda.
 
 ## Contratto di stile HTML
 
@@ -70,9 +65,10 @@ Il rendering finale è un dossier leggibile e scannabile, non un muro di testo. 
 
 **Struttura della card azienda.**
 - Header: nome (serif) + eventuale alias gruppo + descrizione di una riga; a destra (`.co__meta`) il badge priorità (`.prio`) e la pill stato lead (la lista di provenienza si cita per nome dentro la card).
+- Riga di **link rapidi** (`.quick`) sotto la descrizione: sito, LinkedIn aziendale, GitHub/docs se rilevanti, portale bilanci/visura. Sono le risorse che il sales apre per primo: a un click, non sepolte nel footer. In più, le fonti chiave si linkano **inline vicino al dato che sostengono** (es. il portale bilanci accanto al ricavo, il podcast accanto alla citazione): la lista fonti in fondo resta l'elenco completo, non l'unico accesso.
 - Striscia di fatti chiave (`.stats`, griglia a 6): Sede · Dimensione · Ricavi · Utile/Risultato · Salute · AWS. Leggibili a colpo d'occhio. Nella striscia vanno solo numeri verificati o stime solide: un numero con caveat forte (es. un utile single-source da verificare) NON va in evidenza, perché è quello che il sales ricorda e cita; al suo posto un dato verificato che vende (es. la crescita %), il dettaglio col caveat sta nella riga Finanza.
-- Callout `.why` ("Perché ora") subito sotto la striscia: il trigger di timing in una riga, chiuso dalla riga AZIONE in grassetto ("→ Azione proposta: scrivere a {contatto ★} ({canale})"): la risposta a "chi contatto per primo?" deve stare sulla prima schermata, non in fondo alla rail. Attenzione: `.why` è un flex container, quindi tutto il contenuto dopo il `<b>` va racchiuso in un unico `<span>` (testo e tag sciolti diventano flex item separati e il testo si spezza in colonne).
-- Corpo a due colonne: a sinistra (`.main`) i blocchi descrittivi come righe `label / valore` (`.row`), l'organigramma e le schede persona; a destra la rail evidenziata (`.rail`) "Per Corley" con ICP fit / Pain / Leve / Contro-leva / Mossa (contatto, canale, obiettivo di chiusura; mai scadenze) e il box `.draft` con la bozza di apertura (riga Oggetto inclusa). La rail è la parte che serve al sales: tenerla in evidenza.
+- Callout `.why` ("Perché ora") subito sotto la striscia: il trigger di timing in una riga. Alla domanda "chi contatto per primo?" risponde l'organigramma (nodo ★ e percorso). Attenzione: `.why` è un flex container, quindi tutto il contenuto dopo il `<b>` va racchiuso in un unico `<span>` (testo e tag sciolti diventano flex item separati e il testo si spezza in colonne).
+- Corpo a due colonne: a sinistra (`.main`) i blocchi descrittivi come righe `label / valore` (`.row`), l'organigramma e le schede persona; a destra la rail evidenziata (`.rail`) "Per Corley" con ICP fit / Pain / Leve: la lettura dalle nostre angolazioni (AWS, innovazione tecnologica). Niente materiale di ingaggio: il dossier è la fotografia del cliente, le mosse le decide il sales.
 - Il campo NOTE si rende come callout a tutta larghezza (riusa lo stile `.gap`) etichettato "Verifiche sui dati", subito sopra Gap & rischi: dentro la colonna, dopo le schede persona, sembrerebbe riferito all'ultima persona invece che all'azienda.
 - Callout `.gap` (bordo tratteggiato) per Gap & rischi.
 - Footer `.src` con le fonti come chip-link.
@@ -97,7 +93,7 @@ I contatti si rendono come organigramma a tre fasce, non come elenco piatto:
 
 ### Scheda persona (componente `.person`)
 
-La scheda persona (Standard: contatto prioritario; Deep: tutti i contatti chiave) si rende dentro un blocco `.person` annidato nella card dell'azienda, usando righe `.row` (label monospace / valore) per i campi PERCORSO / OPINIONI-TEMI / PASSIONI / STILE / GANCI / CANALE del layout testuale; le FONTI della persona chiudono il blocco come link a pillola (stesso stile del footer `.src`). I ganci portano inline il tag di affidabilità e l'uso consigliato — "(ok in apertura)" / "(per qualificare)" / "(solo in call)" — con gli scartati e il loro motivo (mai nominare il test nel testo, vedi regola sul gergo). Non introdurre classi nuove: nel template canonico `.person` ha solo la regola di stampa `break-inside:avoid` e il blocco si compone con le `.row` esistenti.
+La scheda persona (Standard: contatto prioritario; Deep: tutti i contatti chiave) si rende dentro un blocco `.person` annidato nella card dell'azienda, usando righe `.row` (label monospace / valore) per i campi CANALE / STILE / TEMI / PERCORSO del layout testuale; le FONTI della persona chiudono il blocco come link a pillola (stesso stile del footer `.src`). Non introdurre classi nuove: nel template canonico `.person` ha solo la regola di stampa `break-inside:avoid` e il blocco si compone con le `.row` esistenti.
 
 ### Legenda in chiusura (solo glossario, niente note per-azienda)
 

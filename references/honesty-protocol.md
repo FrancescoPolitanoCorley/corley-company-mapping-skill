@@ -31,5 +31,5 @@ In caso di fonti discordanti, riporta entrambe, dichiara quale usi e perché. I 
 
 - Solo fonti pubbliche, uso professionale e proporzionato.
 - Niente dati sensibili (salute, orientamenti, famiglia) anche quando reperibili.
-- Creepy test sui ganci: se citarlo in una mail farebbe sentire la persona spiata, si scarta.
+- Creepy test su ogni informazione personale citata: se la persona, leggendola nel dossier, si sentirebbe spiata, si scarta.
 - Distinguere sempre fatto verificato, dato single-source e inferenza.

@@ -13,14 +13,14 @@ La skill non deve perdere quello che ricava: ogni azienda sintetizzata viene sal
 Colonne (in quest'ordine):
 
 ```
-id,data_aggiornamento,angolo,tier,azienda,alias,settore,sede,dimensione,dipendenti,ricavi,ricavi_anno,ricavi_label,utile_perdita,utile_label,situazione_finanziaria,salute,gruppo_round,tech_ai,incumbent,legame_aws,lead_stato,lead_evento,lead_anno,lead_lista,lead_status,lead_account_manager,perche_ora,icp_fit,priorita,pain,leve,contro_leva,mossa,bozza_apertura,note,gap_rischi,contatti_json,fonti_json
+id,data_aggiornamento,angolo,tier,azienda,alias,settore,sede,dimensione,dipendenti,ricavi,ricavi_anno,ricavi_label,utile_perdita,utile_label,situazione_finanziaria,salute,gruppo_round,tech_ai,incumbent,legame_aws,lead_stato,lead_evento,lead_anno,lead_lista,lead_status,lead_account_manager,perche_ora,icp_fit,priorita,pain,leve,note,gap_rischi,contatti_json,fonti_json
 ```
 
-Compatibilità: i CSV creati prima della v1.3.0 possono avere la colonna `deal_stimato` (rimossa) e le colonne `crm_*` al posto di `lead_*` (senza `lead_lista`). Se il file esistente ha la vecchia intestazione, mantieni LA SUA intestazione (campi rimossi vuoti, `crm_*` = i corrispondenti `lead_*`); in rigenerazione le colonne legacy si leggono con la stessa mappatura.
+Compatibilità: i CSV creati prima della v1.4.0 possono avere colonne rimosse (`deal_stimato`, `contro_leva`, `mossa`, `bozza_apertura`) e le colonne `crm_*` al posto di `lead_*` (senza `lead_lista`). Se il file esistente ha la vecchia intestazione, mantieni LA SUA intestazione (campi rimossi vuoti, `crm_*` = i corrispondenti `lead_*`); in rigenerazione le colonne legacy si leggono con la stessa mappatura.
 
 - `id`: slug stabile dell'azienda (kebab-case, senza forma societaria: "Kedrion Biopharma" → `kedrion-biopharma`). Le run successive sulla stessa azienda riusano lo stesso `id`.
 - `data_aggiornamento`: data della run (YYYY-MM-DD).
-- I campi testuali (`ricavi`, `pain`, `leve`, `mossa`, `bozza_apertura`, `note`, ...) **mantengono le label inline** `[Dato]`/`[Stima]`/`[Ipotesi]` così la card si ricostruisce identica.
+- I campi testuali (`ricavi`, `pain`, `leve`, `note`, ...) **mantengono le label inline** `[Dato]`/`[Stima]`/`[Ipotesi]` così la card si ricostruisce identica.
 - `priorita` (Alta/Media/Bassa), `icp_fit`: i giudizi, già con `[Stima]`.
 - `lead_stato`: `CALDA`/`FREDDA`/`NON VERIFICATO`. `lead_lista`: nome breve del file lead di provenienza (es. "lead AWS Summit 2026"). `perche_ora`: il trigger di timing.
 - `contatti_json`: array JSON, un oggetto per persona dell'organigramma:
@@ -40,7 +40,7 @@ Esempio (Python, append-safe):
 
 ```python
 import csv, os, json
-COLS = ["id","data_aggiornamento","angolo","tier","azienda","alias","settore","sede","dimensione","dipendenti","ricavi","ricavi_anno","ricavi_label","utile_perdita","utile_label","situazione_finanziaria","salute","gruppo_round","tech_ai","incumbent","legame_aws","lead_stato","lead_evento","lead_anno","lead_lista","lead_status","lead_account_manager","perche_ora","icp_fit","priorita","pain","leve","contro_leva","mossa","bozza_apertura","note","gap_rischi","contatti_json","fonti_json"]
+COLS = ["id","data_aggiornamento","angolo","tier","azienda","alias","settore","sede","dimensione","dipendenti","ricavi","ricavi_anno","ricavi_label","utile_perdita","utile_label","situazione_finanziaria","salute","gruppo_round","tech_ai","incumbent","legame_aws","lead_stato","lead_evento","lead_anno","lead_lista","lead_status","lead_account_manager","perche_ora","icp_fit","priorita","pain","leve","note","gap_rischi","contatti_json","fonti_json"]
 # row = dict con i campi della scheda; "contatti" e "fonti" sono liste Python (vengono serializzate qui)
 row = {"id": "kedrion-biopharma", "data_aggiornamento": "2026-06-09", "contatti": [], "fonti": []}  # esempio
 path = "company-mapping-db.csv"

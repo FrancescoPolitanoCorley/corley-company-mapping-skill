@@ -1,6 +1,6 @@
 # Mappatura persone
 
-Costruisce l'organigramma utile alla vendita e, in Deep, i ganci sui contatti prioritari. Si applica nella Wave C della Fase 2.
+Costruisce l'organigramma utile alla vendita e, in Deep, il layer personale dei contatti prioritari (percorso, temi pubblici, stile, canale). Si applica nella Wave C della Fase 2.
 
 ## Organigramma (cascata di fonti)
 
@@ -36,12 +36,6 @@ Tre casistiche distinte, mai fuse né inventate:
 - **Profilo presente ma su singola fonte** (tipicamente solo LinkedIn, Tier 3): si riporta con label `[Ipotesi]` e nota "single-source, da confermare". Non si promuove a `[Dato]` né si degrada a "non trovato": la persona esiste, il dato non è ancora corroborato.
 - **Non trovato nei lead Drive vs non trovato sul web**: sono due stati diversi e vanno etichettati come tali. "Non trovato nei lead Drive" significa assente dai file lead Corley (campo placeholder o nessun match). "Non trovato sul web" significa nessun profilo pubblico reperibile. Una persona può essere presente sul web ma assente dalle liste lead (o viceversa): in quel caso si dichiarano entrambi gli stati separatamente, mai riassunti in un unico "non trovato".
 
-## Ganci (solo Deep, contatti prioritari)
+## Layer personale (solo Deep, contatti prioritari)
 
-Costruiti da fonti pubbliche, incrociando i temi della persona con l'autenticità di Corley:
-
-- gancio professionale (un'opinione o una sfida condivisa);
-- gancio di competenza (un terreno dove Corley ha credibilità reale utile a loro);
-- gancio personale (un interesse genuino in comune).
-
-Regola: un gancio vale solo se autentico e specifico. Applica il creepy test (vedi `honesty-protocol.md`). Niente dati sensibili.
+Percorso, opinioni e temi pubblici, stile (dati vs storie, builder vs narratore, social vs riservato) e canale migliore. Serve a calibrare tono e linguaggio, non a costruire agganci: il dossier è la fotografia della persona, l'ingaggio lo decide il sales. Ogni informazione personale citata viene da fonti pubbliche e regge il creepy test di `honesty-protocol.md`; niente dati sensibili.

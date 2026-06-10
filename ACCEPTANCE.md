@@ -8,9 +8,11 @@
 - [ ] No file contains TBD/TODO/placeholder text.
 - [ ] Output is a single self-contained HTML file (inline CSS, no external assets) with summary table + per-sector cards (summary table omitted for single-company dossiers, body gets class="single").
 - [ ] A PDF is generated from the HTML via headless Chrome, preserving layout, colors, and the org chart.
+- [ ] An editable DOCX is generated (pandoc, same basename) following the docx-template contract: rethought text-document format, headings, tables, inline labels and links; skipped with a notice if pandoc is unavailable.
+- [ ] The card has a quick-links row (site, company LinkedIn, GitHub/docs, financials) and key sources are linked inline next to the data they support.
 - [ ] Contacts present in the Drive lead lists show email and phone (or "n.d." only when the sheet cell is actually empty); every cited person links to LinkedIn when a verified profile exists.
 - [ ] Org chart renders as tiered Decide/Influenza/Usa with a starred recommended contact, ghost nodes, and a path line.
-- [ ] The mossa/azione is phrased as a proposal: no internal sender prescribed, and NO deadlines or relative time references ("entro venerdì", "questa settimana") — the dossier must not age. Absolute dates on facts are fine.
+- [ ] The dossier contains NO engagement material (email drafts, mossa/azione, ganci, contro-leva) and NO deadlines or relative time references — it is a client photograph that must not age. Absolute dates on facts are fine.
 - [ ] Output files follow the naming convention (single company: `{id}.html`; list: `company-mapping-{YYYY-MM-DD}.html`; PDF same basename), unless the user overrides it.
 
 ## Behavioral (verified on a sample run: 1 company Standard + 1 company Deep, any company)
@@ -22,7 +24,7 @@
 - [ ] Data gaps are declared explicitly with "how to verify"; no fabricated values.
 - [ ] Source conflicts are reconciled out loud.
 - [ ] People are classified decisore/influencer/utente.
-- [ ] Deep tier produces 2-3 ganci per priority contact, each citing a public source and a stated usage (apertura / qualifica / call); rejected hooks listed with reasons. The dossier text never names internal jargon (tier, wave, creepy test).
+- [ ] Deep tier produces complete person cards (canale, stile, temi, percorso) from public sources; any personal info passes the creepy test. The dossier text never names internal jargon (tier, wave, creepy test).
 - [ ] Each scheda ends with a clickable sources list.
 - [ ] A verification report file is written before rendering (even in the no-sub-agent fallback); critical issues stop the run.
 - [ ] On lists larger than ~8 companies, work proceeds in batches of 5-8 (phases 2-4 per batch, verified rows appended per batch, PROGRESS updated per batch); rendering happens once at the end from the CSV.

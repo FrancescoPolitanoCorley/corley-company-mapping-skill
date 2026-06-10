@@ -1,6 +1,6 @@
 # Corley Company Mapping Skill
 
-Skill per [Claude Code](https://claude.com/claude-code) (e agenti compatibili con il formato skill) che trasforma un elenco di aziende, o una singola azienda, in un **dossier di mappatura azionabile** per il team sales/marketing di Corley: business, dati finanziari aggiornati, maturità tecnologica e iniziative AI, legame con AWS, organigramma con contatti, stato nelle liste lead Corley su Drive (calda/fredda), priorità del lead e mossa proposta. Output: un file **HTML** dossier più il **PDF** corrispondente.
+Skill per [Claude Code](https://claude.com/claude-code) (e agenti compatibili con il formato skill) che trasforma un elenco di aziende, o una singola azienda, in un **dossier di mappatura azionabile** per il team sales/marketing di Corley: business, dati finanziari aggiornati, maturità tecnologica e iniziative AI, legame con AWS, organigramma con contatti, stato nelle liste lead Corley su Drive (calda/fredda), priorità del lead e la lettura dalle nostre angolazioni (AWS, innovazione tecnologica). Output: un file **HTML** dossier, il **PDF** corrispondente e un **DOCX editabile** (si apre in Word; caricato su Drive diventa un Google Doc).
 
 È pensata per qualificare lead, preparare call e personalizzare l'outreach (ABM), con onestà delle fonti integrata: ogni numero è etichettato e datato, i dati mancanti sono dichiarati, niente viene inventato.
 
@@ -11,11 +11,12 @@ Skill per [Claude Code](https://claude.com/claude-code) (e agenti compatibili co
 Per ogni azienda, una scheda con:
 
 - **Priorità** (Alta/Media/Bassa), per ordinare la coda di lavoro, con il perché quando diverge dal fit (es. alta per timing, non per dimensione). Il valore economico del lead non viene stimato: lo dimensiona il sales in offerta.
-- **Perché ora** con la riga **Azione** in testa (a chi scrivere e su che canale, senza scadenze: il dossier non deve invecchiare): la risposta a "chi contatto per primo?" sta sulla prima schermata.
+- **Perché ora**: il trigger di timing, senza riferimenti relativi al presente (il dossier non deve invecchiare). Alla domanda "chi contatto per primo?" risponde l'organigramma (contatto ★ e percorso).
 - Anagrafica, **finanza datata**, salute, gruppo/round.
 - **Tecnologia & AI**, incumbent attuale, **legame con AWS**.
 - **Organigramma a fasce** Decide / Influenza / Usa con solo le persone rilevanti per la decisione: contatto consigliato (★), nodi "fantasma" per decisori non raggiungibili, riga "percorso" (chi contattare per primo, dove arrivare); contractor e figure di contorno in una riga sotto. Email e telefono per i contatti presenti nei fogli lead; link LinkedIn solo se verificato.
-- Rail **"Per Corley"**: ICP fit, pain, leve, contro-leva (perché non in casa / non l'incumbent), mossa proposta (contatto, canale e obiettivo della call; senza prescrivere chi scrive internamente e senza scadenze: il dossier non deve invecchiare) e **bozza di apertura** (oggetto incluso) pronta da incollare.
+- Rail **"Per Corley"**: ICP fit, pain, leve — la fotografia del cliente dalle nostre angolazioni. Niente materiale di ingaggio (bozze email, mosse, ganci): l'approccio lo decide il sales. Restano stile, temi e canale dei contatti, per calibrare tono e linguaggio.
+- **Link rapidi** in testa alla card (sito, LinkedIn azienda, GitHub/docs, bilanci) e fonti linkate accanto ai dati che sostengono.
 - Gap & rischi (con "come verificarlo") e fonti cliccabili.
 
 A livello di lista: tabella riepilogativa ordinata per priorità (coda di lavoro), schede raggruppate per settore, e in chiusura solo la legenda.
@@ -56,6 +57,7 @@ Leggi `SKILL.md` e segui il flusso a 6 fasi, aprendo i file in `references/` qua
 
 - **Accesso alle liste lead**: mount locale di Google Drive **oppure** connettore Google Drive (MCP). Almeno uno dei due, vedi sopra. Senza nessuno dei due la skill prosegue con le sole fonti web e marca lo stato lead "NON VERIFICATO" (non "fredda": l'assenza non è stata verificata).
 - **WebSearch / WebFetch** per la ricerca.
+- Per il DOCX editabile: **pandoc** (se manca, la skill consegna HTML+PDF e lo segnala).
 - Per il PDF: un **browser Chromium-based** (Chrome, Chromium, Edge, Brave, Vivaldi, Opera) e accesso alla shell. La skill usa il **browser predefinito di sistema** se è Chromium, altrimenti ripiega su un Chromium installato; rileva tutto da sola su macOS/Linux/Windows, senza percorsi da configurare. Se il predefinito è Safari o Firefox (che non stampano via questa pipeline) e non c'è alcun Chromium, consegna comunque l'HTML e segnala che il PDF va generato a parte.
 
 ---
@@ -66,7 +68,7 @@ Frase tipo: *"mappa queste aziende: …"*, *"qualifica questi lead"*, *"prepara 
 
 **Input:** un elenco di aziende o una singola azienda. Opzionale: l'angolo (default: lead per consulenza AWS). Come prima azione la skill pone una **domanda a risposta multipla Standard/Deep** con le implicazioni di costo e profondità (saltata se il tier è già nella richiesta; senza risposta procede in Standard).
 
-**Output:** nella directory di lavoro, un HTML + il PDF corrispondente. Naming: singola azienda `{id}.html` (slug dell'azienda, es. `kedrion-biopharma.html`), lista `company-mapping-{data}.html`; un nome indicato dall'utente vince sulla convenzione.
+**Output:** nella directory di lavoro, HTML + PDF + DOCX editabile. Naming: singola azienda `{id}.html/.pdf/.docx` (slug dell'azienda, es. `kedrion-biopharma.html`), lista `company-mapping-{data}.*`; un nome indicato dall'utente vince sulla convenzione.
 
 ---
 
@@ -74,7 +76,7 @@ Frase tipo: *"mappa queste aziende: …"*, *"qualifica questi lead"*, *"prepara 
 
 | | Standard (default) | Deep |
 |---|---|---|
-| Copertura | Azienda & finanza, tecnologia & AWS, organigramma essenziale | + layer personale completo, **ganci** sui contatti chiave, studio del prodotto alla fonte, triangolazione aggressiva |
+| Copertura | Azienda & finanza, tecnologia & AWS, organigramma essenziale | + layer personale completo dei contatti chiave (percorso, temi, stile, canale), studio del prodotto alla fonte, triangolazione aggressiva |
 | Round di ricerca per wave | 2-3 | 4-6 |
 | Quando | sgrezzare liste lunghe, qualificare | preparare a fondo un singolo account per una call |
 
@@ -91,11 +93,11 @@ L'utente può sempre forzare il tier.
 2. **Ricerca web in wave** (fan-out parallelo di sub-agent) — A azienda & finanza (+ trigger di timing, segnali di dimensione), B tecnologia & AWS (+ incumbent), C persone (organigramma; in Deep layer personale + ganci). I grezzi vanno in `raw/`. Su liste lunghe si lavora a lotti di 5-8 aziende (Fasi 2-4 per lotto, PROGRESS aggiornato per lotto): una run interrotta riprende dal primo lotto incompleto.
 3. **Sintesi** — connette i segnali, calcola priorità e ICP fit, deriva pain/leve/contro-leva/mossa/bozza, applica le label, riconcilia i conflitti, dichiara i gap, prepara la riga del datastore.
 4. **Verifica** — un controllo rilegge i contenuti (claim senza fonte, contraddizioni, dati stale, gap non dichiarati) prima del rendering; a verifica superata le righe vengono scritte nel datastore CSV.
-5. **Output** — HTML dossier + PDF (Chrome headless).
+5. **Output** — HTML dossier + PDF (Chrome headless) + DOCX editabile (pandoc, formato ripensato per il documento di testo).
 
 ### Onestà delle fonti (regola non negoziabile)
 
-Ogni affermazione porta una label: `[Dato]` (verificato), `[Stima]` (calcolato con assunzione dichiarata; include priorità e ICP fit), `[Ipotesi]` (da confermare). Mai inventare: un gap dichiarato con "come verificarlo" è sempre preferibile a un valore tirato a indovinare. Vale per dati finanziari, email, telefono e URL LinkedIn. Solo fonti pubbliche; sui ganci personali si applica il "creepy test".
+Ogni affermazione porta una label: `[Dato]` (verificato), `[Stima]` (calcolato con assunzione dichiarata; include priorità e ICP fit), `[Ipotesi]` (da confermare). Mai inventare: un gap dichiarato con "come verificarlo" è sempre preferibile a un valore tirato a indovinare. Vale per dati finanziari, email, telefono e URL LinkedIn. Solo fonti pubbliche; su ogni informazione personale citata si applica il "creepy test".
 
 ---
 
