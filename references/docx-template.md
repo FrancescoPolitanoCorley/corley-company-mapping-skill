@@ -5,7 +5,7 @@ Accanto a HTML e PDF, la skill produce un **DOCX editabile**: il documento che i
 ## Pipeline
 
 1. Costruisci un **markdown intermedio** dai dati sintetizzati (le stesse righe del datastore usate per l'HTML), secondo la struttura sotto.
-2. Converti con pandoc: `pandoc "{basename}.docx.md" -o "{basename}.docx"`.
+2. Converti con pandoc usando SEMPRE gli stili Corley: `pandoc "{basename}.docx.md" --reference-doc="{skill-dir}/references/reference.docx" -o "{basename}.docx"`. Senza `--reference-doc` il DOCX esce con i default pandoc (tabelle senza bordi, stili anonimi): non consegnarlo così. `reference.docx` è versionato nella skill: tabelle bordate con header evidenziato, heading navy Corley.
 3. Cancella il markdown intermedio: l'editabile è il DOCX.
 
 Naming: stesso basename di HTML e PDF (`{id}.docx` per singola azienda, `company-mapping-{data}.docx` per lista). Requisito: **pandoc** (già nel toolchain Corley). Se manca: prova `python-docx` se installato, altrimenti consegna HTML+PDF e segnala che il DOCX va generato a parte. Non far fallire la run per il solo DOCX.

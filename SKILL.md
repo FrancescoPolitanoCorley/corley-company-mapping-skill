@@ -24,6 +24,7 @@ Trasforma una lista di aziende (o una singola) in un dossier di qualificazione l
 | `references/data-store.md` | Fase 3 (preparazione righe CSV) e per rigenerare da CSV |
 | `references/report-template.html` | Fase 5 (rendering): template HTML canonico, richiamato da `scheda-template.md` |
 | `references/docx-template.md` | Fase 5 (output editabile DOCX) |
+| `references/reference.docx` | Fase 5: stili DOCX per pandoc (`--reference-doc`, non si legge) |
 
 Leggi `references/honesty-protocol.md` all'inizio della sessione: le sue regole valgono per ogni fase, non solo per una.
 
