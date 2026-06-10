@@ -7,6 +7,17 @@ Accanto a HTML e PDF, la skill produce un **DOCX editabile**: il documento che i
 1. Costruisci un **markdown intermedio** dai dati sintetizzati (le stesse righe del datastore usate per l'HTML), secondo la struttura sotto.
 2. Converti con pandoc usando SEMPRE gli stili Corley: `pandoc "{basename}.docx.md" --reference-doc="{skill-dir}/references/reference.docx" -o "{basename}.docx"`. Senza `--reference-doc` il DOCX esce con i default pandoc (tabelle senza bordi, stili anonimi): non consegnarlo così. `reference.docx` è versionato nella skill: tabelle bordate con header evidenziato, heading navy Corley.
 3. Cancella il markdown intermedio: l'editabile è il DOCX.
+4. **Consegna su Drive come Google Doc nativo (opzionale, se l'utente la chiede o l'ambiente la consente).** Usa la CLI `gws` con la config Corley (stessa via delle altre skill del deal engine), in due passi:
+
+```bash
+# upload binario affidabile (mai base64 via tool di chat: si corrompe)
+GOOGLE_WORKSPACE_CLI_CONFIG_DIR=~/.config/gws-corley gws drive +upload "{basename}.docx" --name "{titolo}.docx"
+# conversione in Google Doc nativo (files.copy con mimeType google-apps.document)
+GOOGLE_WORKSPACE_CLI_CONFIG_DIR=~/.config/gws-corley gws drive files copy   --params '{"fileId":"{id-del-docx-caricato}"}'   --json '{"mimeType":"application/vnd.google-apps.document","name":"{titolo}"}'
+# poi cestina il .docx intermedio su Drive (files update {"trashed":true}): resta solo il Doc nativo
+```
+
+Heading, tabelle bordate e link sopravvivono alla conversione. Se `gws` non c'è o l'OAuth non è configurato (`gws auth login --services drive`), salta la consegna Drive e segnala: il DOCX locale resta il deliverable. NON usare il connettore Drive MCP per caricare binari (converte da solo solo txt/csv e il base64 attraverso la chat si corrompe).
 
 Naming: stesso basename di HTML e PDF (`{id}.docx` per singola azienda, `company-mapping-{data}.docx` per lista). Requisito: **pandoc** (già nel toolchain Corley). Se manca: prova `python-docx` se installato, altrimenti consegna HTML+PDF e segnala che il DOCX va generato a parte. Non far fallire la run per il solo DOCX.
 

@@ -58,6 +58,7 @@ Leggi `SKILL.md` e segui il flusso a 6 fasi, aprendo i file in `references/` qua
 - **Accesso alle liste lead**: mount locale di Google Drive **oppure** connettore Google Drive (MCP). Almeno uno dei due, vedi sopra. Senza nessuno dei due la skill prosegue con le sole fonti web e marca lo stato lead "NON VERIFICATO" (non "fredda": l'assenza non è stata verificata).
 - **WebSearch / WebFetch** per la ricerca.
 - Per il DOCX editabile: **pandoc** (se manca, la skill consegna HTML+PDF e lo segnala).
+- Per la consegna su Drive come **Google Doc nativo** (opzionale): CLI **gws** con OAuth Corley (`~/.config/gws-corley`, la stessa delle altre skill del deal engine).
 - Per il PDF: un **browser Chromium-based** (Chrome, Chromium, Edge, Brave, Vivaldi, Opera) e accesso alla shell. La skill usa il **browser predefinito di sistema** se è Chromium, altrimenti ripiega su un Chromium installato; rileva tutto da sola su macOS/Linux/Windows, senza percorsi da configurare. Se il predefinito è Safari o Firefox (che non stampano via questa pipeline) e non c'è alcun Chromium, consegna comunque l'HTML e segnala che il PDF va generato a parte.
 
 ---
@@ -70,7 +71,7 @@ Frase tipo: *"mappa queste aziende: …"*, *"qualifica questi lead"*, *"prepara 
 
 **Input:** un elenco di aziende o una singola azienda. Opzionale: l'angolo (default: lead per consulenza AWS). Come prima azione la skill pone una **domanda a risposta multipla Standard/Deep** con le implicazioni di costo e profondità (saltata se il tier è già nella richiesta; senza risposta procede in Standard).
 
-**Output:** nella directory di lavoro, HTML + PDF + DOCX editabile. Naming: singola azienda `{id}.html/.pdf/.docx` (slug dell'azienda, es. `kedrion-biopharma.html`), lista `company-mapping-{data}.*`; un nome indicato dall'utente vince sulla convenzione.
+**Output:** nella directory di lavoro, HTML + PDF + DOCX editabile (e su richiesta il Google Doc nativo su Drive via gws). Naming: singola azienda `{id}.html/.pdf/.docx` (slug dell'azienda, es. `kedrion-biopharma.html`), lista `company-mapping-{data}.*`; un nome indicato dall'utente vince sulla convenzione.
 
 ---
 
