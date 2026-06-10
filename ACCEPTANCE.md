@@ -17,6 +17,7 @@
 
 ## Behavioral (verified on a sample run: 1 company Standard + 1 company Deep, any company)
 - [ ] Phase 0 opens with a multiple-choice Standard/Deep question stating depth and cost implications (skipped only if the user already specified the tier; defaults to Standard when no answer is possible).
+- [ ] Phase 0 checks `company-mapping-db.csv` before anything else: for companies already in the datastore the user is asked whether to regenerate from CSV or re-run the research (never silently re-researched).
 - [ ] Phase 1 lead-list cross-reference (Drive) runs BEFORE any web search.
 - [ ] Each company is classified warm/cold (or NON VERIFICATO when lists are unreachable) with lead-list evidence when warm: source file named (e.g. "lead AWS Summit 2026") + event + year + notes. The dossier never calls the lists "CRM".
 - [ ] Every number carries [Dato]/[Stima]/[Ipotesi] and a date.

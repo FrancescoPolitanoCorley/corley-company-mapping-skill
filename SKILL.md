@@ -21,7 +21,7 @@ Trasforma una lista di aziende (o una singola) in un dossier di qualificazione l
 | `references/synthesis.md` | inizio Fase 3 |
 | `references/verification-agent.md` | inizio Fase 4 |
 | `references/scheda-template.md` | Fase 3 (scrittura schede) |
-| `references/data-store.md` | Fase 3 (preparazione righe CSV) e per rigenerare da CSV |
+| `references/data-store.md` | Fase 0 (check dello storico), Fase 3 (preparazione righe CSV) e per rigenerare da CSV |
 | `references/report-template.html` | Fase 5 (rendering): template HTML canonico, richiamato da `scheda-template.md` |
 | `references/docx-template.md` | Fase 5 (output editabile DOCX) |
 | `references/reference.docx` | Fase 5: stili DOCX per pandoc (`--reference-doc`, non si legge) |
@@ -38,6 +38,8 @@ Leggi `references/honesty-protocol.md` all'inizio della sessione: le sue regole 
 2. **Deep (consigliata per un singolo account da preparare per una call)** — tutto lo Standard più: layer personale dei contatti chiave (percorso, temi pubblici, stile, canale), studio del prodotto alla fonte (docs, repository, demo), triangolazione aggressiva, schede persona complete. 4-6 round per wave. Costa ~3x lo Standard (riferimento misurato: ~9 minuti e ~150k token per azienda).
 
 Se la risposta non arriva (ambiente non interattivo), procedi in Standard e dichiaralo.
+
+**Seconda azione: controlla lo storico.** Se `company-mapping-db.csv` esiste nella directory di lavoro, verifica se le aziende richieste sono già state mappate (stesso `id`/slug). Per quelle già presenti chiedi all'utente: **rigenerare il dossier dal CSV** (senza ricerca, pochi secondi, dati alla data dell'ultima run) oppure **rifare la ricerca da capo** (nuova riga in append, dati freschi). È il motivo per cui conviene lanciare la skill sempre nella stessa directory di progetto: il datastore è la memoria delle scansioni.
 
 Ricevi la lista o la singola azienda. L'angolo di default è quello Corley: "è un buon lead per consulenza AWS (migrazione, modernizzazione, GenAI) e chi contatto per primo?". L'utente può fornire un angolo diverso per la run, che vince sempre.
 

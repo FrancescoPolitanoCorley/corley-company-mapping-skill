@@ -53,6 +53,10 @@ with open(path, "a", newline="", encoding="utf-8") as f:
     w.writerow({k: row.get(k, "") for k in COLS})
 ```
 
+## Check all'avvio (Fase 0)
+
+Il datastore è il primo posto dove guardare, prima di qualunque ricerca: se il file esiste e contiene un `id` richiesto, l'azienda è già stata scansionata. In quel caso si chiede all'utente se rigenerare il dossier dal CSV (sotto) o rifare la ricerca da capo; non si riparte mai da zero in silenzio su un'azienda già in memoria.
+
 ## Rigenerare HTML/PDF senza ricerca (il punto del datastore)
 
 Quando l'utente chiede di **ricreare, ri-stilizzare o ri-esportare** un dossier di aziende già mappate (o di metterne alcune già note in un nuovo report), NON rifare le Fasi 1-4 (lead Drive, ricerca, sintesi e verifica sono già consolidate nel CSV): leggi il CSV e renderizza.

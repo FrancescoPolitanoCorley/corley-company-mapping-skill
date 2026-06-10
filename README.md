@@ -66,6 +66,8 @@ Leggi `SKILL.md` e segui il flusso a 6 fasi, aprendo i file in `references/` qua
 
 Frase tipo: *"mappa queste aziende: …"*, *"qualifica questi lead"*, *"prepara la call su {azienda}"*, *"company mapping di {azienda}"*.
 
+**Consiglio operativo: lancia la skill sempre nella stessa directory di progetto.** Il datastore `company-mapping-db.csv` vive lì ed è la memoria delle scansioni: all'avvio la skill lo controlla per prima cosa e, per le aziende già mappate, chiede se rigenerare il dossier dallo storico (pochi secondi, zero ricerca) o rifare la ricerca da capo. Directory diverse = memorie diverse, e si perde il beneficio.
+
 **Input:** un elenco di aziende o una singola azienda. Opzionale: l'angolo (default: lead per consulenza AWS). Come prima azione la skill pone una **domanda a risposta multipla Standard/Deep** con le implicazioni di costo e profondità (saltata se il tier è già nella richiesta; senza risposta procede in Standard).
 
 **Output:** nella directory di lavoro, HTML + PDF + DOCX editabile. Naming: singola azienda `{id}.html/.pdf/.docx` (slug dell'azienda, es. `kedrion-biopharma.html`), lista `company-mapping-{data}.*`; un nome indicato dall'utente vince sulla convenzione.
